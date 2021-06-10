@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.controller.mail;
+package br.com.ifsp.pi.lixt.test.utils.mail;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +8,7 @@ import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 
 @SpringBootTest
-public class MailController {
+public class MailTest {
 	
 	@Autowired
 	private SenderMail senderMail;
