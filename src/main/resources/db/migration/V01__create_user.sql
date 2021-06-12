@@ -1,5 +1,5 @@
 CREATE TABLE tb_user (
-	id_user bigint NOT NULL,
+	id_user bigint NOT NULL auto_increment,
 	st_name varchar (50),
 	st_username varchar (50),
 	st_email varchar (250),

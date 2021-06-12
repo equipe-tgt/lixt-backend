@@ -36,11 +36,11 @@ public class SenderMail {
 		this.auth = smtp;
 	}
 	
-	public boolean sendEmail(MailDto email) {
+	public boolean sendEmail(MailDto mail) {
 		
 		try {
 
-			MimeMessage message = this.configMessage(email, this.config());
+			MimeMessage message = this.configMessage(mail, this.config());
 			Transport.send(message);
 		
 			logger.info("Email enviado com sucesso!");
@@ -66,33 +66,33 @@ public class SenderMail {
 		return Session.getInstance(props, auth);
 	}
 	
-	private MimeMessage configMessage(MailDto email, Session session) throws AddressException, MessagingException {
+	private MimeMessage configMessage(MailDto mail, Session session) throws AddressException, MessagingException {
 		MimeMessage message = new MimeMessage(session);
 				
-		for(String recipient : email.getRecipientsTO())
+		for(String recipient : mail.getRecipientsTO())
 			message.addRecipient(RecipientType.TO, new InternetAddress(recipient));
 		
-		if(Objects.nonNull(email.getRecipientsCC())) {
-			for(String recipient : email.getRecipientsCC())
+		if(Objects.nonNull(mail.getRecipientsCC())) {
+			for(String recipient : mail.getRecipientsCC())
 				message.addRecipient(RecipientType.CC, new InternetAddress(recipient));
 		}
 		
-		if(Objects.nonNull(email.getRecipientsBCC())) {
-			for(String recipient : email.getRecipientsBCC())
+		if(Objects.nonNull(mail.getRecipientsBCC())) {
+			for(String recipient : mail.getRecipientsBCC())
 				message.addRecipient(RecipientType.BCC, new InternetAddress(recipient));
 		}
 				
-		message.setSentDate(email.getDateSent());
-		message.setSubject(email.getTitle());
+		message.setSentDate(mail.getDateSent());
+		message.setSubject(mail.getTitle());
 		
 		Multipart multipart = new MimeMultipart();
 		
 		MimeBodyPart attachmentText = new MimeBodyPart();
-		attachmentText.setContent(email.getMsgHTML(),"text/html; charset=UTF-8");
+		attachmentText.setContent(mail.getMsgHTML(),"text/html; charset=UTF-8");
 		multipart.addBodyPart(attachmentText);
 		
-		if(Objects.nonNull(email.getFiles())) {
-			for(File file : email.getFiles())
+		if(Objects.nonNull(mail.getFiles())) {
+			for(File file : mail.getFiles())
 				this.setAttachment(multipart, file);
 		}
 		

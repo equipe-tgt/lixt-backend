@@ -18,7 +18,8 @@
 	
 	<properties>
 		<java.version>11</java.version>
-		
+	
+		<oauth.version>2.1.5.RELEASE</oauth.version>
 		<swagger.version>2.9.2</swagger.version>
 		<mail.version>1.4.7</mail.version>
 	</properties>
@@ -29,7 +30,7 @@
 	
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
@@ -67,6 +68,14 @@
 			<artifactId>flyway-core</artifactId>
 		</dependency>
 		
+		<!-- Spring Security -->
+
+        <dependency>
+            <groupId>org.springframework.security.oauth.boot</groupId>
+            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
+            <version>${oauth.version}</version>
+        </dependency>
+		
 		<!-- Mail -->
 		
 		<dependency>
@@ -93,10 +102,25 @@
 
 	<build>
 		<plugins>
+		
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+            
 		</plugins>
 	</build>
 
