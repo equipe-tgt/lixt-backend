@@ -15,16 +15,23 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
+	private static final String[] AUTH_WHITELIST = {
+			"/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"
+	};
+	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
 				.antMatchers("/auth/register")
+				.antMatchers(HttpMethod.OPTIONS,"/**")
+				.antMatchers(AUTH_WHITELIST)
 				.antMatchers(HttpMethod.OPTIONS,"/**");
 	}
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
+			.antMatchers(AUTH_WHITELIST).permitAll()
 			.antMatchers("/auth/register").permitAll()
 			.anyRequest().authenticated()
 			.and()

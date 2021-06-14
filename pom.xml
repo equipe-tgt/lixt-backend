@@ -70,18 +70,18 @@
 		
 		<!-- Spring Security -->
 
-        <dependency>
-            <groupId>org.springframework.security.oauth.boot</groupId>
-            <artifactId>spring-security-oauth2-autoconfigure</artifactId>
-            <version>${oauth.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.security.oauth.boot</groupId>
+			<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+			<version>${oauth.version}</version>
+		</dependency>
 		
 		<!-- Mail -->
 		
 		<dependency>
-		    <groupId>javax.mail</groupId>
-		    <artifactId>mail</artifactId>
-		    <version>${mail.version}</version>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>${mail.version}</version>
 		</dependency>	
 		
 		<!-- Swagger -->
@@ -120,7 +120,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-            
+			
 		</plugins>
 	</build>
 
