@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.user;
+package br.com.ifsp.pi.lixt.data.business.user;
 
 import java.util.List;
 
@@ -13,8 +13,12 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 
 	List<User> findAll();
 	
-	@Query("select u from User u where u.email = ?1")
 	User findByUsername(String username);
+	
+	User findByEmail(String email);
+	
+	@Query("select u from User u where u.email = ?1 or u.username = ?1")
+	User findByUsernameOrEmail(String username);
 	
 	@Modifying(clearAutomatically = true)
 	@Transactional
@@ -29,6 +33,6 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 	@Modifying(clearAutomatically = true)
 	@Transactional
 	@Query("update User u set u.password = ?1 where u.email = ?2")
-	Integer updatePassword(String password, String username);
+	Integer updatePassword(String password, String email);
 	
 }

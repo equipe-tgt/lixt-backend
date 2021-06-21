@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.user;
+package br.com.ifsp.pi.lixt.data.business.category;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,30 +20,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode
-@Table(name = "tb_user")
-public class User {
-
+@Table(name = "tb_category")
+public class Category {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Basic(optional = false)
-	@Column(name = "id_user", updatable = false)
+	@Column(name = "id_category", updatable = false, nullable = false)
 	@Builder.Default
 	private Long id = null;
-
-	@Column(name = "st_name")
-	private String name;
 	
-	@Column(name = "st_username")
-	private String username;
+	@Column(name = "st_name", nullable = false)
+	private String name;
 
-	@Column(name = "st_email", unique = true)
-	private String email;
-
-	@Column(name = "st_password")
-	private String password;
-
-	@Builder.Default
-	@Column(name = "bl_activated")
-	private boolean activated = false;
-
-} 
+}

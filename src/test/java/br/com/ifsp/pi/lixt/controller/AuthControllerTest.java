@@ -6,11 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.com.ifsp.pi.lixt.user.User;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 
 @SpringBootTest
-public class AuthTest {
+public class AuthControllerTest {
 	
 	@Autowired
 	private AuthController authController;
@@ -18,7 +17,7 @@ public class AuthTest {
 	@Test
 	public void registerUser() {
 		
-		User user = User.builder()
+		UserDto user = UserDto.builder()
 				.name("leo")
 				.username("leo")
 				.email("leo@gmail.com")

@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.user;
+package br.com.ifsp.pi.lixt.data.business.user;
 
 import java.util.List;
 
@@ -16,16 +16,24 @@ public class UserService {
 		return this.userRepository.findAll();
 	}
 	
-	public User findById(Long id) {
-		return this.userRepository.findById(id).orElse(null);
-	}
-	
 	public User findByUsername(String username) {
 		return this.userRepository.findByUsername(username);
 	}
 	
+	public User findByEmail(String email) {
+		return this.userRepository.findByEmail(email);
+	}
+	
+	public User findByUsernameOrEmail(String username) {
+		return this.userRepository.findByUsernameOrEmail(username);
+	}
+	
 	public User save(User user) {
 		return this.userRepository.save(user);
+	}
+	
+	public Integer activeAccount(String email, String password) {
+		return this.userRepository.updatePassword(password, email);
 	}
 	
 	public Integer activeAccount(Long id) {

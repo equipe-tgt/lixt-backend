@@ -2,7 +2,7 @@ package br.com.ifsp.pi.lixt.mapper;
 
 import java.util.Objects;
 
-import br.com.ifsp.pi.lixt.user.User;
+import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 
 public abstract class UserMapper {
@@ -30,6 +30,7 @@ public abstract class UserMapper {
 				.name(dto.getName())
 				.username(dto.getUsername())
 				.email(dto.getEmail())
+				.password(dto.getPassword())
 				.build();
 	}
 

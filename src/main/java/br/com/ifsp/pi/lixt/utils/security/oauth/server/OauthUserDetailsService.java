@@ -6,8 +6,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import br.com.ifsp.pi.lixt.user.User;
-import br.com.ifsp.pi.lixt.user.UserService;
+import br.com.ifsp.pi.lixt.data.business.user.User;
+import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ public class OauthUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDto loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		User user = userService.findByUsername(username);
+		User user = userService.findByUsernameOrEmail(username);
 		
 		if(Objects.nonNull(user)) {
 			
