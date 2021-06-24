@@ -3,6 +3,7 @@ package br.com.ifsp.pi.lixt.data.business.list;
 import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -45,7 +46,7 @@ public class ListOfItems {
 	@Column(name = "st_description", nullable = false)
 	private String description;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_list", insertable = false, updatable = false)
 	private List<ProductOfList> productsOfList;
 

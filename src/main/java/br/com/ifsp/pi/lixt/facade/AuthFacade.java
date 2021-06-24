@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.utils.exception.DuplicatedDataException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -17,10 +18,10 @@ public class AuthFacade {
 	public User register(User user) {
 
 		if(userService.findByEmail(user.getEmail()) != null) {
-			
+			throw new DuplicatedDataException("Email já cadastrado na plataforma");
 		}
 		if(userService.findByUsername(user.getUsername()) != null) {
-			
+			throw new DuplicatedDataException("Usuário já cadastrado na plataforma");
 		}
 		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));		

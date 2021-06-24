@@ -15,7 +15,7 @@ import br.com.ifsp.pi.lixt.data.business.product.ProductService;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 
 @SpringBootTest
-public class ProductData {
+public class ProductCreateData {
 	
 	@Autowired
 	private CategoryService categoryService;
@@ -24,7 +24,7 @@ public class ProductData {
 	private ProductService productService;
 	
 	@Test
-	public void createProductData() {
+	public void productCreateData() {
 		
 		Category category = categoryService.save(Category.builder().name("alimento").build());
 		
