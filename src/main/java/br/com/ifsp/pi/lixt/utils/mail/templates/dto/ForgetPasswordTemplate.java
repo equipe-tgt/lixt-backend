@@ -34,7 +34,7 @@ public abstract class ForgetPasswordTemplate {
 						"            }\r\n" + 
 						"\r\n" + 
 						"            h1 {\r\n" + 
-						"                font-family: Poppins !important;\r\n" + 
+						"                font-family: Helvetica, Arial, sans-serif !important;\r\n" + 
 						"                font-weight: 800 !important;\r\n" + 
 						"                font-size: 2rem !important;\r\n" + 
 						"                line-height: 2.25rem !important;\r\n" + 
@@ -44,7 +44,7 @@ public abstract class ForgetPasswordTemplate {
 						"            }\r\n" + 
 						"\r\n" + 
 						"            p {\r\n" + 
-						"                font-family: Poppins !important;\r\n" + 
+						"                font-family: Helvetica, Arial, sans-serif !important;\r\n" + 
 						"                font-style: normal !important;\r\n" + 
 						"                font-weight: normal !important;\r\n" + 
 						"                font-size: 14px !important;\r\n" + 
@@ -66,6 +66,12 @@ public abstract class ForgetPasswordTemplate {
 						"            #reset-password .body {\r\n" + 
 						"                padding: 1rem !important;\r\n" + 
 						"                background: white !important;\r\n" + 
+						"            }\r\n" + 
+						"\r\n" + 
+						"            #reset-password .body .greeting {\r\n" + 
+						"                margin-bottom: 4px !important;\r\n" + 
+						"                font-size: 16px !important;\r\n" + 
+						"                font-weight: 600 !important;\r\n" + 
 						"            }\r\n" + 
 						"\r\n" + 
 						"            #reset-password .footer {\r\n" + 
@@ -90,7 +96,7 @@ public abstract class ForgetPasswordTemplate {
 						"            </div>\r\n" + 
 						"\r\n" + 
 						"            <div class=\"body\">\r\n" + 
-						"                <p>Olá, $USERNAME!</p>\r\n" + 
+						"                <p class=\"greeting\">Olá, $USERNAME!</p>\r\n" + 
 						"                <p>Sua nova senha de acesso do Lixt é: <b>$PASSWORD</b>.</p>\r\n" + 
 						"                <p>É altamente recomendado que a altere após acessar a plataforma para melhor proteger sua conta.</p>\r\n" + 
 						"                <p>Bons planejamentos e boas compras!</p>\r\n" + 
