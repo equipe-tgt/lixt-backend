@@ -35,4 +35,7 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 	@Query("update User u set u.password = ?1 where u.email = ?2")
 	Integer updatePassword(String password, String email);
 	
+	@Query("select u.username from User u where u.email = ?1")
+	String findUsernameByEmail(String email);
+	
 }

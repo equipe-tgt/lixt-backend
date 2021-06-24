@@ -44,4 +44,12 @@ public class UserService {
 		return this.userRepository.desactiveAccount(id);
 	}
 	
+	public Integer updatePassword(String email, String password) {
+		return this.userRepository.updatePassword(password, email);
+	}
+	
+	public String findUsernameByEmail(String email) {
+		return this.userRepository.findUsernameByEmail(email);
+	}
+	
 }

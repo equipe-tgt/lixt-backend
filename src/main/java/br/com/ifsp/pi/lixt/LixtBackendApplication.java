@@ -43,6 +43,8 @@ public class LixtBackendApplication {
 	 * 
 	 * 3. Analisar pontos passiveis de exceções
 	 * 
+	 * 4. Refatorar scripts de teste
+	 * 
 	 */
 
 }

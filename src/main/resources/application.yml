@@ -32,6 +32,6 @@ spring:
 
 lixt:
   mail:
-    username: 
-    password: 
+    username: noreply.lixt@gmail.com
+    password: lixtapp2021!
 
