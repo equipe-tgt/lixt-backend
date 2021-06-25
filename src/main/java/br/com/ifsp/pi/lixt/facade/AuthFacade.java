@@ -1,5 +1,7 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.util.Objects;
+
 import javax.transaction.Transactional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -7,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.utils.database.ValidatorResponse;
 import br.com.ifsp.pi.lixt.utils.exception.DuplicatedDataException;
+import br.com.ifsp.pi.lixt.utils.exception.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.ChooseTemplateMail;
@@ -15,6 +19,7 @@ import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.ParametersMail;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.PasswordGenerator;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,27 +43,43 @@ public class AuthFacade {
 		return this.userService.save(user);
 	}
 	
-	public Integer updatePassword(User user) {
+	public Integer updatePassword(User user) throws NotFoundException {
+	
+		if(Objects.isNull(this.userService.findByEmail(user.getEmail()))) {
+			throw new NotFoundException("Usuário não encontrado");
+		}
+		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return this.userService.updatePassword(user.getEmail(), user.getPassword());
 	}
 	
 	@Transactional
-	public Integer forgetPassword(String email) {
-		String password = PasswordGenerator.generateRandomPassword();
+	public Integer forgetPassword(String email) throws NotFoundException {
 		
-		Integer result = this.userService.updatePassword(
-				email, passwordEncoder.encode(password)
-		);
+		User user = this.userService.findByEmail(email);
 		
-		if(result == 1) {
-			MailDto mail = ChooseTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD);
-			mail = FormatterMail.formatMail(mail, ParametersMail.formatParamsResetPassword(this.userService.findUsernameByEmail(email), password));
-			mail.setRecipientTo(email);
-			senderMail.sendEmail(mail);
+		if(Objects.isNull(user)) {
+			throw new NotFoundException("Usuário não encontrado");
 		}
 		
-		return result;
+		String password = PasswordGenerator.generateRandomPassword();
+		
+		Integer responseUpdate = this.userService.updatePassword(email, passwordEncoder.encode(password));
+		
+		if(ValidatorResponse.successfullyUpdated(responseUpdate)) {
+			
+			MailDto mail = ChooseTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD);
+			mail = FormatterMail.formatMail(mail, ParametersMail.formatParamsResetPassword(user.getUsername(), password));
+			mail.setRecipientTo(email);
+			
+			boolean responseSendMail = senderMail.sendEmail(mail);
+			
+			if(!responseSendMail) {
+				throw new SendMailException();
+			}
+		}
+		
+		return responseUpdate;
 	}
 
 }

@@ -6,13 +6,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import lombok.Getter;
 
 @SuppressWarnings("serial")
-@ResponseStatus(value = HttpStatus.CONFLICT)
-public class DuplicatedDataException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.NOT_FOUND)
+public class NotFoundException extends RuntimeException {
 	
 	@Getter
-	private final HttpStatus status = HttpStatus.CONFLICT;
+	private final HttpStatus status = HttpStatus.NOT_FOUND;
 	
-	public DuplicatedDataException(String message) {
+	public NotFoundException(String message) {
 		super(message, null, false, false);
 	}
 

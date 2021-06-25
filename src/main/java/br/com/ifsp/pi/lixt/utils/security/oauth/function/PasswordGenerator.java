@@ -4,8 +4,10 @@ import org.apache.commons.lang3.RandomStringUtils;
 
 public abstract class PasswordGenerator {
 	
+	private static final int LENGTH_PASSWORD = 12;
+	
 	public static String generateRandomPassword() {
-		return RandomStringUtils.randomAlphanumeric(12);
+		return RandomStringUtils.randomAlphanumeric(LENGTH_PASSWORD);
 	}
 
 }

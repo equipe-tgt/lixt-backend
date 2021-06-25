@@ -35,7 +35,7 @@ public class ProductController {
 		this.productService.deleteById(id);
 	}
 	
-	@GetMapping("/by-name")
+	@GetMapping("/by-name/{name}")
 	public ProductDto findByName(@PathVariable String name) {
 		return ProductMapper.entityToDto(this.productService.findByName(name));
 	}

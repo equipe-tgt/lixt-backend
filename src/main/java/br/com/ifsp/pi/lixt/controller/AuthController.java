@@ -1,5 +1,7 @@
 package br.com.ifsp.pi.lixt.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.facade.AuthFacade;
 import br.com.ifsp.pi.lixt.mapper.UserMapper;
+import br.com.ifsp.pi.lixt.utils.exception.SendMailException;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Api(value = "Controller de autenticação, registro e busca de dados do usuário")
@@ -31,15 +35,27 @@ public class AuthController {
 	}
 	
 	@PostMapping("/forget-password/{email}")
-	@ApiOperation(value = "Atualizar a senha de um usuário na plataforma")
-	public Integer forgetPassword(@PathVariable String email) {
-		return this.authFacade.forgetPassword(email);
+	@ApiOperation(value = "Gera uma nova senha de um usuário na plataforma que será enviado por email")
+	public ResponseEntity<Integer> forgetPassword(@PathVariable String email) {
+		try {
+			return new ResponseEntity<>(this.authFacade.forgetPassword(email), HttpStatus.OK);
+		} catch (NotFoundException e) {
+			return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
+		}
+		catch(SendMailException e) {
+			return new ResponseEntity<>(0, HttpStatus.SERVICE_UNAVAILABLE);
+		}
 	}
 	
 	@PostMapping("/update-password")
 	@ApiOperation(value = "Atualizar a senha de um usuário na plataforma")
-	public Integer updatePassword(@RequestBody(required = false) UserDto user) {
-		return this.authFacade.updatePassword(UserMapper.dtoToEntity(user));
+	public ResponseEntity<Integer> updatePassword(@RequestBody(required = false) UserDto user) {
+		try {
+			return new ResponseEntity<>(this.authFacade.updatePassword(UserMapper.dtoToEntity(user)), HttpStatus.OK);
+		}
+		catch(NotFoundException e) {
+			return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
+		}
 	}
 	
 	@GetMapping("/data-user")
