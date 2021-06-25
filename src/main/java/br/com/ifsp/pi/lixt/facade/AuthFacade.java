@@ -9,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
-import br.com.ifsp.pi.lixt.utils.database.ValidatorResponse;
-import br.com.ifsp.pi.lixt.utils.exception.DuplicatedDataException;
-import br.com.ifsp.pi.lixt.utils.exception.SendMailException;
+import br.com.ifsp.pi.lixt.utils.database.validators.ValidatorResponse;
+import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
+import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.ChooseTemplateMail;

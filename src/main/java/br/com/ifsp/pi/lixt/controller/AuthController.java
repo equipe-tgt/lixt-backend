@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.facade.AuthFacade;
 import br.com.ifsp.pi.lixt.mapper.UserMapper;
-import br.com.ifsp.pi.lixt.utils.exception.SendMailException;
+import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

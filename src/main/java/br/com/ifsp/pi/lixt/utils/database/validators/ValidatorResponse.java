@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.utils.database;
+package br.com.ifsp.pi.lixt.utils.database.validators;
 
 public abstract class ValidatorResponse {
 	

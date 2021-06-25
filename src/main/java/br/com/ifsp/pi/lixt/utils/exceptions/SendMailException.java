@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.utils.exception;
+package br.com.ifsp.pi.lixt.utils.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

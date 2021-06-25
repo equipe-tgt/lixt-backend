@@ -40,7 +40,7 @@ public class ProductCreateData {
 					.measureValue(new BigDecimal(5))
 					.build()
 		);
-		
+			
 		products.add(
 				Product.builder()
 					.name("feijão")
@@ -50,7 +50,7 @@ public class ProductCreateData {
 					.measureType(MeasureType.KG)
 					.measureValue(new BigDecimal(1))
 					.build()
-		);
+		);	
 		
 		productService.saveAll(products);
 	}

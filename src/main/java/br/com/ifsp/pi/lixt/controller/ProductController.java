@@ -1,5 +1,8 @@
 package br.com.ifsp.pi.lixt.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,8 +39,8 @@ public class ProductController {
 	}
 	
 	@GetMapping("/by-name/{name}")
-	public ProductDto findByName(@PathVariable String name) {
-		return ProductMapper.entityToDto(this.productService.findByName(name));
+	public List<ProductDto> findByName(@PathVariable String name) {
+		return this.productService.findByName(name).stream().map(ProductMapper::entityToDto).collect(Collectors.toList());
 	}
 
 }
