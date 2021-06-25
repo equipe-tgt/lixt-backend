@@ -1,21 +1,38 @@
 package br.com.ifsp.pi.lixt.controller;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import br.com.ifsp.pi.lixt.controller.operations.AuthControllerOperations;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 
 @SpringBootTest
+@AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+@DisplayName("Testar endpoint Auth")
 public class AuthControllerTest {
+
+	@Autowired
+	private AuthControllerOperations authControllerOperationsTest;
 	
 	@Autowired
-	private AuthController authController;
+	private MockMvc mockMvc;
 	
-	@Test
-	public void registerUser() {
+	private String token;
+	private HttpHeaders httpHeaders = new HttpHeaders();
+	
+	@BeforeAll
+	public void registerUser() throws Exception {
 		
 		UserDto user = UserDto.builder()
 				.name("leo")
@@ -24,10 +41,19 @@ public class AuthControllerTest {
 				.password("123")
 				.build();
 		
-		UserDto createdUser = authController.register(user);
+		this.authControllerOperationsTest.registerUser(user);
+
+		token = this.authControllerOperationsTest.login(user);
+		httpHeaders.add("Authorization", token);		
+	}
+	
+	@Test
+	@DisplayName("Encontrar dados do usuário através do token previamente armazenado e não expirado")
+	public void findDataUser() throws Exception {
 		
-		assertThat(createdUser).isNotNull();
-		assertThat(createdUser.getPassword()).isNull();
+		mockMvc.perform(get("/auth/data-user").headers(httpHeaders).accept("application/json;charset=UTF-8"))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
 	}
 
 }

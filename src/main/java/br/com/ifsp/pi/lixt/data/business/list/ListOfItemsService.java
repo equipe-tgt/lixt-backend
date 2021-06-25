@@ -27,5 +27,9 @@ public class ListOfItemsService {
 	public void deleteById(Long id) {
 		this.listOfItemsRepository.deleteById(id);
 	}
+	
+	public List<ListOfItems> findUserLists(Long idUser) {
+		return this.listOfItemsRepository.findUserLists(idUser);
+	}
 
 }

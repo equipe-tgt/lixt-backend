@@ -33,6 +33,12 @@ public class ProductController {
 		return ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product)));
 	}
 	
+	@PostMapping("/save-all")
+	public List<ProductDto> saveAll(@RequestBody(required = false) List<ProductDto> products) {
+		return this.productService.saveAll(products.stream().map(ProductMapper::dtoToEntity).collect(Collectors.toList()))
+				.stream().map(ProductMapper::entityToDto).collect(Collectors.toList());
+	}
+	
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id) {
 		this.productService.deleteById(id);

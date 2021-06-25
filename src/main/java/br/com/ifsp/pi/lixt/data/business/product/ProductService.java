@@ -15,8 +15,8 @@ public class ProductService {
 	
 	private final ProductRepository productRepository;
 	
-	private final int LENGTH_DATA_BY_NAME_DEFAULT = 12;
-	private final String SORT_DATA_BY_NAME_DEFAULT = "name";
+	private final int LENGTH_DATA_BY_DEFAULT = 12;
+	private final String SORT_DATA_BY_DEFAULT = "name";
 	
 	public Product findById(Long id) {
 		return this.productRepository.findById(id).orElse(null);
@@ -37,7 +37,7 @@ public class ProductService {
 	public List<Product> findByName(String name) {
 		return this.productRepository.findByName(
 				Like.contains(name), 
-				PageRequest.of(0, LENGTH_DATA_BY_NAME_DEFAULT, Sort.by(SORT_DATA_BY_NAME_DEFAULT))
+				PageRequest.of(0, LENGTH_DATA_BY_DEFAULT, Sort.by(SORT_DATA_BY_DEFAULT))
 		);
 	}
 

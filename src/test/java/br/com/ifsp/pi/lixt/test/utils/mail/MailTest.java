@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.test.utils.mail;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,12 +11,14 @@ import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 
 @SpringBootTest
+@DisplayName("Testar serviço de email")
 public class MailTest {
 	
 	@Autowired
 	private SenderMail senderMail;
 	
 	@Test
+	@DisplayName("Enviar email sem erros")
 	public void sendMail() {
 		
 		MailDto mailDto = MailDto.builder()

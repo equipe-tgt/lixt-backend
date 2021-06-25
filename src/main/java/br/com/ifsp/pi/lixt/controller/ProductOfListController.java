@@ -1,5 +1,8 @@
 package br.com.ifsp.pi.lixt.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +31,12 @@ public class ProductOfListController {
 	@PostMapping
 	public ProductOfListDto save(@RequestBody(required = false) ProductOfListDto productOfListDto) {
 		return ProductOfListMapper.entityToDto(this.productOfListService.save(ProductOfListMapper.dtoToEntity(productOfListDto)));
+	}
+	
+	@PostMapping("/save-all")
+	public List<ProductOfListDto> saveAll(@RequestBody(required = false) List<ProductOfListDto> productsOfList) {
+		return this.productOfListService.saveAll(productsOfList.stream().map(ProductOfListMapper::dtoToEntity).collect(Collectors.toList()))
+				.stream().map(ProductOfListMapper::entityToDto).collect(Collectors.toList());
 	}
 	
 	@DeleteMapping("/{id}")

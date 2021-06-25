@@ -5,13 +5,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
+@DisplayName("Testar e documentar tokens")
 public class TokenTest {
 	
 	@Test
+	@DisplayName("Validar criação do basic token")
 	public void generateClientToken() {
 		
 		String token = "Basic ".concat(generateBasicAuthToken("client", "123456"));
