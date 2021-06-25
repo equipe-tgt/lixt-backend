@@ -14,8 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.data.business.category.CategoryService;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 
+@Api(value = "Controller de categoria")
 @RestController
 @RequestMapping("/category")
 @RequiredArgsConstructor
@@ -23,22 +26,26 @@ public class CategoryController {
 	
 	private final CategoryService categoryService;
 	
+	@ApiOperation(value = "Buscar categoria por id")
 	@GetMapping("/{id}")
 	public CategoryDto findById(@PathVariable Long id) {
 		return CategoryMapper.entityToDto(this.categoryService.findById(id));
 	}
 	
+	@ApiOperation(value = "Salvar uma categoria")
 	@PostMapping
 	public CategoryDto save(@RequestBody(required = false) CategoryDto category) {
 		return CategoryMapper.entityToDto(this.categoryService.save(CategoryMapper.dtoToEntity(category)));
 	}
 	
+	@ApiOperation(value = "Salvar várias categorias")
 	@PostMapping("/save-all")
 	public List<CategoryDto> saveAll(@RequestBody(required = false) List<CategoryDto> lists) {
 		return this.categoryService.saveAll(lists.stream().map(CategoryMapper::dtoToEntity).collect(Collectors.toList()))
 				.stream().map(CategoryMapper::entityToDto).collect(Collectors.toList());
 	}
 	
+	@ApiOperation(value = "Deletar uma categoria")
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id) {
 		this.categoryService.deleteById(id);
