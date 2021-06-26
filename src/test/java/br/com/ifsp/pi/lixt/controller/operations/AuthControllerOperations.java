@@ -32,7 +32,7 @@ public class AuthControllerOperations {
 	
 	public void registerUser(UserDto user) {
 		
-		UserDto createdUser = authController.register(user);
+		UserDto createdUser = (UserDto) authController.register(user).getBody();
 		
 		assertThat(createdUser).isNotNull();
 		assertThat(createdUser.getPassword()).isNull();

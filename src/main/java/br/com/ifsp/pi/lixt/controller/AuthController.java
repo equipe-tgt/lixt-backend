@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.facade.AuthFacade;
 import br.com.ifsp.pi.lixt.mapper.UserMapper;
+import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
+import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Api(value = "Controller de autenticação, registro e busca de dados do usuário")
@@ -30,8 +31,12 @@ public class AuthController {
 	
 	@PostMapping("/register")
 	@ApiOperation(value = "Registrar usuário na plataforma")
-	public UserDto register(@RequestBody(required = false) UserDto user) {
-		return UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user)));
+	public ResponseEntity<Object> register(@RequestBody(required = false) UserDto user) {
+		try {
+			return new ResponseEntity<>(UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user))), HttpStatus.OK);
+		} catch (DuplicatedDataException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+		}
 	}
 	
 	@PostMapping("/forget-password/{email}")

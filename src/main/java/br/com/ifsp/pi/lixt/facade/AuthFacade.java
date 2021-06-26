@@ -12,6 +12,7 @@ import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.utils.database.validators.ValidatorResponse;
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
+import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
@@ -20,7 +21,6 @@ import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.CreatorParametersMail;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.PasswordGenerator;
-import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -55,7 +55,7 @@ public class AuthFacade {
 	}
 	
 	@Transactional
-	public Integer forgetPassword(String email) throws NotFoundException {
+	public Integer forgetPassword(String email) {
 		
 		User user = this.userService.findByEmail(email);
 		
