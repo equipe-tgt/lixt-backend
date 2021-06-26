@@ -3,7 +3,7 @@ package br.com.ifsp.pi.lixt.utils.mail.templates;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.templates.dto.ForgetPasswordTemplate;
 
-public abstract class ChooseTemplateMail {
+public abstract class ChooserTemplateMail {
 	
 	public static MailDto chooseTemplate(TypeMail typeMail) {
 		

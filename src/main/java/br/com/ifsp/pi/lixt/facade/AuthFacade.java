@@ -1,5 +1,6 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.util.Map;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
@@ -14,10 +15,10 @@ import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
-import br.com.ifsp.pi.lixt.utils.mail.templates.ChooseTemplateMail;
+import br.com.ifsp.pi.lixt.utils.mail.templates.ChooserTemplateMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
-import br.com.ifsp.pi.lixt.utils.mail.templates.config.ParametersMail;
+import br.com.ifsp.pi.lixt.utils.mail.templates.config.CreatorParametersMail;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.PasswordGenerator;
 import javassist.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -66,10 +67,11 @@ public class AuthFacade {
 		
 		Integer responseUpdate = this.userService.updatePassword(email, passwordEncoder.encode(password));
 		
-		if(ValidatorResponse.successfullyUpdated(responseUpdate)) {
+		if(ValidatorResponse.wasUpdated(responseUpdate)) {
 			
-			MailDto mail = ChooseTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD);
-			mail = FormatterMail.formatMail(mail, ParametersMail.formatParamsResetPassword(user.getUsername(), password));
+			MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD);
+			Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), password);
+			mail = FormatterMail.formatMail(mail, params);
 			mail.setRecipientTo(email);
 			
 			boolean responseSendMail = senderMail.sendEmail(mail);
