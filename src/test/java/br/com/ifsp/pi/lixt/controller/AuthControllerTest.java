@@ -37,7 +37,7 @@ public class AuthControllerTest {
 		UserDto user = UserDto.builder()
 				.name("leo")
 				.username("leo")
-				.email("leo@gmail.com")
+				.email("leo_narita@hotmail.com")
 				.password("123")
 				.build();
 		

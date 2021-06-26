@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
+import br.com.ifsp.pi.lixt.utils.validators.ValidatorData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,8 +39,7 @@ public class MailDto {
 	}
 	
 	public boolean validateBodyEmail() {
-		
-		return Objects.isNull(msgHTML) || msgHTML.isBlank() || Objects.isNull(title) || title.isBlank();
+		return ValidatorData.validateString(msgHTML) && ValidatorData.validateString(title);
 	}
 
 }

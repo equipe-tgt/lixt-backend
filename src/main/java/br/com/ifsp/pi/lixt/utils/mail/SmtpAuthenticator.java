@@ -3,6 +3,8 @@ package br.com.ifsp.pi.lixt.utils.mail;
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
 
+import br.com.ifsp.pi.lixt.utils.validators.ValidatorData;
+
 public class SmtpAuthenticator extends Authenticator {
 	
 	private String username;
@@ -17,7 +19,7 @@ public class SmtpAuthenticator extends Authenticator {
 	@Override
 	public PasswordAuthentication getPasswordAuthentication() {
 	    
-		if ((username != null) && (username.length() > 0) && (password != null)  && (password.length () > 0)) {
+		if (ValidatorData.validateString(username) && ValidatorData.validateString(password)) {
 	        return new PasswordAuthentication(username, password);
 	    }
 	
