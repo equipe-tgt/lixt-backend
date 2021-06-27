@@ -45,6 +45,8 @@ public class LixtBackendApplication {
 	 * 
 	 * 4. Refatorar scripts de teste
 	 * 
+	 * 5. Analisar casos de segurança
+	 * 
 	 */
 
 }

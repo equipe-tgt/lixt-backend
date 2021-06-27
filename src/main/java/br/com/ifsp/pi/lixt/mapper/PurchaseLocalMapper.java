@@ -17,6 +17,7 @@ public abstract class PurchaseLocalMapper {
 		
 		try {
 			return PurchaseLocal.builder()
+					.id(dto.getId())
 					.name(dto.getName())
 					.location(GeolocalizationConvert.convertCoordsToPoint(dto.getLatitude(), dto.getLongitude()))
 					.build();
@@ -33,6 +34,7 @@ public abstract class PurchaseLocalMapper {
 			return null;
 		
 		return PurchaseLocalDto.builder()
+				.id(entity.getId())
 				.name(entity.getName())
 				.latitude(entity.getLocation().getCoordinate().getX())
 				.longitude(entity.getLocation().getCoordinate().getY())

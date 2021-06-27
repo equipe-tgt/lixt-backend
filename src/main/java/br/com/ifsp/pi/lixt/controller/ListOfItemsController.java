@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.mapper.ListOfItemsMapper;
+import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +46,16 @@ public class ListOfItemsController {
 	public List<ListOfItemsDto> saveAll(@RequestBody(required = false) List<ListOfItemsDto> lists) {
 		return this.listOfItemsService.saveAll(lists.stream().map(ListOfItemsMapper::dtoToEntity).collect(Collectors.toList()))
 				.stream().map(ListOfItemsMapper::entityToDto).collect(Collectors.toList());
+	}
+	
+	@ApiOperation(value = "Atualizar lista")
+	@PutMapping("/{id}")
+	public ListOfItemsDto update(@RequestBody(required = false) ListOfItemsDto list, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+		
+		if(!list.getId().equals(id))
+			throw new PrecoditionUpdateFailedException("Erro ao atualizar lista");
+		
+		return ListOfItemsMapper.entityToDto(this.listOfItemsService.save(ListOfItemsMapper.dtoToEntity(list)));
 	}
 	
 	@ApiOperation(value = "Deletar uma lista")

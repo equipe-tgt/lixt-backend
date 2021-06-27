@@ -29,8 +29,7 @@ public class PurchaseLocal {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Basic(optional = false)
 	@Column(name = "id_purchase_local", updatable = false, nullable = false)
-	@Builder.Default
-	private Long id = null;
+	private Long id;
 	
 	@Column(name = "st_name", updatable = false, nullable = false)
 	private String name;
