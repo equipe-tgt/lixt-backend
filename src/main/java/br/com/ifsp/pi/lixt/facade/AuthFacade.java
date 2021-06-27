@@ -20,6 +20,7 @@ import br.com.ifsp.pi.lixt.utils.mail.templates.ChooserTemplateMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.CreatorParametersMail;
+import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.PasswordGenerator;
 import lombok.RequiredArgsConstructor;
 
@@ -44,14 +45,8 @@ public class AuthFacade {
 		return this.userService.save(user);
 	}
 	
-	public Integer updatePassword(User user) throws NotFoundException {
-	
-		if(Objects.isNull(this.userService.findByEmail(user.getEmail()))) {
-			throw new NotFoundException("Usuário não encontrado");
-		}
-		
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
-		return this.userService.updatePassword(user.getEmail(), user.getPassword());
+	public Integer updatePassword(String password) throws NotFoundException {		
+		return this.userService.updatePassword(Users.getEmail(), passwordEncoder.encode(password));
 	}
 	
 	@Transactional

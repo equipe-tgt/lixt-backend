@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -52,15 +53,10 @@ public class AuthController {
 		}
 	}
 	
-	@PostMapping("/update-password")
+	@PostMapping(path = "/update-password", consumes = MediaType.TEXT_PLAIN_VALUE)
 	@ApiOperation(value = "Atualizar a senha de um usuário na plataforma")
-	public ResponseEntity<Integer> updatePassword(@RequestBody(required = false) UserDto user) {
-		try {
-			return new ResponseEntity<>(this.authFacade.updatePassword(UserMapper.dtoToEntity(user)), HttpStatus.OK);
-		}
-		catch(NotFoundException e) {
-			return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
-		}
+	public Integer updatePassword(@RequestBody String password) {
+			return this.authFacade.updatePassword(password);
 	}
 	
 	@GetMapping("/data-user")

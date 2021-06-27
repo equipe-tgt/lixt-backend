@@ -29,4 +29,14 @@ public abstract class Users {
 		return user.getId();
 	}
 	
+	public static String getEmail() {
+		UserDto user = getUserAuthenticated();
+		
+		if(Objects.isNull(user)) {
+			return null;
+		}
+		
+		return user.getEmail();
+	}
+	
 }
