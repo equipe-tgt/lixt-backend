@@ -56,7 +56,7 @@ public class AuthController {
 	@PostMapping(path = "/update-password", consumes = MediaType.TEXT_PLAIN_VALUE)
 	@ApiOperation(value = "Atualizar a senha de um usuário na plataforma")
 	public Integer updatePassword(@RequestBody String password) {
-			return this.authFacade.updatePassword(password);
+		return this.authFacade.updatePassword(password);
 	}
 	
 	@GetMapping("/data-user")

@@ -36,8 +36,8 @@ public abstract class PurchaseLocalMapper {
 		return PurchaseLocalDto.builder()
 				.id(entity.getId())
 				.name(entity.getName())
-				.latitude(entity.getLocation().getCoordinate().getX())
-				.longitude(entity.getLocation().getCoordinate().getY())
+				.latitude(entity.getLocation().getCoordinate().getY())
+				.longitude(entity.getLocation().getCoordinate().getX())
 				.build();
 	}
 
