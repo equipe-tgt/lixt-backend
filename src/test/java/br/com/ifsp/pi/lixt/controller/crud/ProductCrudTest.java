@@ -46,7 +46,6 @@ public class ProductCrudTest {
 		listProducts.add(
 				ProductDto.builder()
 					.name("arroz")
-					.price(new BigDecimal(32))
 					.categoryId(category.getId())
 					.category(category)
 					.measureType(MeasureType.KG)
@@ -57,7 +56,6 @@ public class ProductCrudTest {
 		listProducts.add(
 				ProductDto.builder()
 					.name("feijão")
-					.price(new BigDecimal(20))
 					.categoryId(category.getId())
 					.category(category)
 					.measureType(MeasureType.KG)

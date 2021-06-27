@@ -39,9 +39,6 @@ public class Product {
 	@Column(name = "st_name", nullable = false)
 	private String name;
 	
-	@Column(name = "nr_price", nullable = false)
-	private BigDecimal price;	
-	
 	@Column(name = "id_user")
 	private Long userId;
 	
@@ -51,11 +48,11 @@ public class Product {
 	@Column(name = "st_barcode")
 	private String barcode;
 	
-	@Column(name = "nr_measure_value", nullable = false)
+	@Column(name = "nr_measure_value")
 	private BigDecimal measureValue;
 	
 	@Convert(converter = MeasureType.Converter.class)
-	@Column(name = "en_measure_type", nullable = false)
+	@Column(name = "en_measure_type")
 	private MeasureType measureType;
 	
 	@ManyToOne

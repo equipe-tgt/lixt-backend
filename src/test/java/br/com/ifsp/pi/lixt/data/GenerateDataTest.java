@@ -39,7 +39,7 @@ public class GenerateDataTest {
 		
 		listProducts.add(
 				ProductDto.builder()
-					.name("Arroz").price(new BigDecimal(30))
+					.name("Arroz")
 					.categoryId(category.getId()).category(category)
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(5))
 					.build()
@@ -47,7 +47,7 @@ public class GenerateDataTest {
 		
 		listProducts.add(
 				ProductDto.builder()
-					.name("Feijão").price(new BigDecimal(15))
+					.name("Feijão")
 					.categoryId(category.getId()).category(category)
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(2))
 					.build()
@@ -55,7 +55,7 @@ public class GenerateDataTest {
 		
 		listProducts.add(
 				ProductDto.builder()
-					.name("Sal").price(new BigDecimal(1))
+					.name("Sal")
 					.categoryId(category.getId()).category(category)
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(1))
 					.build()
@@ -63,7 +63,7 @@ public class GenerateDataTest {
 		
 		listProducts.add(
 				ProductDto.builder()
-					.name("Açúcar").price(new BigDecimal(4))
+					.name("Açúcar")
 					.categoryId(category.getId()).category(category)
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(1))
 					.build()
@@ -71,7 +71,7 @@ public class GenerateDataTest {
 		
 		listProducts.add(
 				ProductDto.builder()
-					.name("Azeite").price(new BigDecimal(20))
+					.name("Azeite")
 					.categoryId(category.getId()).category(category)
 					.measureType(MeasureType.L).measureValue(new BigDecimal(1))
 					.build()
@@ -79,7 +79,7 @@ public class GenerateDataTest {
 		
 		listProducts.add(
 				ProductDto.builder()
-					.name("Vinagre").price(new BigDecimal(6))
+					.name("Vinagre")
 					.categoryId(category.getId()).category(category)
 					.measureType(MeasureType.ML).measureValue(new BigDecimal(750))
 					.build()

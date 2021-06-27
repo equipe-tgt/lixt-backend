@@ -18,12 +18,11 @@ ENGINE = InnoDB;
 CREATE TABLE IF NOT EXISTS `tb_product` (
   `id_product` INT NOT NULL AUTO_INCREMENT,
   `st_name` VARCHAR(45) NOT NULL,
-  `nr_price` DECIMAL(12,2) NULL,
   `id_user` INT NULL,
   `id_category` INT NOT NULL,
-  `nr_measure_value` DECIMAL NOT NULL,
+  `nr_measure_value` DECIMAL NULL,
   `st_barcode` VARCHAR(20) NULL,
-  `en_measure_type` INT NOT NULL,
+  `en_measure_type` INT NULL,
   
   PRIMARY KEY (`id_product`),
   

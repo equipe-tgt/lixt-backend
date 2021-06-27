@@ -1,7 +1,5 @@
 package br.com.ifsp.pi.lixt.dto;
 
-import java.math.BigDecimal;
-import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,22 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class ProductDto {
-
+public class PurchaseLocalDto {
+	
 	private Long id;
 	
 	private String name;
-		
-	private Long userId;
 	
-	private Long categoryId;
+	private Double latitude;
 	
-	private String barcode;
-	
-	private BigDecimal measureValue;
-	
-	private MeasureType measureType;
-	
-	private CategoryDto category;
+	private Double longitude;	
 
 }
