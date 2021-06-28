@@ -1,6 +1,6 @@
 name: Lixt Backend Deploy Prod
 on:
-  pull_request:
+  push:
     branches:
       - main
 
