@@ -2,7 +2,6 @@ package br.com.ifsp.pi.lixt.utils.security;
 
 import java.util.Objects;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
@@ -10,7 +9,7 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 public abstract class Users {
 
 	private static UserDto getUserAuthenticated() {
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		var authentication = SecurityContextHolder.getContext().getAuthentication();
 		
 		if(Objects.isNull(authentication)) {
 			return null;

@@ -11,11 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @DisplayName("Testar e documentar tokens")
-public class TokenTest {
+class TokenTest {
 	
 	@Test
 	@DisplayName("Validar criação do basic token")
-	public void generateClientToken() {
+	void generateClientToken() {
 		
 		String token = "Basic ".concat(generateBasicAuthToken("client", "123456"));
 		System.out.println(token);

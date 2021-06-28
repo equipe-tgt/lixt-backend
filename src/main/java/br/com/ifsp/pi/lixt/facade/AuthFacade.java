@@ -52,7 +52,7 @@ public class AuthFacade {
 	@Transactional
 	public Integer forgetPassword(String email) {
 		
-		User user = this.userService.findByEmail(email);
+		var user = this.userService.findByEmail(email);
 		
 		if(Objects.isNull(user)) {
 			throw new NotFoundException("Usuário não encontrado");

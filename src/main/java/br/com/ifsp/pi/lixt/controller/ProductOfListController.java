@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ifsp.pi.lixt.data.business.productOfList.ProductOfListService;
+import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.mapper.ProductOfListMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;

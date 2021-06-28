@@ -10,6 +10,6 @@ public enum TypeMail {
 	
 	RESET_PASSWORD(1);
 	
-	public int id;
+	private int id;
 
 }

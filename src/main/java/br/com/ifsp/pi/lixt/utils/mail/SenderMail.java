@@ -11,7 +11,6 @@ import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.Transport;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class SenderMail {
 	
-	private Properties props;
 	private final SmtpAuthenticator auth;
 	
 	private static final Logger logger = LoggerFactory.getLogger(SenderMail.class);
@@ -47,14 +45,14 @@ public class SenderMail {
 			return true;
 		}
 		catch(Exception e) {
-			logger.error("Erro ao enviar email: " + e.getMessage());
+			logger.error("Erro ao enviar email: ".concat(e.getMessage()));
 			return false;
 		}
 	}
 
 	private Session config() {
 
-		props = new Properties();
+		var props = new Properties();
 		  
 		props.put("mail.smtp.host", "smtp.gmail.com");
 		props.put("mail.smtp.starttls.enable","true");
@@ -62,12 +60,13 @@ public class SenderMail {
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
 		props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+		props.put("mail.smtp.ssl.checkserveridentity", "true");
 		
 		return Session.getInstance(props, auth);
 	}
 	
-	private MimeMessage configMessage(MailDto mail, Session session) throws AddressException, MessagingException {
-		MimeMessage message = new MimeMessage(session);
+	private MimeMessage configMessage(MailDto mail, Session session) throws MessagingException {
+		var message = new MimeMessage(session);
 				
 		for(String recipient : mail.getRecipientsTO())
 			message.addRecipient(RecipientType.TO, new InternetAddress(recipient));
@@ -85,9 +84,9 @@ public class SenderMail {
 		message.setSentDate(mail.getDateSent());
 		message.setSubject(mail.getTitle());
 		
-		Multipart multipart = new MimeMultipart();
+		var multipart = new MimeMultipart();
 		
-		MimeBodyPart attachmentText = new MimeBodyPart();
+		var attachmentText = new MimeBodyPart();
 		attachmentText.setContent(mail.getMsgHTML(),"text/html; charset=UTF-8");
 		multipart.addBodyPart(attachmentText);
 		
@@ -104,13 +103,13 @@ public class SenderMail {
 	private void setAttachment(Multipart multipart, File file) throws MessagingException {
 		
 		try {
-			MimeBodyPart part = new MimeBodyPart();
+			var part = new MimeBodyPart();
 			part.setDataHandler(new DataHandler(new FileDataSource(file)));
 			part.setFileName(file.getName());
 			multipart.addBodyPart(part);
 			
 		} catch (MessagingException e) {
-			e.printStackTrace();
+			logger.error("Erro ao anexar ".concat(file.getName()).concat(" no email."));
 		}
 		
 	}

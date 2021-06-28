@@ -4,7 +4,7 @@ import java.util.Objects;
 
 import org.locationtech.jts.io.ParseException;
 
-import br.com.ifsp.pi.lixt.data.business.purchaseLocal.PurchaseLocal;
+import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
 

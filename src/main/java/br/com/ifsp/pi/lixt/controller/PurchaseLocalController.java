@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ifsp.pi.lixt.data.business.purchaseLocal.PurchaseLocalService;
+import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocalService;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;

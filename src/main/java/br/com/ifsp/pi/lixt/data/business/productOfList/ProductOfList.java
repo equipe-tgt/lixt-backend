@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.data.business.productOfList;
+package br.com.ifsp.pi.lixt.data.business.productoflist;
 
 import java.math.BigDecimal;
 

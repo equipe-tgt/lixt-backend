@@ -16,6 +16,10 @@ public class CategoryService {
 		return this.categoryRepository.findById(id).orElse(null);
 	}
 	
+	public List<Category> findAll() {
+		return (List<Category>) this.categoryRepository.findAll();
+	}
+	
 	public Category save(Category category) {
 		return this.categoryRepository.save(category);
 	}
