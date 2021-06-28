@@ -11,11 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import br.com.ifsp.pi.lixt.controller.AuthController;
 import br.com.ifsp.pi.lixt.controller.CategoryController;
+import br.com.ifsp.pi.lixt.controller.ListOfItemsController;
 import br.com.ifsp.pi.lixt.controller.ProductController;
+import br.com.ifsp.pi.lixt.controller.ProductOfListController;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
+import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
+import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -24,16 +30,36 @@ import br.com.ifsp.pi.lixt.dto.ProductDto;
 public class GenerateDataTest {
 	
 	@Autowired
+	private AuthController authController;
+	
+	@Autowired
 	private CategoryController categoryController;
 	
 	@Autowired
 	private ProductController productController;
 	
+	@Autowired
+	private ListOfItemsController listOfItemsController;
+	
+	@Autowired
+	private ProductOfListController productOfListController;
+	
 	private List<ProductDto> listProducts = new ArrayList<>();
 	private CategoryDto category;
+	private List<ProductOfListDto> listProductsOfList = new ArrayList<>();
+	private ListOfItemsDto listOfItems;
 
 	@Test
 	public void createData() {
+		
+		UserDto user = UserDto.builder()
+				.name("leo")
+				.username("leo")
+				.email("leo_narita@hotmail.com")
+				.password("123")
+				.build();
+		
+		user = (UserDto) this.authController.register(user).getBody();
 		
 		category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
 		
@@ -85,7 +111,36 @@ public class GenerateDataTest {
 					.build()
 		);
 		
-		this.productController.saveAll(listProducts);
+		listProducts = this.productController.saveAll(listProducts);
+		
+		listOfItems = this.listOfItemsController.save(
+				ListOfItemsDto.builder().nameList("Lista De Teste").ownerId(user.getId()).description("Teste").build()
+		);
+		
+		listProductsOfList.add(
+				ProductOfListDto.builder()
+					.productId(listProducts.get(0).getId())
+					.listId(listOfItems.getId())
+					.name("Arroz branco")
+					.measureType(MeasureType.KG)
+					.measureValue(new BigDecimal(5))
+					.isMarked(false)
+					.build()
+		);
+		
+		listProductsOfList.add(
+				ProductOfListDto.builder()
+					.productId(listProducts.get(0).getId())
+					.listId(listOfItems.getId())
+					.name("Arroz integral")
+					.measureType(MeasureType.KG)
+					.measureValue(new BigDecimal(5))
+					.isMarked(false)
+					.build()
+		);
+		
+		listProductsOfList = this.productOfListController.saveAll(listProductsOfList);
+		
 	}
 	
 }
