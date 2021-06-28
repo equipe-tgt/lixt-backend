@@ -34,6 +34,12 @@ public class CategoryController {
 		return CategoryMapper.entityToDto(this.categoryService.findById(id));
 	}
 	
+	@ApiOperation(value = "Buscar todas as categorias")
+	@GetMapping()
+	public List<CategoryDto> findAll() {
+		return this.categoryService.findAll().stream().map(CategoryMapper::entityToDto).collect(Collectors.toList());
+	}
+	
 	@ApiOperation(value = "Salvar uma categoria")
 	@PostMapping
 	public CategoryDto save(@RequestBody(required = false) CategoryDto category) {
