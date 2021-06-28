@@ -21,12 +21,12 @@ jobs:
   build:
     runs-on: ubuntu-18.04
     steps:
-      - name: notify telegram
-        uses: appleboy/checkout@master
-        with:
-          to: ${{secrets.TELEGRAM_TO}}
-          token: ${{secrets.TELEGRAM_TOKEN}}
-          args: "Iniciado deploy em produção"
+#      - name: notify telegram
+#        uses: appleboy/checkout@master
+#        with:
+#          to: ${{secrets.TELEGRAM_TO}}
+#          token: ${{secrets.TELEGRAM_TOKEN}}
+#          args: "Iniciado deploy em produção"
 
       - name: Checkout
         uses: actions/checkout@v2
@@ -84,9 +84,9 @@ jobs:
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
-      - name: notify telegram
-        uses: appleboy/checkout@master
-        with:
-          to: ${{secrets.TELEGRAM_TO}}
-          token: ${{secrets.TELEGRAM_TOKEN}}
-          args: "Deploy finalizado com sucesso"
+#      - name: notify telegram
+#        uses: appleboy/checkout@master
+#        with:
+#          to: ${{secrets.TELEGRAM_TO}}
+#          token: ${{secrets.TELEGRAM_TOKEN}}
+#          args: "Deploy finalizado com sucesso"
