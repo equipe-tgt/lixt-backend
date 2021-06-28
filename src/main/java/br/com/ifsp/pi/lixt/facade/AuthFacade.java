@@ -67,7 +67,7 @@ public class AuthFacade {
 			MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD);
 			Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), password);
 			mail = FormatterMail.formatMail(mail, params);
-//			mail.setRecipientTo(email);
+			mail.setRecipientTo(email);
 			
 			boolean responseSendMail = senderMail.sendEmail(mail);
 			
