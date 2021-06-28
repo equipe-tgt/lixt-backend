@@ -20,7 +20,7 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Testar endpoint Auth")
-public class AuthControllerTest {
+class AuthControllerTest {
 
 	@Autowired
 	private AuthControllerOperations authControllerOperationsTest;
@@ -32,7 +32,7 @@ public class AuthControllerTest {
 	private HttpHeaders httpHeaders = new HttpHeaders();
 	
 	@BeforeAll
-	public void registerUser() throws Exception {
+	void registerUser() throws Exception {
 		
 		UserDto user = UserDto.builder()
 				.name("leo")
@@ -49,7 +49,7 @@ public class AuthControllerTest {
 	
 	@Test
 	@DisplayName("Encontrar dados do usuário através do token previamente armazenado e não expirado")
-	public void findDataUser() throws Exception {
+	void findDataUser() throws Exception {
 		
 		mockMvc.perform(get("/auth/data-user").headers(httpHeaders).accept("application/json;charset=UTF-8"))
 			.andExpect(MockMvcResultMatchers.status().isOk())

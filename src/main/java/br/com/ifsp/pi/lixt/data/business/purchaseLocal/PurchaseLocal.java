@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.data.business.purchaseLocal;
+package br.com.ifsp.pi.lixt.data.business.purchaselocal;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;

@@ -10,7 +10,7 @@ import lombok.Getter;
 public class NotFoundException extends RuntimeException {
 	
 	@Getter
-	private final HttpStatus status = HttpStatus.NOT_FOUND;
+	private static final HttpStatus status = HttpStatus.NOT_FOUND;
 	
 	public NotFoundException(String message) {
 		super(message, null, false, false);

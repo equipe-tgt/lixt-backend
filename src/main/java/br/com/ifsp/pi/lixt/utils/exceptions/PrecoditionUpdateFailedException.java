@@ -10,7 +10,7 @@ import lombok.Getter;
 public class PrecoditionUpdateFailedException extends RuntimeException {
 	
 	@Getter
-	private final HttpStatus status = HttpStatus.PRECONDITION_FAILED;
+	private static final HttpStatus status = HttpStatus.PRECONDITION_FAILED;
 	
 	public PrecoditionUpdateFailedException(String message) {
 		super(message, null, false, false);

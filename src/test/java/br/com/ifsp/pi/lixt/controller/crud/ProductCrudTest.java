@@ -26,7 +26,7 @@ import br.com.ifsp.pi.lixt.dto.ProductDto;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Testar endpoints de produtos e categorias")
-public class ProductCrudTest {
+class ProductCrudTest {
 	
 	@Autowired
 	private CategoryController categoryController;
@@ -38,7 +38,7 @@ public class ProductCrudTest {
 	private CategoryDto category;
 	
 	@BeforeAll
-	public void createProducts() {
+	void createProducts() {
 		
 		category = categoryController.save(CategoryDto.builder().name("alimento").build());
 		listProducts = new ArrayList<>();
@@ -68,7 +68,7 @@ public class ProductCrudTest {
 	
 	@Test
 	@DisplayName("Testar endpoints de busca de produtos")
-	public void validateProducts() {
+	void validateProducts() {
 
 		for(Long id : listProducts.stream().map(element -> element.getId()).collect(Collectors.toList())) {
 			assertThat(this.productController.findById(id).getCategory()).isNotNull();
@@ -78,7 +78,7 @@ public class ProductCrudTest {
 	}
 	
 	@AfterAll
-	public void deleteProducts() {
+	void deleteProducts() {
 		
 		for(Long id : listProducts.stream().map(element -> element.getId()).collect(Collectors.toList())) {
 			this.productController.deleteById(id);

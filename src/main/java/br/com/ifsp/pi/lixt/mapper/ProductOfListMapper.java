@@ -2,7 +2,7 @@ package br.com.ifsp.pi.lixt.mapper;
 
 import java.util.Objects;
 
-import br.com.ifsp.pi.lixt.data.business.productOfList.ProductOfList;
+import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 
 public abstract class ProductOfListMapper {

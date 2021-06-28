@@ -12,14 +12,14 @@ import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 
 @SpringBootTest
 @DisplayName("Testar serviço de email")
-public class MailTest {
+class MailTest {
 	
 	@Autowired
 	private SenderMail senderMail;
 	
 	@Test
 	@DisplayName("Enviar email sem erros")
-	public void sendMail() {
+	void sendMail() {
 		
 		MailDto mailDto = MailDto.builder()
 				.title("TESTE EMAIL")

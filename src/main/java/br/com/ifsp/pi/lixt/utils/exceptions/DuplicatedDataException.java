@@ -10,7 +10,7 @@ import lombok.Getter;
 public class DuplicatedDataException extends RuntimeException {
 	
 	@Getter
-	private final HttpStatus status = HttpStatus.CONFLICT;
+	private static final HttpStatus status = HttpStatus.CONFLICT;
 	
 	public DuplicatedDataException(String message) {
 		super(message, null, false, false);

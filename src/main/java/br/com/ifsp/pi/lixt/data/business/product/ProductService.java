@@ -15,8 +15,8 @@ public class ProductService {
 	
 	private final ProductRepository productRepository;
 	
-	private final int LENGTH_DATA_BY_DEFAULT = 12;
-	private final String SORT_DATA_BY_DEFAULT = "name";
+	private static final int LENGTH_DATA_BY_DEFAULT = 12;
+	private static final String SORT_DATA_BY_DEFAULT = "name";
 	
 	public Product findById(Long id) {
 		return this.productRepository.findById(id).orElse(null);

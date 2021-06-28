@@ -1,5 +1,7 @@
 package br.com.ifsp.pi.lixt.data;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +29,7 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Criar massa de dados")
-public class GenerateDataTest {
+class GenerateDataTest {
 	
 	@Autowired
 	private AuthController authController;
@@ -50,7 +52,7 @@ public class GenerateDataTest {
 	private ListOfItemsDto listOfItems;
 
 	@Test
-	public void createData() {
+	void createData() {
 		
 		UserDto user = UserDto.builder()
 				.name("leo")
@@ -141,6 +143,7 @@ public class GenerateDataTest {
 		
 		listProductsOfList = this.productOfListController.saveAll(listProductsOfList);
 		
+		assertThat(listProductsOfList).isNotNull();
 	}
 	
 }

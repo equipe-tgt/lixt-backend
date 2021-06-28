@@ -39,10 +39,12 @@ public class CorsFilter implements Filter {
 
 	@Override
 	public void init(FilterConfig filterConfig) {
+		// ignored
 	}
 
 	@Override
 	public void destroy() {
+		// ignored
 	}
 
 }

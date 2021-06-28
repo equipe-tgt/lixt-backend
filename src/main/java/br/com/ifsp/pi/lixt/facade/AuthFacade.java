@@ -52,7 +52,7 @@ public class AuthFacade {
 	@Transactional
 	public Integer forgetPassword(String email) {
 		
-		User user = this.userService.findByEmail(email);
+		var user = this.userService.findByEmail(email);
 		
 		if(Objects.isNull(user)) {
 			throw new NotFoundException("Usuário não encontrado");
@@ -67,7 +67,7 @@ public class AuthFacade {
 			MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD);
 			Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), password);
 			mail = FormatterMail.formatMail(mail, params);
-			mail.setRecipientTo(email);
+//			mail.setRecipientTo(email);
 			
 			boolean responseSendMail = senderMail.sendEmail(mail);
 			

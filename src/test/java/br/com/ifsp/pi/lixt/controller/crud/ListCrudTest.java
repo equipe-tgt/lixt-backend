@@ -25,7 +25,7 @@ import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Testar endpoints de lista e itens da lista")
-public class ListCrudTest {
+class ListCrudTest {
 
 	@Autowired
 	private ListOfItemsController listOfItemsController;
@@ -37,7 +37,7 @@ public class ListCrudTest {
 	private ListOfItemsDto listOfItems;
 	
 	@BeforeAll
-	public void createList() {
+	void createList() {
 		
 		listOfItems = this.listOfItemsController.save(
 				ListOfItemsDto.builder().nameList("Lista De Teste").ownerId((long)1).description("Teste").build()
@@ -74,12 +74,12 @@ public class ListCrudTest {
 	
 	@Test
 	@DisplayName("Testar endpoints de busca de lista")
-	public void validateList() {
+	void validateList() {
 		assertThat(this.listOfItemsController.findById(listOfItems.getId()).getProductsOfList().size()).isEqualTo(listProductsOfList.size());
 	}
 	
 	@AfterAll
-	public void deleteList() {
+	void deleteList() {
 		this.productOfListController.deleteById(listProductsOfList.get(0).getId());
 		
 		this.listOfItemsController.deleteById(listOfItems.getId());
