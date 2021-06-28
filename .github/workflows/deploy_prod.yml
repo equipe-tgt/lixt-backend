@@ -40,9 +40,6 @@ jobs:
       - name: Build with Maven
         run: mvn -B package --file pom.xml
 
-  deploy:
-    runs-on: ubuntu-18.04
-    steps:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
