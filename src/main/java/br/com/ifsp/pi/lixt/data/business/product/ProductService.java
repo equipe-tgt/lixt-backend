@@ -34,9 +34,10 @@ public class ProductService {
 		this.productRepository.deleteById(id);
 	}
 	
-	public List<Product> findByName(String name) {
+	public List<Product> findByName(String name, Long userId) {
 		return this.productRepository.findByName(
 				Like.contains(name), 
+				userId,
 				PageRequest.of(0, LENGTH_DATA_BY_DEFAULT, Sort.by(SORT_DATA_BY_DEFAULT))
 		);
 	}

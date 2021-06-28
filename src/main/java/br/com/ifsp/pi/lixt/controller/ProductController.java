@@ -16,6 +16,7 @@ import br.com.ifsp.pi.lixt.data.business.product.ProductService;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.security.Users;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,7 @@ public class ProductController {
 	@ApiOperation(value = "Encontrar produtos a partir de possibilidades de nomes")
 	@GetMapping("/by-name/{name}")
 	public List<ProductDto> findByName(@PathVariable String name) {
-		return this.productService.findByName(name).stream().map(ProductMapper::entityToDto).collect(Collectors.toList());
+		return this.productService.findByName(name, Users.getUserId()).stream().map(ProductMapper::entityToDto).collect(Collectors.toList());
 	}
 
 }

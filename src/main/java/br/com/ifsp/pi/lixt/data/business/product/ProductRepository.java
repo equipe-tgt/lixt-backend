@@ -9,6 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ProductRepository extends CrudRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-	@Query("select p from Product p where p.name like ?1")
-	List<Product> findByName(String name, Pageable pageable);
+	@Query("select p from Product p where p.name like ?1 and (p.userId = ?2 or p.userId is null)")
+	List<Product> findByName(String name, Long userId, Pageable pageable);
 }
