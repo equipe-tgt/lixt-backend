@@ -22,7 +22,7 @@
                     "containerPort": 8080
                 }
             ],
-            "command": ["java", "-jar", "/home/lixt-backend.jar", "-Dspring.profiles.active=prod"],
+            "command": ["java", "-jar", "-Dspring.profiles.active=prod", "/home/lixt-backend.jar"],
             "linuxParameters": null,
             "cpu": 1024,
             "environment": [],
