@@ -1,5 +1,5 @@
 spring:
   datasource:
-    url: lixt-database.cluster-cpqytoinpxge.us-east-1.rds.amazonaws.com:3306
+    url: jdbc:mysql:aurora:lixt-database.cluster-cpqytoinpxge.us-east-1.rds.amazonaws.com:3306/lixt
     username: root
     password: dMh71CPycRIjKk0tJ8DQ
