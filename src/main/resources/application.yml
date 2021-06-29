@@ -13,7 +13,7 @@ spring:
       schema: lixt
 
   jpa:
-    hibernate.ddl-auto: none
+    hibernate.ddl-auto: update
     show-sql: false
     
     hibernate:
@@ -26,6 +26,7 @@ spring:
         default_schema: lixt
 
   flyway:
+    enabled: false
     baseline-on-migrate: true
     schemas: lixt
 
