@@ -9,7 +9,6 @@ spring:
     active: @activatedProperties@
     
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
     hikari:
       schema: lixt
 
