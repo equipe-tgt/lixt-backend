@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: lixt-database.cluster-cpqytoinpxge.us-east-1.rds.amazonaws.com:3306
+    username: root
+    password: dMh71CPycRIjKk0tJ8DQ

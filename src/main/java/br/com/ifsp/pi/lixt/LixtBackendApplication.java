@@ -1,9 +1,6 @@
 package br.com.ifsp.pi.lixt;
 
-import java.util.TimeZone;
-
-import javax.annotation.PostConstruct;
-
+import br.com.ifsp.pi.lixt.utils.mail.SmtpAuthenticator;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
@@ -12,7 +9,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 
-import br.com.ifsp.pi.lixt.utils.mail.SmtpAuthenticator;
+import javax.annotation.PostConstruct;
+import java.util.TimeZone;
 
 @SpringBootApplication
 @EnableResourceServer
