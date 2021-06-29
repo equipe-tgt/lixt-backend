@@ -10,11 +10,11 @@ CREATE TABLE IF NOT EXISTS `tb_list` (
 
   PRIMARY KEY (`id_list`),
 
-  INDEX `fk_list_user` (`id_user` ASC) VISIBLE,
-
   CONSTRAINT `fk_lista_usuario1` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`) ON DELETE NO ACTION ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
+
+CREATE INDEX fk_list_user ON tb_list (id_user);
 
 
 -- -----------------------------------------------------
@@ -36,12 +36,6 @@ CREATE TABLE IF NOT EXISTS `tb_product_of_list` (
 
   PRIMARY KEY (`id_product_of_list`),
 
-  INDEX `fk_productOfList_list` (`id_list` ASC) INVISIBLE,
-  INDEX `fk_productOfList_userAssined` (`id_assigned_user` ASC) INVISIBLE,
-  INDEX `fk_productOfList_product` (`id_product` ASC) VISIBLE,
-  INDEX `fk_productOfList_userMarked` (`id_user_who_marked` ASC) VISIBLE,
-  INDEX `idx_name` (`st_name` ASC) VISIBLE,
-
   CONSTRAINT `fk_lista`
     FOREIGN KEY (`id_list`)
     REFERENCES `tb_list` (`id_list`)
@@ -62,6 +56,12 @@ CREATE TABLE IF NOT EXISTS `tb_product_of_list` (
 )
 ENGINE = InnoDB;
 
+CREATE INDEX fk_list_user ON tb_product_of_list (id_list);
+CREATE INDEX fk_productOfList_userAssined ON tb_product_of_list (id_assigned_user);
+CREATE INDEX fk_productOfList_product ON tb_product_of_list (id_product);
+CREATE INDEX fk_productOfList_userMarked ON tb_product_of_list (id_user_who_marked);
+CREATE INDEX idx_name ON tb_product_of_list (st_name);
+
 
 -- -----------------------------------------------------
 -- Table `tb_listMembers`
@@ -75,9 +75,6 @@ CREATE TABLE IF NOT EXISTS `tb_list_members` (
 
   PRIMARY KEY (`id_list_members`),
 
-  INDEX `fk_listMembers_user` (`id_user` ASC) VISIBLE,
-  INDEX `fk_listMembers_list` (`id_list` ASC) VISIBLE,
-
   CONSTRAINT `fk_membrosLista_usuario1` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`) 
     ON DELETE NO ACTION 
     ON UPDATE NO ACTION,
@@ -87,6 +84,9 @@ CREATE TABLE IF NOT EXISTS `tb_list_members` (
     ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
+
+CREATE INDEX fk_listMembers_user ON tb_list_members (id_user);
+CREATE INDEX fk_listMembers_list ON tb_list_members (id_list);
 
 
 -- -----------------------------------------------------
@@ -100,9 +100,6 @@ CREATE TABLE IF NOT EXISTS `tb_comment` (
   `st_content` VARCHAR(200) NOT NULL,
   `dt_created_at` DATE NOT NULL,
 
-  INDEX `fk_comment_productOfList` (`id_product_of_list` ASC) VISIBLE,
-  INDEX `fk_comment_user` (`id_user` ASC) VISIBLE,
-
   PRIMARY KEY (`id_comment`),
 
   CONSTRAINT `fk_comentario_produtoDaLista1` FOREIGN KEY (`id_product_of_list`) REFERENCES `tb_product_of_list` (`id_product_of_list`)
@@ -114,5 +111,8 @@ CREATE TABLE IF NOT EXISTS `tb_comment` (
     ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
+
+CREATE INDEX fk_comment_productOfList ON tb_comment (id_product_of_list);
+CREATE INDEX fk_comment_user ON tb_comment (id_user);
 
 

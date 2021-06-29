@@ -26,11 +26,6 @@ CREATE TABLE IF NOT EXISTS `tb_product` (
   
   PRIMARY KEY (`id_product`),
   
-  INDEX `fk_product_user` (`id_user` ASC) VISIBLE,
-  INDEX `fk_product_category` (`id_category` ASC) VISIBLE,
-  INDEX `idx_product_name` (`st_name` ASC) VISIBLE,
-  INDEX `idx_product_barcode` (`st_barcode` ASC) VISIBLE,
-  
   CONSTRAINT `fk_produto_usuario1` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`) 
     ON DELETE NO ACTION 
     ON UPDATE NO ACTION,
@@ -40,3 +35,8 @@ CREATE TABLE IF NOT EXISTS `tb_product` (
     ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
+
+CREATE INDEX fk_product_user ON tb_product (id_user);
+CREATE INDEX fk_product_category ON tb_product (id_category);
+CREATE INDEX idx_product_name ON tb_product (st_name);
+CREATE INDEX idx_product_barcode ON tb_product (st_barcode);

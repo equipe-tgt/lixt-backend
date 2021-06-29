@@ -26,10 +26,6 @@ CREATE TABLE IF NOT EXISTS `tb_purchase` (
 
   PRIMARY KEY (`id_purchase`),
 
-  INDEX `fk_purchase_user` (`id_user` ASC) VISIBLE,
-  INDEX `fk_purchase_list` (`id_list` ASC) VISIBLE,
-  INDEX `fk_purchase_groceryLocal` (`id_purchase_local` ASC) VISIBLE,
-
   CONSTRAINT `fk_compra_usuario1` FOREIGN KEY (`id_user`) REFERENCES `tb_user` (`id_user`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
@@ -43,6 +39,10 @@ CREATE TABLE IF NOT EXISTS `tb_purchase` (
     ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
+
+CREATE INDEX fk_purchase_user ON tb_purchase (id_user);
+CREATE INDEX fk_purchase_list ON tb_purchase (id_list);
+CREATE INDEX fk_purchase_groceryLocal ON tb_purchase (id_purchase_local);
 
 
 -- -----------------------------------------------------
@@ -59,10 +59,6 @@ CREATE TABLE IF NOT EXISTS `tb_item_of_purchase` (
   `nr_measure_value` DECIMAL NOT NULL,
   `en_measure_type` INT NOT NULL,
 
-  INDEX `fk_itemOfPurchase_purchase` (`id_purchase` ASC) VISIBLE,
-  INDEX `fk_itemOfPurchase_product` (`id_product` ASC) VISIBLE,
-  INDEX `idx_itemOfPurchase_name` (`st_name` ASC) VISIBLE,
-
   PRIMARY KEY (`id_item_of_purchase`),
 
   CONSTRAINT `fk_itensDaCompra_compra1` FOREIGN KEY (`id_purchase`) REFERENCES `tb_purchase` (`id_purchase`)
@@ -74,3 +70,8 @@ CREATE TABLE IF NOT EXISTS `tb_item_of_purchase` (
     ON UPDATE NO ACTION
 )
 ENGINE = InnoDB;
+
+CREATE INDEX fk_itemOfPurchase_purchase ON tb_item_of_purchase (id_purchase);
+CREATE INDEX fk_itemOfPurchase_product ON tb_item_of_purchase (id_product);
+CREATE INDEX idx_itemOfPurchase_name ON tb_item_of_purchase (st_name);
+

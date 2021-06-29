@@ -3,6 +3,7 @@ package br.com.ifsp.pi.lixt.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.locationtech.jts.io.ParseException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocalService;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
+import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
 import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -61,6 +63,13 @@ public class PurchaseLocalController {
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id) {
 		this.purchaseLocalService.deleteById(id);
+	}
+	
+	@ApiOperation(value = "Encontrar locais de compra a 10 metros de proximidade")
+	@GetMapping("/find-near/{latitude}/{longitude}")
+	public List<PurchaseLocalDto> findPurchasesLocalNear(@PathVariable double latitude, @PathVariable double longitude) throws ParseException {
+		return this.purchaseLocalService.findPurchasesLocalNear(GeolocalizationConvert.convertCoordsToPoint(latitude, longitude))
+				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
 	}
 	
 }
