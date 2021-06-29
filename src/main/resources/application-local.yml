@@ -1,5 +1,5 @@
 spring:
   datasource:
     url: jdbc:mysql://localhost/lixt?useLegacyDatetimeCode=false&useTimezone=true&serverTimezone=America/Sao_Paulo
-    username: kinder
-    password: abXY34!?
+    username: root
+    password: 123456
