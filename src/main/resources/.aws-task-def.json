@@ -54,7 +54,7 @@
             "dockerLabels": null,
             "systemControls": null,
             "privileged": null,
-            "name": "lixt-backend-application"
+            "name": "tomcat-webserver"
         }
     ],
     "placementConstraints": [],
