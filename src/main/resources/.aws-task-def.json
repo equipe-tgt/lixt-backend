@@ -37,7 +37,7 @@
             "memoryReservation": 2048,
             "volumesFrom": [],
             "stopTimeout": null,
-            "image": "255492520345.dkr.ecr.us-east-1.amazonaws.com/lixt-registry",
+            "image": "tomcat",
             "startTimeout": null,
             "firelensConfiguration": null,
             "dependsOn": null,
