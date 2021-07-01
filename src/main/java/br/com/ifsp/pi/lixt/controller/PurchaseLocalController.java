@@ -42,13 +42,6 @@ public class PurchaseLocalController {
 		return PurchaseLocalMapper.entityToDto(this.purchaseLocalService.save(PurchaseLocalMapper.dtoToEntity(purchaseLocal)));
 	}
 	
-	@ApiOperation(value = "Salvar vários locais de compra")
-	@PostMapping("/save-all")
-	public List<PurchaseLocalDto> saveAll(@RequestBody(required = false) List<PurchaseLocalDto> purchasesLocal) {
-		return this.purchaseLocalService.saveAll(purchasesLocal.stream().map(PurchaseLocalMapper::dtoToEntity).collect(Collectors.toList()))
-				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
-	}
-	
 	@ApiOperation(value = "Atualizar local de compra")
 	@PutMapping("/{id}")
 	public PurchaseLocalDto update(@RequestBody(required = false) PurchaseLocalDto purchaseLocal, @PathVariable Long id) throws PrecoditionUpdateFailedException {

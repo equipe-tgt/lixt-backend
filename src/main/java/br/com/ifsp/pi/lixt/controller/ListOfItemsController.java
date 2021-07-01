@@ -38,14 +38,8 @@ public class ListOfItemsController {
 	@ApiOperation(value = "Salvar uma lista")
 	@PostMapping
 	public ListOfItemsDto save(@RequestBody(required = false) ListOfItemsDto list) {
+		list.setOwnerId(Users.getUserId());
 		return ListOfItemsMapper.entityToDto(this.listOfItemsService.save(ListOfItemsMapper.dtoToEntity(list)));
-	}
-	
-	@ApiOperation(value = "Salvar várias listas")
-	@PostMapping("/save-all")
-	public List<ListOfItemsDto> saveAll(@RequestBody(required = false) List<ListOfItemsDto> lists) {
-		return this.listOfItemsService.saveAll(lists.stream().map(ListOfItemsMapper::dtoToEntity).collect(Collectors.toList()))
-				.stream().map(ListOfItemsMapper::entityToDto).collect(Collectors.toList());
 	}
 	
 	@ApiOperation(value = "Atualizar lista")

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto implements UserDetails, CredentialsContainer {
+public class OauthUserDto implements UserDetails, CredentialsContainer {
 	
 	private Long id;
 	

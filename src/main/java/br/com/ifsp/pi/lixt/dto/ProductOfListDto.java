@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import lombok.AllArgsConstructor;
@@ -39,5 +40,7 @@ public class ProductOfListDto {
 	private MeasureType measureType;
 	
 	private ProductDto product;
+	
+	private List<CommentDto> comments;
 
 }

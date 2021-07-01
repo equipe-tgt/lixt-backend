@@ -36,8 +36,8 @@ public class ProductOfListController {
 	
 	@ApiOperation(value = "Salvar um produto da lista")
 	@PostMapping
-	public ProductOfListDto save(@RequestBody(required = false) ProductOfListDto productOfListDto) {
-		return ProductOfListMapper.entityToDto(this.productOfListService.save(ProductOfListMapper.dtoToEntity(productOfListDto)));
+	public ProductOfListDto save(@RequestBody(required = false) ProductOfListDto productOfList) {
+		return ProductOfListMapper.entityToDto(this.productOfListService.save(ProductOfListMapper.dtoToEntity(productOfList)));
 	}
 	
 	@ApiOperation(value = "Salvar vários produtos da lista")
@@ -49,12 +49,12 @@ public class ProductOfListController {
 	
 	@ApiOperation(value = "Atualizar produto da lista")
 	@PutMapping("/{id}")
-	public ProductOfListDto update(@RequestBody(required = false) ProductOfListDto productOfListDto, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+	public ProductOfListDto update(@RequestBody(required = false) ProductOfListDto productOfList, @PathVariable Long id) throws PrecoditionUpdateFailedException {
 		
-		if(!productOfListDto.getId().equals(id))
+		if(!productOfList.getId().equals(id))
 			throw new PrecoditionUpdateFailedException("Erro ao atualizar produto da lista");
 		
-		return ProductOfListMapper.entityToDto(this.productOfListService.save(ProductOfListMapper.dtoToEntity(productOfListDto)));
+		return ProductOfListMapper.entityToDto(this.productOfListService.save(ProductOfListMapper.dtoToEntity(productOfList)));
 	}
 	
 	@ApiOperation(value = "Deletar um produto da lista")

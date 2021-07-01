@@ -15,15 +15,20 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.ifsp.pi.lixt.controller.AuthController;
 import br.com.ifsp.pi.lixt.controller.CategoryController;
+import br.com.ifsp.pi.lixt.controller.ListMembersController;
 import br.com.ifsp.pi.lixt.controller.ListOfItemsController;
 import br.com.ifsp.pi.lixt.controller.ProductController;
 import br.com.ifsp.pi.lixt.controller.ProductOfListController;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
+import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
+import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
+import br.com.ifsp.pi.lixt.dto.UserDto;
+import br.com.ifsp.pi.lixt.mapper.UserMapper;
+import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,6 +51,9 @@ class GenerateDataTest {
 	@Autowired
 	private ProductOfListController productOfListController;
 	
+	@Autowired
+	private ListMembersController listMembersController;
+	
 	private List<ProductDto> listProducts = new ArrayList<>();
 	private CategoryDto category;
 	private List<ProductOfListDto> listProductsOfList = new ArrayList<>();
@@ -54,14 +62,28 @@ class GenerateDataTest {
 	@Test
 	void createData() {
 		
-		UserDto user = UserDto.builder()
+		OauthUserDto oauthUser1 = OauthUserDto.builder()
 				.name("leo")
 				.username("leo")
 				.email("leo_narita@hotmail.com")
 				.password("123")
 				.build();
 		
-		user = (UserDto) this.authController.register(user).getBody();
+		OauthUserDto oauthUser2 = OauthUserDto.builder()
+				.name("teste")
+				.username("teste")
+				.email("teste@gmail.com")
+				.password("123")
+				.build();
+		
+		oauthUser1 = (OauthUserDto) this.authController.register(oauthUser1).getBody();
+		oauthUser2 = (OauthUserDto) this.authController.register(oauthUser2).getBody();
+		
+		UserDto user1 = UserMapper.dtoOauthToDto(oauthUser1);
+		UserDto user2 = UserMapper.dtoOauthToDto(oauthUser2);
+		
+		assertThat(user1.getId()).isNotNull();
+		assertThat(user2.getId()).isNotNull();
 		
 		category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
 		
@@ -116,7 +138,7 @@ class GenerateDataTest {
 		listProducts = this.productController.saveAll(listProducts);
 		
 		listOfItems = this.listOfItemsController.save(
-				ListOfItemsDto.builder().nameList("Lista De Teste").ownerId(user.getId()).description("Teste").build()
+				ListOfItemsDto.builder().nameList("Lista De Teste").ownerId(user1.getId()).description("Teste").build()
 		);
 		
 		listProductsOfList.add(
@@ -144,6 +166,18 @@ class GenerateDataTest {
 		listProductsOfList = this.productOfListController.saveAll(listProductsOfList);
 		
 		assertThat(listProductsOfList).isNotNull();
+		
+		ListMembersDto listMembers = ListMembersDto.builder()
+				.listId(listOfItems.getId())
+				.userId(user2.getId())
+				.user(user2)
+				.statusListMember(StatusListMember.WAITING)
+				.build();
+		
+		listMembers = listMembersController.save(listMembers);
+
+		listMembers.setStatusListMember(StatusListMember.ACCEPT);
+		listMembers = listMembersController.update(listMembers, listMembers.getId());
 	}
 	
 }

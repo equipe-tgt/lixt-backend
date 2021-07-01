@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserAuthenticated;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
+import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.security.oauth.server.OauthUserDetailsService;
 import lombok.RequiredArgsConstructor;
 
@@ -24,7 +24,7 @@ public class OauthManager implements AuthenticationManager {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-		UserDto user = userDetailsService.loadUserByUsername(authentication.getName());
+		OauthUserDto user = userDetailsService.loadUserByUsername(authentication.getName());
 		
 		if(Objects.nonNull(user) && passwordEncoder.matches((String) authentication.getCredentials(), user.getPassword())) {
 			return new UserAuthenticated(user);

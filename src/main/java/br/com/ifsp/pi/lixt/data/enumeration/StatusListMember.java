@@ -11,7 +11,7 @@ import lombok.Getter;
 public enum StatusListMember implements EnumID {
 
 	WAITING(1),
-	ACEPT(2),
+	ACCEPT(2),
 	REJECT(3);
 	
 	private int id;

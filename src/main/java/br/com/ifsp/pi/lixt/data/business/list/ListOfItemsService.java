@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,7 +30,7 @@ public class ListOfItemsService {
 	}
 	
 	public List<ListOfItems> findUserLists(Long idUser) {
-		return this.listOfItemsRepository.findUserLists(idUser);
+		return this.listOfItemsRepository.findUserLists(idUser, StatusListMember.ACCEPT);
 	}
 
 }

@@ -1,6 +1,6 @@
 package br.com.ifsp.pi.lixt.dto;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,17 +13,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class ListOfItemsDto {
+public class CommentDto {
 
 	private Long id;
 	
-	private String nameList;
+	private Long userId;
 	
-	private Long ownerId;
+	private Long productOfListId;
 	
-	private String description;
+	private String content;
 	
-	private List<ProductOfListDto> productsOfList;
+	private LocalDateTime date;
 	
-	private List<ListMembersDto> listMembers;
+	private UserDto user;
+	
 }

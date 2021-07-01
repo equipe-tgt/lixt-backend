@@ -1,18 +1,24 @@
 package br.com.ifsp.pi.lixt.data.business.productoflist;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import lombok.AllArgsConstructor;
@@ -27,7 +33,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode
-@Table(name = "tb_product_of_list")
+@Table(name = "tb_product_of_list", indexes = {
+		@Index(columnList = "id_list", name = "fk_list_user"),
+		@Index(columnList = "id_assigned_user", name = "fk_productOfList_userAssined"),
+		@Index(columnList = "id_product", name = "fk_productOfList_product"),
+		@Index(columnList = "id_user_who_marked", name = "fk_productOfList_userMarked"),
+		@Index(columnList = "st_name", name = "idx_name")
+})
 public class ProductOfList {
 	
 	@Id
@@ -72,5 +84,9 @@ public class ProductOfList {
 	@ManyToOne
 	@JoinColumn(name = "id_product", insertable = false, updatable = false)
 	private Product product;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_product_of_list", insertable = false, updatable = false)
+	private List<Comment> comments;
 
 }

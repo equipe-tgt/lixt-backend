@@ -1,7 +1,5 @@
 package br.com.ifsp.pi.lixt.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,17 +11,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class ListOfItemsDto {
-
+public class UserDto {
+	
 	private Long id;
+
+	private String name;
 	
-	private String nameList;
-	
-	private Long ownerId;
-	
-	private String description;
-	
-	private List<ProductOfListDto> productsOfList;
-	
-	private List<ListMembersDto> listMembers;
+	private String username;
+
+	private String email;
+
 }

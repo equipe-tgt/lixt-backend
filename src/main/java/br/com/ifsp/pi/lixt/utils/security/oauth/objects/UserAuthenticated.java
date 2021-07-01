@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @SuppressWarnings("serial")
 public class UserAuthenticated implements Authentication {
 
-	private UserDto user;
+	private OauthUserDto user;
 
 	@Override
 	public String getName() {
@@ -36,7 +36,7 @@ public class UserAuthenticated implements Authentication {
 	}
 
 	@Override
-	public UserDto getPrincipal() {
+	public OauthUserDto getPrincipal() {
 		return user;
 	}
 

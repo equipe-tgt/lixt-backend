@@ -46,13 +46,6 @@ public class CategoryController {
 		return CategoryMapper.entityToDto(this.categoryService.save(CategoryMapper.dtoToEntity(category)));
 	}
 	
-	@ApiOperation(value = "Salvar várias categorias")
-	@PostMapping("/save-all")
-	public List<CategoryDto> saveAll(@RequestBody(required = false) List<CategoryDto> lists) {
-		return this.categoryService.saveAll(lists.stream().map(CategoryMapper::dtoToEntity).collect(Collectors.toList()))
-				.stream().map(CategoryMapper::entityToDto).collect(Collectors.toList());
-	}
-	
 	@ApiOperation(value = "Atualizar categoria")
 	@PutMapping("/{id}")
 	public CategoryDto update(@RequestBody(required = false) CategoryDto category, @PathVariable Long id) throws PrecoditionUpdateFailedException {
