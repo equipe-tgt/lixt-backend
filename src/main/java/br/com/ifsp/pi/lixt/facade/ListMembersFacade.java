@@ -26,11 +26,11 @@ public class ListMembersFacade {
 	
 	public ListMembers sendInvite(Long listId, String username) throws RuntimeException {
 		
-//		List<Long> ownerIdList = this.listOfItemsService.findOwnerIdByListId(listId);
-//		
-//		if(!ValidatorAccess.canAcces(ownerIdList)) {
-//			throw new ForbiddenException();
-//		}
+		List<Long> ownerIdList = this.listOfItemsService.findOwnerIdByListId(listId);
+		
+		if(!ValidatorAccess.canAcces(ownerIdList)) {
+			throw new ForbiddenException();
+		}
 		
 		User user = this.userService.findByUsernameOrEmail(username);
 		
@@ -62,12 +62,12 @@ public class ListMembersFacade {
 	
 	public void removeUserAtList(Long listMembersId) throws RuntimeException {
 		
-//		List<Long> memberId = this.listMembersService.findUserIdByListMembersId(listMembersId);
-//		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(listMembersId);
-//		
-//		if(!ValidatorAccess.canAcces(ownerIdList)) {
-//			throw new ForbiddenException();
-//		}
+		List<Long> memberId = this.listMembersService.findUserIdByListMembersId(listMembersId);
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(listMembersId);
+		
+		if(!ValidatorAccess.canAcces(ownerIdList) || !ValidatorAccess.canAcces(memberId)) {
+			throw new ForbiddenException();
+		}
 		
 		this.listMembersService.deleteById(listMembersId);
 	}

@@ -13,10 +13,10 @@ public interface ListOfItemsRepository extends CrudRepository<ListOfItems, Long>
 	@Query("select l from ListOfItems l join l.listMembers lm  where l.ownerId = ?1 or (lm.userId = ?1 and lm.statusListMember = ?2)")
 	List<ListOfItems> findUserLists(Long idUser, StatusListMember status);
 	
-//	@Query("select l.ownerId from ListOfItems l wbere l.id = ?1")
-//	List<Long> findOwnerIdByListId(Long listId);
-//	
-//	@Query("select l.ownerId from ListOfItems l join l.listMembers lm wbere lm.id = ?1")
-//	Long findOwnerIdByListMemberId(Long listMembersId);
-//	
+	@Query("select l.ownerId from ListOfItems l where l.id = ?1")
+	List<Long> findOwnerIdByListId(Long listId);
+	
+	@Query("select l.ownerId from ListOfItems l join l.listMembers lm where lm.id = ?1")
+	Long findOwnerIdByListMemberId(Long listMembersId);
+	
 }

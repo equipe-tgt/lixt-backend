@@ -38,20 +38,20 @@ public class ListOfItemsFacade {
 		if(!list.getId().equals(id))
 			throw new PrecoditionUpdateFailedException("Erro ao atualizar lista");
 		
-//		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(id);
-//		
-//		if(!ValidatorAccess.canAcces(ownerIdList))
-//			throw new ForbiddenException();
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(id);
+		
+		if(!ValidatorAccess.canAcces(ownerIdList))
+			throw new ForbiddenException();
 		
 		return this.listOfItemsService.save(list);
 	}
 	
 	public void deleteById(Long id) {
 		
-//		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(id);
-//		
-//		if(!ValidatorAccess.canAcces(ownerIdList))
-//			throw new ForbiddenException();
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(id);
+		
+		if(!ValidatorAccess.canAcces(ownerIdList))
+			throw new ForbiddenException();
 		
 		this.listOfItemsService.deleteById(id);
 	}
