@@ -4,7 +4,6 @@ import java.util.Objects;
 
 import org.springframework.stereotype.Service;
 
-import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembers;
 import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembersService;
@@ -26,9 +25,9 @@ public class ListMembersFacade {
 	
 	public ListMembers sendInvite(Long listId, String username) throws RuntimeException {
 		
-		ListOfItems listOfItems = this.listOfItemsService.findById(listId);
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(listId);
 		
-		if(!ValidatorAccess.canAcces(listOfItems.getOwnerId())) {
+		if(!ValidatorAccess.canAcces(ownerIdList)) {
 			throw new ForbiddenException();
 		}
 		
@@ -62,10 +61,10 @@ public class ListMembersFacade {
 	
 	public void removeUserAtList(Long listMembersId) throws RuntimeException {
 		
-		ListMembers listMembers = this.listMembersService.findById(listMembersId);
-		ListOfItems listOfItems = this.listOfItemsService.findById(listMembers.getListId());
+		Long memberId = this.listMembersService.findUserIdByListMembersId(listMembersId);
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(listMembersId);
 		
-		if(!ValidatorAccess.canAcces(listMembers.getUserId()) || !ValidatorAccess.canAcces(listOfItems.getOwnerId())) {
+		if(!ValidatorAccess.canAcces(memberId) || !ValidatorAccess.canAcces(ownerIdList)) {
 			throw new ForbiddenException();
 		}
 		

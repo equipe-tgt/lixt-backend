@@ -32,5 +32,13 @@ public class ListOfItemsService {
 	public List<ListOfItems> findUserLists(Long idUser) {
 		return this.listOfItemsRepository.findUserLists(idUser, StatusListMember.ACCEPT);
 	}
+	
+	public Long findOwnerIdByListId(Long listId) {
+		return this.listOfItemsRepository.findOwnerIdByListId(listId);
+	}
+	
+	public Long findOwnerIdByListMemberId(Long listMembersId) {
+		return this.listOfItemsRepository.findOwnerIdByListMemberId(listMembersId);
+	}
 
 }

@@ -45,7 +45,7 @@ public class Product {
 	@Column(name = "st_name", nullable = false)
 	private String name;
 	
-	@Column(name = "id_user")
+	@Column(name = "id_user", updatable = false)
 	private Long userId;
 	
 	@Column(name = "id_category", nullable = false)

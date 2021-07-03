@@ -42,7 +42,7 @@ public class ListOfItems {
 	@Column(name = "st_name_list", nullable = false)
 	private String nameList;
 	
-	@Column(name = "id_user", nullable = false)
+	@Column(name = "id_user", nullable = false, updatable = false)
 	private Long ownerId;
 	
 	@Column(name = "st_description", nullable = false)

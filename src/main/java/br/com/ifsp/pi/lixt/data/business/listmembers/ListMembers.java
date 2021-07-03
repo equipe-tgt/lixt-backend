@@ -39,10 +39,10 @@ public class ListMembers {
 	@Builder.Default
 	private Long id = null;	
 
-	@Column(name = "id_user", nullable = false)
+	@Column(name = "id_user", nullable = false, updatable = false)
 	private Long userId;
 	
-	@Column(name = "id_list", nullable = false)
+	@Column(name = "id_list", nullable = false, updatable = false)
 	private Long listId;
 	
 	@Convert(converter = StatusListMember.Converter.class)

@@ -39,7 +39,7 @@ public class Comment {
 	@Builder.Default
 	private Long id = null;
 	
-	@Column(name = "id_user")
+	@Column(name = "id_user", updatable = false)
 	private Long userId;
 	
 	@Column(name = "id_product_of_list")
