@@ -5,7 +5,6 @@ import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.utils.security.Users;
 
 public abstract class ListOfItemsMapper {
 	
@@ -20,7 +19,7 @@ public abstract class ListOfItemsMapper {
 				.description(entity.getDescription())
 				.ownerId(entity.getOwnerId())
 				.productsOfList(Objects.isNull(entity.getProductsOfList()) ? null : entity.getProductsOfList().stream().map(ProductOfListMapper::entityToDto).collect(Collectors.toList()))
-				.listMembers(Objects.isNull(entity.getListMembers()) || !Users.getUserId().equals(entity.getOwnerId()) ? null : entity.getListMembers().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList()))
+				.listMembers(Objects.isNull(entity.getListMembers()) ? null : entity.getListMembers().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList()))
 				.build();
 	}
 	
