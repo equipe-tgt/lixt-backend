@@ -20,9 +20,7 @@ import br.com.ifsp.pi.lixt.controller.ListOfItemsController;
 import br.com.ifsp.pi.lixt.controller.ProductController;
 import br.com.ifsp.pi.lixt.controller.ProductOfListController;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
-import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
-import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
@@ -76,14 +74,24 @@ class GenerateDataTest {
 				.password("123")
 				.build();
 		
+		OauthUserDto oauthUser3 = OauthUserDto.builder()
+				.name("teste3")
+				.username("teste3")
+				.email("teste3@gmail.com")
+				.password("123")
+				.build();
+		
 		oauthUser1 = (OauthUserDto) this.authController.register(oauthUser1).getBody();
 		oauthUser2 = (OauthUserDto) this.authController.register(oauthUser2).getBody();
+		oauthUser3 = (OauthUserDto) this.authController.register(oauthUser3).getBody();
 		
 		UserDto user1 = UserMapper.dtoOauthToDto(oauthUser1);
 		UserDto user2 = UserMapper.dtoOauthToDto(oauthUser2);
+		UserDto user3 = UserMapper.dtoOauthToDto(oauthUser3);
 		
 		assertThat(user1.getId()).isNotNull();
 		assertThat(user2.getId()).isNotNull();
+		assertThat(user3.getId()).isNotNull();
 		
 		category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
 		
@@ -167,17 +175,8 @@ class GenerateDataTest {
 		
 		assertThat(listProductsOfList).isNotNull();
 		
-		ListMembersDto listMembers = ListMembersDto.builder()
-				.listId(listOfItems.getId())
-				.userId(user2.getId())
-				.user(user2)
-				.statusListMember(StatusListMember.WAITING)
-				.build();
-		
-		listMembers = listMembersController.save(listMembers);
-
-		listMembers.setStatusListMember(StatusListMember.ACCEPT);
-		listMembers = listMembersController.update(listMembers, listMembers.getId());
+		listMembersController.sendInvite(listOfItems.getId(), user2.getUsername());
+		listMembersController.acceptInvite(listOfItems.getId());
 	}
 	
 }

@@ -48,7 +48,7 @@ public class ListMembersFacade {
 		return this.listMembersService.save(listMembers);
 	}
 	
-	public ListMembers acceptInvite(Long listMembersId) throws RuntimeException {
+	public ListMembers alterStatusInvite(Long listMembersId, StatusListMember status) throws RuntimeException {
 		
 		ListMembers listMembers = this.listMembersService.findById(listMembersId);
 		
@@ -56,27 +56,16 @@ public class ListMembersFacade {
 			throw new ForbiddenException();
 		}
 		
-		listMembers.setStatusListMember(StatusListMember.ACCEPT);
-		return this.listMembersService.save(listMembers);
-	}
-	
-	public ListMembers rejectInvite(Long listMembersId) throws RuntimeException {
-		
-		ListMembers listMembers = this.listMembersService.findById(listMembersId);
-		
-		if(!ValidatorAccess.canAcces(listMembers.getUserId())) {
-			throw new ForbiddenException();
-		}
-		
-		listMembers.setStatusListMember(StatusListMember.REJECT);
+		listMembers.setStatusListMember(status);
 		return this.listMembersService.save(listMembers);
 	}
 	
 	public void removeUserAtList(Long listMembersId) throws RuntimeException {
 		
 		ListMembers listMembers = this.listMembersService.findById(listMembersId);
+		ListOfItems listOfItems = this.listOfItemsService.findById(listMembers.getListId());
 		
-		if(!ValidatorAccess.canAcces(listMembers.getUserId())) {
+		if(!ValidatorAccess.canAcces(listMembers.getUserId()) || !ValidatorAccess.canAcces(listOfItems.getOwnerId())) {
 			throw new ForbiddenException();
 		}
 		
