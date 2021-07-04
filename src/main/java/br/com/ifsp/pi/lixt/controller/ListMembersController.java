@@ -59,7 +59,7 @@ public class ListMembersController {
 	}
 	
 	@ApiOperation(value = "Encontrar convites recebidos para participar de listas compartilhadas")
-	@GetMapping("/recevied")
+	@GetMapping("/received")
 	public List<ListMembersDto> findListMembersReceviedByUser() {
 		return this.listMembersFacade.findListMembersReceviedByUser().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList());
 	}
