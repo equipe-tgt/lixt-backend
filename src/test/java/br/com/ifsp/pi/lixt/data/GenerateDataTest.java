@@ -17,14 +17,15 @@ import br.com.ifsp.pi.lixt.controller.AuthController;
 import br.com.ifsp.pi.lixt.controller.CategoryController;
 import br.com.ifsp.pi.lixt.controller.ListMembersController;
 import br.com.ifsp.pi.lixt.controller.ListOfItemsController;
-import br.com.ifsp.pi.lixt.controller.ProductController;
-import br.com.ifsp.pi.lixt.controller.ProductOfListController;
+import br.com.ifsp.pi.lixt.data.business.product.Product;
+import br.com.ifsp.pi.lixt.data.business.product.ProductService;
+import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.dto.ProductDto;
-import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.dto.UserDto;
+import br.com.ifsp.pi.lixt.facade.ProductOfListFacade;
+import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
 import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
@@ -41,20 +42,20 @@ class GenerateDataTest {
 	private CategoryController categoryController;
 	
 	@Autowired
-	private ProductController productController;
-	
-	@Autowired
 	private ListOfItemsController listOfItemsController;
-	
-	@Autowired
-	private ProductOfListController productOfListController;
 	
 	@Autowired
 	private ListMembersController listMembersController;
 	
-	private List<ProductDto> listProducts = new ArrayList<>();
+	@Autowired
+	private ProductOfListFacade productOfListFacade;
+	
+	@Autowired
+	private ProductService productService;
+	
+	private List<Product> listProducts = new ArrayList<>();
 	private CategoryDto category;
-	private List<ProductOfListDto> listProductsOfList = new ArrayList<>();
+	private List<ProductOfList> listProductsOfList = new ArrayList<>();
 	private ListOfItemsDto listOfItems;
 
 	@Test
@@ -96,61 +97,61 @@ class GenerateDataTest {
 		category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
 		
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("Arroz")
-					.categoryId(category.getId()).category(category)
+					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(5))
 					.build()
 		);
 		
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("Feijão")
-					.categoryId(category.getId()).category(category)
+					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(2))
 					.build()
 		);
 		
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("Sal")
-					.categoryId(category.getId()).category(category)
+					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(1))
 					.build()
 		);
 		
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("Açúcar")
-					.categoryId(category.getId()).category(category)
+					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.KG).measureValue(new BigDecimal(1))
 					.build()
 		);
 		
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("Azeite")
-					.categoryId(category.getId()).category(category)
+					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.L).measureValue(new BigDecimal(1))
 					.build()
 		);
 		
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("Vinagre")
-					.categoryId(category.getId()).category(category)
+					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.ML).measureValue(new BigDecimal(750))
 					.build()
 		);
 		
-		listProducts = this.productController.saveAll(listProducts);
+		listProducts = this.productService.saveAll(listProducts);
 		
 		listOfItems = this.listOfItemsController.save(
 				ListOfItemsDto.builder().nameList("Lista De Teste").ownerId(user1.getId()).description("Teste").build()
 		);
 		
 		listProductsOfList.add(
-				ProductOfListDto.builder()
+				ProductOfList.builder()
 					.productId(listProducts.get(0).getId())
 					.listId(listOfItems.getId())
 					.name("Arroz branco")
@@ -161,7 +162,7 @@ class GenerateDataTest {
 		);
 		
 		listProductsOfList.add(
-				ProductOfListDto.builder()
+				ProductOfList.builder()
 					.productId(listProducts.get(0).getId())
 					.listId(listOfItems.getId())
 					.name("Arroz integral")
@@ -171,7 +172,7 @@ class GenerateDataTest {
 					.build()
 		);
 		
-		listProductsOfList = this.productOfListController.saveAll(listProductsOfList);
+		listProductsOfList = this.productOfListFacade.saveAll(listProductsOfList);
 		
 		assertThat(listProductsOfList).isNotNull();
 		

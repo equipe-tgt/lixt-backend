@@ -27,5 +27,9 @@ public class CommentService {
 	public void deleteById(Long id) {
 		this.commentRepository.deleteById(id);
 	}
+	
+	public Long findUserIdByCommentId(Long commentId) {
+		return this.commentRepository.findUserIdByCommentId(commentId);
+	}
 
 }

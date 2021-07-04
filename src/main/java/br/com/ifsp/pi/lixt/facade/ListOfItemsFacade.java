@@ -38,7 +38,7 @@ public class ListOfItemsFacade {
 		if(!list.getId().equals(id))
 			throw new PrecoditionUpdateFailedException("Erro ao atualizar lista");
 		
-		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(id);
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(id);
 		
 		if(!ValidatorAccess.canAcces(ownerIdList))
 			throw new ForbiddenException();
@@ -48,7 +48,7 @@ public class ListOfItemsFacade {
 	
 	public void deleteById(Long id) {
 		
-		Long ownerIdList = this.listOfItemsService.findOwnerIdByListMemberId(id);
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(id);
 		
 		if(!ValidatorAccess.canAcces(ownerIdList))
 			throw new ForbiddenException();

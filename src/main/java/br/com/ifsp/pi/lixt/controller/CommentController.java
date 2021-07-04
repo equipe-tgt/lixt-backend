@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ifsp.pi.lixt.data.business.comment.CommentService;
 import br.com.ifsp.pi.lixt.dto.CommentDto;
+import br.com.ifsp.pi.lixt.facade.CommentFacade;
 import br.com.ifsp.pi.lixt.mapper.CommentMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
@@ -24,19 +24,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CommentController {
 	
-	private final CommentService commentService;
+	private final CommentFacade commentFacade;
 
 	@ApiOperation(value = "Buscar comentário por id")
 	@GetMapping("/{id}")
 	public CommentDto findById(@PathVariable Long id) {
-		return CommentMapper.entityToDto(this.commentService.findById(id));
+		return CommentMapper.entityToDto(this.commentFacade.findById(id));
 	}
 	
 	@ApiOperation(value = "Salvar um comentário")
 	@PostMapping
 	public CommentDto save(@RequestBody(required = false) CommentDto comment) {
 		comment.setUserId(Users.getUserId());
-		return CommentMapper.entityToDto(this.commentService.save(CommentMapper.dtoToEntity(comment)));
+		return CommentMapper.entityToDto(this.commentFacade.save(CommentMapper.dtoToEntity(comment)));
 	}
 	
 	@ApiOperation(value = "Atualizar comentário")
@@ -46,13 +46,13 @@ public class CommentController {
 		if(!comment.getId().equals(id))
 			throw new PrecoditionUpdateFailedException("Erro ao atualizar lista");
 		
-		return CommentMapper.entityToDto(this.commentService.save(CommentMapper.dtoToEntity(comment)));
+		return CommentMapper.entityToDto(this.commentFacade.save(CommentMapper.dtoToEntity(comment)));
 	}
 	
 	@ApiOperation(value = "Deletar um comentário")
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id) {
-		this.commentService.deleteById(id);
+		this.commentFacade.deleteById(id);
 	}
 	
 }

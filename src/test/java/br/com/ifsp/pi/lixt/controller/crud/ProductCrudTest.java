@@ -18,9 +18,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.ifsp.pi.lixt.controller.CategoryController;
 import br.com.ifsp.pi.lixt.controller.ProductController;
+import br.com.ifsp.pi.lixt.data.business.product.Product;
+import br.com.ifsp.pi.lixt.data.business.product.ProductService;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
-import br.com.ifsp.pi.lixt.dto.ProductDto;
+import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,7 +36,10 @@ class ProductCrudTest {
 	@Autowired
 	private ProductController productController;
 	
-	private List<ProductDto> listProducts;
+	@Autowired
+	private ProductService productService;
+	
+	private List<Product> listProducts;
 	private CategoryDto category;
 	
 	@BeforeAll
@@ -44,26 +49,26 @@ class ProductCrudTest {
 		listProducts = new ArrayList<>();
 				
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("arroz")
 					.categoryId(category.getId())
-					.category(category)
+					.category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.KG)
 					.measureValue(new BigDecimal(5))
 					.build()
 		);
 			
 		listProducts.add(
-				ProductDto.builder()
+				Product.builder()
 					.name("feijão")
 					.categoryId(category.getId())
-					.category(category)
+					.category(CategoryMapper.dtoToEntity(category))
 					.measureType(MeasureType.KG)
 					.measureValue(new BigDecimal(1))
 					.build()
 		);
 		
-		listProducts = this.productController.saveAll(listProducts);
+		listProducts = this.productService.saveAll(listProducts);
 	}
 	
 	@Test

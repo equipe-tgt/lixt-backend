@@ -41,13 +41,6 @@ public class ProductController {
 		return ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product)));
 	}
 	
-	@ApiOperation(value = "Salvar vários produtos")
-	@PostMapping("/save-all")
-	public List<ProductDto> saveAll(@RequestBody(required = false) List<ProductDto> products) {
-		return this.productService.saveAll(products.stream().map(ProductMapper::dtoToEntity).collect(Collectors.toList()))
-				.stream().map(ProductMapper::entityToDto).collect(Collectors.toList());
-	}
-	
 	@ApiOperation(value = "Atualizar produto")
 	@PutMapping("/{id}")
 	public ProductDto update(@RequestBody(required = false) ProductDto product, @PathVariable Long id) throws PrecoditionUpdateFailedException {

@@ -17,9 +17,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.ifsp.pi.lixt.controller.ListOfItemsController;
 import br.com.ifsp.pi.lixt.controller.ProductOfListController;
+import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.facade.ProductOfListFacade;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,7 +34,10 @@ class ListCrudTest {
 	@Autowired
 	private ProductOfListController productOfListController;
 	
-	private List<ProductOfListDto> listProductsOfList;
+	@Autowired
+	private ProductOfListFacade productOfListFacade;
+	
+	private List<ProductOfList> listProductsOfList;
 	private ListOfItemsDto listOfItems;
 	
 	@BeforeAll
@@ -48,7 +52,7 @@ class ListCrudTest {
 		assertThat(listOfItems.getId()).isNotNull();
 		
 		listProductsOfList.add(
-				ProductOfListDto.builder()
+				ProductOfList.builder()
 					.productId((long)2)
 					.listId(listOfItems.getId())
 					.name("Arroz legal")
@@ -59,7 +63,7 @@ class ListCrudTest {
 		);
 		
 		listProductsOfList.add(
-				ProductOfListDto.builder()
+				ProductOfList.builder()
 					.productId((long)2)
 					.listId(listOfItems.getId())
 					.name("Arroz do bem")
@@ -69,7 +73,7 @@ class ListCrudTest {
 					.build()
 		);
 		
-		listProductsOfList = this.productOfListController.saveAll(listProductsOfList);
+		listProductsOfList = this.productOfListFacade.saveAll(listProductsOfList);
 	}
 	
 	@Test

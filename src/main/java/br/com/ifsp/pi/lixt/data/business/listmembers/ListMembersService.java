@@ -28,7 +28,7 @@ public class ListMembersService {
 		this.listMembersRepository.deleteById(id);
 	}
 	
-	public List<Long> findUserIdByListMembersId(Long listMembersId) {
+	public Long findUserIdByListMembersId(Long listMembersId) {
 		return this.listMembersRepository.findUserIdByListMembersId(listMembersId);
 	}
 

@@ -1,8 +1,5 @@
 package br.com.ifsp.pi.lixt.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.facade.ProductOfListFacade;
 import br.com.ifsp.pi.lixt.mapper.ProductOfListMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
 import io.swagger.annotations.Api;
@@ -26,25 +23,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductOfListController {
 	
-	private final ProductOfListService productOfListService;
+	private final ProductOfListFacade productOfListFacade;
 	
 	@ApiOperation(value = "Buscar produto da lista por id")
 	@GetMapping("/{id}")
 	public ProductOfListDto findById(@PathVariable Long id) {
-		return ProductOfListMapper.entityToDto(this.productOfListService.findById(id));
+		return ProductOfListMapper.entityToDto(this.productOfListFacade.findById(id));
 	}
 	
 	@ApiOperation(value = "Salvar um produto da lista")
 	@PostMapping
 	public ProductOfListDto save(@RequestBody(required = false) ProductOfListDto productOfList) {
-		return ProductOfListMapper.entityToDto(this.productOfListService.save(ProductOfListMapper.dtoToEntity(productOfList)));
-	}
-	
-	@ApiOperation(value = "Salvar vários produtos da lista")
-	@PostMapping("/save-all")
-	public List<ProductOfListDto> saveAll(@RequestBody(required = false) List<ProductOfListDto> productsOfList) {
-		return this.productOfListService.saveAll(productsOfList.stream().map(ProductOfListMapper::dtoToEntity).collect(Collectors.toList()))
-				.stream().map(ProductOfListMapper::entityToDto).collect(Collectors.toList());
+		return ProductOfListMapper.entityToDto(this.productOfListFacade.save(ProductOfListMapper.dtoToEntity(productOfList)));
 	}
 	
 	@ApiOperation(value = "Atualizar produto da lista")
@@ -54,13 +44,13 @@ public class ProductOfListController {
 		if(!productOfList.getId().equals(id))
 			throw new PrecoditionUpdateFailedException("Erro ao atualizar produto da lista");
 		
-		return ProductOfListMapper.entityToDto(this.productOfListService.save(ProductOfListMapper.dtoToEntity(productOfList)));
+		return ProductOfListMapper.entityToDto(this.productOfListFacade.save(ProductOfListMapper.dtoToEntity(productOfList)));
 	}
 	
 	@ApiOperation(value = "Deletar um produto da lista")
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id) {
-		this.productOfListService.deleteById(id);
+		this.productOfListFacade.deleteById(id);
 	}
 
 }
