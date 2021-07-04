@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
+import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembers;
 import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 
 public interface ListOfItemsRepository extends CrudRepository<ListOfItems, Long>, JpaSpecificationExecutor<ListOfItems> {
@@ -18,6 +19,9 @@ public interface ListOfItemsRepository extends CrudRepository<ListOfItems, Long>
 	
 	@Query("select lm.userId from ListOfItems l join l.listMembers lm where l.id = ?1 and lm.statusListMember = ?2")
 	List<Long> findMembersIdsByListId(Long listId, StatusListMember status);
+	
+	@Query("select lm from ListOfItems l join l.listMembers lm where l.ownerId = ?1")
+	List<ListMembers> findListMembersSentByUser(Long userId);
 	
 	
 	@Query("select l.ownerId from ListOfItems l join l.productsOfList p where p.id = ?1")

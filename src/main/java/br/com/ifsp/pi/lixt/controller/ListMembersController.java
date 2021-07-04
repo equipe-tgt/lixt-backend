@@ -1,5 +1,8 @@
 package br.com.ifsp.pi.lixt.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,6 +50,18 @@ public class ListMembersController {
 	@DeleteMapping("/{listMembersId}")
 	public void removeUserAtList(@PathVariable Long listMembersId) throws RuntimeException {
 		this.listMembersFacade.removeUserAtList(listMembersId);
+	}
+	
+	@ApiOperation(value = "Encontrar convites enviados para participar de listas compartilhadas")
+	@GetMapping("/sent")
+	public List<ListMembersDto> findListMembersSentByUser() {
+		return this.listMembersFacade.findListMembersSentByUser().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList());
+	}
+	
+	@ApiOperation(value = "Encontrar convites recebidos para participar de listas compartilhadas")
+	@GetMapping("/recevied")
+	public List<ListMembersDto> findListMembersReceviedByUser() {
+		return this.listMembersFacade.findListMembersReceviedByUser().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList());
 	}
 
 }

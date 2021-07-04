@@ -31,5 +31,9 @@ public class ListMembersService {
 	public Long findUserIdByListMembersId(Long listMembersId) {
 		return this.listMembersRepository.findUserIdByListMembersId(listMembersId);
 	}
+	
+	public List<ListMembers> findListMembersReceviedByUser(Long userId) {
+		return this.listMembersRepository.findListMembersReceviedByUser(userId);
+	}
 
 }
