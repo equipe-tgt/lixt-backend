@@ -29,6 +29,7 @@ public class ListOfItemsService {
 		this.listOfItemsRepository.deleteById(id);
 	}
 	
+	
 	public List<ListOfItems> findUserLists(Long idUser) {
 		return this.listOfItemsRepository.findUserLists(idUser, StatusListMember.ACCEPT);
 	}
@@ -38,27 +39,30 @@ public class ListOfItemsService {
 	}
 	
 	public List<Long> findMembersIdsByListId(Long listId) {
-		return this.listOfItemsRepository.findMembersIdsByListId(listId);
+		return this.listOfItemsRepository.findMembersIdsByListId(listId, StatusListMember.ACCEPT);
 	}
+	
 	
 	public Long findOwnerIdByListMemberId(Long listMembersId) {
 		return this.listOfItemsRepository.findOwnerIdByListMemberId(listMembersId);
 	}
+	
 	
 	public Long findOwnerIdByCommentId(Long commentId) {
 		return this.listOfItemsRepository.findOwnerIdByCommentId(commentId);
 	}
 	
 	public List<Long> findMembersIdsByCommentId(Long commentId) {
-		return this.listOfItemsRepository.findMembersIdsByCommentId(commentId);
+		return this.listOfItemsRepository.findMembersIdsByCommentId(commentId, StatusListMember.ACCEPT);
 	}
+	
 	
 	public Long findOwnerIdByProductOfListId(Long productOfListId) {
 		return this.listOfItemsRepository.findOwnerIdByProductOfListId(productOfListId);
 	}
 	
 	public List<Long> findMembersIdsByProductOfListId(Long productOfListId) {
-		return this.listOfItemsRepository.findMembersIdsByProductOfListId(productOfListId);
+		return this.listOfItemsRepository.findMembersIdsByProductOfListId(productOfListId, StatusListMember.ACCEPT);
 	}
 
 }
