@@ -42,11 +42,7 @@ public class CommentController {
 	@ApiOperation(value = "Atualizar comentário")
 	@PutMapping("/{id}")
 	public CommentDto update(@RequestBody(required = false) CommentDto comment, @PathVariable Long id) throws PrecoditionUpdateFailedException {
-		
-		if(!comment.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar lista");
-		
-		return CommentMapper.entityToDto(this.commentFacade.save(CommentMapper.dtoToEntity(comment)));
+		return CommentMapper.entityToDto(this.commentFacade.update(CommentMapper.dtoToEntity(comment), id));
 	}
 	
 	@ApiOperation(value = "Deletar um comentário")

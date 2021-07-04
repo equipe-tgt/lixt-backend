@@ -43,7 +43,7 @@ public class ListOfItemsController {
 	@ApiOperation(value = "Atualizar lista")
 	@PutMapping("/{id}")
 	public ListOfItemsDto update(@RequestBody(required = false) ListOfItemsDto list, @PathVariable Long id) throws PrecoditionUpdateFailedException {
-		return ListOfItemsMapper.entityToDto(this.listOfItemsFacade.save(ListOfItemsMapper.dtoToEntity(list)));
+		return ListOfItemsMapper.entityToDto(this.listOfItemsFacade.update(ListOfItemsMapper.dtoToEntity(list), id));
 	}
 	
 	@ApiOperation(value = "Deletar uma lista")

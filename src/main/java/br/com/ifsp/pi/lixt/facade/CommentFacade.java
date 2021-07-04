@@ -36,7 +36,7 @@ public class CommentFacade {
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(comment.getProductOfListId());
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(comment.getProductOfListId());
 		
-		if(!ValidatorAccess.canAcces(membersIds) && !ValidatorAccess.canAcces(ownerId)) {
+		if(!ValidatorAccess.canAcces(comment.getUserId()) || (!ValidatorAccess.canAcces(membersIds) || !ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 		
@@ -45,13 +45,13 @@ public class CommentFacade {
 	}
 	
 	public Comment update(Comment comment, Long id) throws PrecoditionUpdateFailedException {
-		
-		if(!comment.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar comentário");
 
 		Long userId = this.commentService.findUserIdByCommentId(id);
+
+		if(!comment.getId().equals(id) || !comment.getUserId().equals(userId))
+			throw new PrecoditionUpdateFailedException("Erro ao atualizar comentário");
 		
-		if(!comment.getUserId().equals(userId) || !ValidatorAccess.canAcces(comment.getUserId())) 
+		if(!ValidatorAccess.canAcces(comment.getUserId())) 
 			throw new ForbiddenException();
 		
 		return this.commentService.save(comment);
