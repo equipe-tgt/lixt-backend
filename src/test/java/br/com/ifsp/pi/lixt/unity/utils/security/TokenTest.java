@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.utils.security;
+package br.com.ifsp.pi.lixt.unity.utils.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -23,7 +23,7 @@ public class ListOfItemsFacade {
 		ListOfItems listOfItems = this.listOfItemsService.findById(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByListId(id);
 
-		if(!ValidatorAccess.canAcces(listOfItems.getOwnerId()) && !ValidatorAccess.canAcces(membersIds))
+		if(!(ValidatorAccess.canAcces(listOfItems.getOwnerId()) || ValidatorAccess.canAcces(membersIds)))
 			throw new ForbiddenException();
 		
 		return listOfItems;

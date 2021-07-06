@@ -28,6 +28,10 @@ public class ListMembersService {
 		this.listMembersRepository.deleteById(id);
 	}
 	
+	public ListMembers findByListIdAndUserId(Long listId, Long userId) {
+		return this.listMembersRepository.findByListIdAndUserId(listId, userId);
+	}
+	
 	public Long findUserIdByListMembersId(Long listMembersId) {
 		return this.listMembersRepository.findUserIdByListMembersId(listMembersId);
 	}

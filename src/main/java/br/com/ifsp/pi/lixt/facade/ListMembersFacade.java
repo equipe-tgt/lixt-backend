@@ -11,6 +11,7 @@ import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembersService;
 import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
+import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
@@ -39,7 +40,13 @@ public class ListMembersFacade {
 			throw new NotFoundException("Usuário não encontrado");
 		}
 		
-		ListMembers listMembers = ListMembers.builder()
+		ListMembers listMembers = this.listMembersService.findByListIdAndUserId(listId, user.getId());
+		
+		if(Objects.nonNull(listMembers)) {
+			throw new DuplicatedDataException("Convite já enviado para esse usuário");
+		}
+		
+		listMembers = ListMembers.builder()
 				.listId(listId)
 				.userId(user.getId())
 				.user(user)
@@ -66,7 +73,7 @@ public class ListMembersFacade {
 		Long memberId = this.listMembersService.findUserIdByListMembersId(listMembersId);
 		Long ownerId = this.listOfItemsService.findOwnerIdByListMemberId(listMembersId);
 		
-		if(!ValidatorAccess.canAcces(ownerId) && !ValidatorAccess.canAcces(memberId)) {
+		if(!(ValidatorAccess.canAcces(ownerId) || ValidatorAccess.canAcces(memberId))) {
 			throw new ForbiddenException();
 		}
 		

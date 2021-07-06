@@ -23,7 +23,7 @@ public class ProductOfListFacade {
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
 		
-		if(!ValidatorAccess.canAcces(membersIds) && !ValidatorAccess.canAcces(ownerId)) {
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 		
@@ -35,7 +35,7 @@ public class ProductOfListFacade {
 		Long ownerId = this.listOfItemsService.findOwnerIdByListId(productOfList.getListId());
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByListId(productOfList.getListId());
 		
-		if(!ValidatorAccess.canAcces(membersIds) && !ValidatorAccess.canAcces(ownerId)) {
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 		
@@ -66,7 +66,7 @@ public class ProductOfListFacade {
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
 		
-		if(!ValidatorAccess.canAcces(membersIds) && !ValidatorAccess.canAcces(ownerId)) {
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 		

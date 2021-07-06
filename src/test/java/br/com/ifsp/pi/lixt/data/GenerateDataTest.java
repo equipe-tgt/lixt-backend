@@ -2,38 +2,53 @@ package br.com.ifsp.pi.lixt.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.http.HttpStatus;
+import org.springframework.test.web.servlet.MockMvc;
 import br.com.ifsp.pi.lixt.controller.AuthController;
 import br.com.ifsp.pi.lixt.controller.CategoryController;
-import br.com.ifsp.pi.lixt.controller.ListMembersController;
-import br.com.ifsp.pi.lixt.controller.ListOfItemsController;
+import br.com.ifsp.pi.lixt.controller.PurchaseLocalController;
 import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
-import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
-import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
+import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.data.dto.CommentDtoDataJson;
+import br.com.ifsp.pi.lixt.data.dto.ListOfItemsDtoDataJson;
+import br.com.ifsp.pi.lixt.data.dto.ProductDtoData;
+import br.com.ifsp.pi.lixt.data.dto.ProductOfListDtoDataJson;
+import br.com.ifsp.pi.lixt.data.dto.UserDtoData;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
+import br.com.ifsp.pi.lixt.dto.CommentDto;
+import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
+import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.dto.UserDto;
-import br.com.ifsp.pi.lixt.facade.ProductOfListFacade;
-import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
 import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
+import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
+import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
+import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
+import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
+import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePost;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("Criar massa de dados")
+@DisplayName("Criar massa de dados e testar primeiros casos de uso e casos de segurança")
 class GenerateDataTest {
+	
+	@Autowired
+	private MockMvc mockMvc;
 	
 	@Autowired
 	private AuthController authController;
@@ -42,142 +57,128 @@ class GenerateDataTest {
 	private CategoryController categoryController;
 	
 	@Autowired
-	private ListOfItemsController listOfItemsController;
-	
-	@Autowired
-	private ListMembersController listMembersController;
-	
-	@Autowired
-	private ProductOfListFacade productOfListFacade;
-	
-	@Autowired
 	private ProductService productService;
 	
-	private List<Product> listProducts = new ArrayList<>();
+	@Autowired
+	private PurchaseLocalController purchaseLocalController;
+	
+	@Autowired
+	private UserService userService;
+	
+	private List<OauthUserDto> oauthUsers = new ArrayList<>();
+	private List<Product> products = new ArrayList<>();
 	private CategoryDto category;
-	private List<ProductOfList> listProductsOfList = new ArrayList<>();
+	private List<ProductOfListDto> productsOfList = new ArrayList<>();
 	private ListOfItemsDto listOfItems;
+	private List<UserDto> users = new ArrayList<>();
+	private PurchaseLocalDto purchaseLocal;
+	private List<CommentDto> comments = new ArrayList<>();
+		
+	@BeforeAll
+	void initializeData() throws Exception {
 
+		UserDtoData.initializeValues().forEach(user -> {
+			oauthUsers.add((OauthUserDto) this.authController.register(user).getBody());
+			users.add(UserMapper.dtoOauthToDto(oauthUsers.get(oauthUsers.size() - 1)));
+			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
+		});
+		
+		assertThat(this.authController.register(oauthUsers.get(0)).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+//		assertThat(this.authController.forgetPassword(oauthUsers.get(0).getEmail()).getStatusCode()).isEqualTo(HttpStatus.OK);
+//		this.userService.updatePassword(oauthUsers.get(0).getEmail(), passwordEncoder.encode("123"));
+		
+		this.category = categoryController.save(CategoryDto.builder().name("Alimentação").build());		
+		this.products = this.productService.saveAll(ProductDtoData.initializeValues(category));
+		
+		purchaseLocal = this.purchaseLocalController.save(
+				PurchaseLocalDto.builder().name("Mercado Extra").latitude(23.66666).longitude(20.77777).build()
+		);
+	}
+	
+	@DisplayName("Testar casos de uso do sistema")
 	@Test
-	void createData() {
+	void createData() throws Exception {
 		
-		OauthUserDto oauthUser1 = OauthUserDto.builder()
-				.name("leo")
-				.username("leo")
-				.email("leo_narita@hotmail.com")
-				.password("123")
-				.build();
+		assertThat(purchaseLocal).isNotNull();
 		
-		OauthUserDto oauthUser2 = OauthUserDto.builder()
-				.name("teste")
-				.username("teste")
-				.email("teste@gmail.com")
-				.password("123")
-				.build();
+		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+			
+		// Criar lista e validar que apenas o dono e os membros da lista que aceitaram o convite tem acesso à ela
+		this.listOfItems = (ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
+
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(1), "/list/".concat(this.listOfItems.getId().toString()));
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/list/".concat(this.listOfItems.getId().toString()));
+				
+		// Criar produtos da lista
+		ProductOfListDtoDataJson.initializeValues(this.listOfItems, this.products.get(0)).forEach(productOfList -> {
+
+			try {
+				String tokenUser = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+				ProductOfListDto product = (ProductOfListDto) RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
+				this.productsOfList.add(product);
+				assertThat(product).isNotNull();
+			} catch (Exception e) {
+			}
+		});
 		
-		OauthUserDto oauthUser3 = OauthUserDto.builder()
-				.name("teste3")
-				.username("teste3")
-				.email("teste3@gmail.com")
-				.password("123")
-				.build();
+		assertThat(this.productsOfList.size()).isGreaterThan(0);
+	
+		// Criar convite e validar que apenas o dono e os membros da lista que aceitaram o convite tem acesso à ela
+		ListMembersDto listMembers = (ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), "teste", token, ListMembersDto.class);
+		assertThat(listMembers).isNotNull();
 		
-		oauthUser1 = (OauthUserDto) this.authController.register(oauthUser1).getBody();
-		oauthUser2 = (OauthUserDto) this.authController.register(oauthUser2).getBody();
-		oauthUser3 = (OauthUserDto) this.authController.register(oauthUser3).getBody();
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(1), "/list/".concat(this.listOfItems.getId().toString()));
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/list/".concat(this.listOfItems.getId().toString()));
 		
-		UserDto user1 = UserMapper.dtoOauthToDto(oauthUser1);
-		UserDto user2 = UserMapper.dtoOauthToDto(oauthUser2);
-		UserDto user3 = UserMapper.dtoOauthToDto(oauthUser3);
+		// Aceitar o convite (usuario teste) e validar que apenas o dono e os membros da lista que aceitaram o convite tem acesso à ela
+		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
+		listMembers = (ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listOfItems.getId(), token, ListMembersDto.class);
+		assertThat(listMembers).isNotNull();
 		
-		assertThat(user1.getId()).isNotNull();
-		assertThat(user2.getId()).isNotNull();
-		assertThat(user3.getId()).isNotNull();
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(1), "/list/".concat(this.listOfItems.getId().toString()));
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/list/".concat(this.listOfItems.getId().toString()));
 		
-		category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
+		// Criar comentário e validar que apenas o dono e os membros da lista que aceitaram o convite aos comentários e podem comentar
+		CommentDtoDataJson.initializeValues(this.users.get(0), this.productsOfList.get(0)).forEach(comment -> {
+			saveComment(comment);
+		});
 		
-		listProducts.add(
-				Product.builder()
-					.name("Arroz")
-					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
-					.measureType(MeasureType.KG).measureValue(new BigDecimal(5))
-					.build()
-		);
+		assertThat(this.comments.size()).isGreaterThan(0);
 		
-		listProducts.add(
-				Product.builder()
-					.name("Feijão")
-					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
-					.measureType(MeasureType.KG).measureValue(new BigDecimal(2))
-					.build()
-		);
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/comment/" + this.comments.get(0).getId());
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(1), "/comment/" + this.comments.get(0).getId());
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/comment/" + this.comments.get(0).getId());
 		
-		listProducts.add(
-				Product.builder()
-					.name("Sal")
-					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
-					.measureType(MeasureType.KG).measureValue(new BigDecimal(1))
-					.build()
-		);
+		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+	}
+	
+	@AfterAll
+	void deleteData() throws Exception {
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/list/" + this.listOfItems.getId());
 		
-		listProducts.add(
-				Product.builder()
-					.name("Açúcar")
-					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
-					.measureType(MeasureType.KG).measureValue(new BigDecimal(1))
-					.build()
-		);
-		
-		listProducts.add(
-				Product.builder()
-					.name("Azeite")
-					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
-					.measureType(MeasureType.L).measureValue(new BigDecimal(1))
-					.build()
-		);
-		
-		listProducts.add(
-				Product.builder()
-					.name("Vinagre")
-					.categoryId(category.getId()).category(CategoryMapper.dtoToEntity(category))
-					.measureType(MeasureType.ML).measureValue(new BigDecimal(750))
-					.build()
-		);
-		
-		listProducts = this.productService.saveAll(listProducts);
-		
-		listOfItems = this.listOfItemsController.save(
-				ListOfItemsDto.builder().nameList("Lista De Teste").ownerId(user1.getId()).description("Teste").build()
-		);
-		
-		listProductsOfList.add(
-				ProductOfList.builder()
-					.productId(listProducts.get(0).getId())
-					.listId(listOfItems.getId())
-					.name("Arroz branco")
-					.measureType(MeasureType.KG)
-					.measureValue(new BigDecimal(5))
-					.isMarked(false)
-					.build()
-		);
-		
-		listProductsOfList.add(
-				ProductOfList.builder()
-					.productId(listProducts.get(0).getId())
-					.listId(listOfItems.getId())
-					.name("Arroz integral")
-					.measureType(MeasureType.KG)
-					.measureValue(new BigDecimal(5))
-					.isMarked(false)
-					.build()
-		);
-		
-		listProductsOfList = this.productOfListFacade.saveAll(listProductsOfList);
-		
-		assertThat(listProductsOfList).isNotNull();
-		
-		listMembersController.sendInvite(listOfItems.getId(), user2.getUsername());
-		listMembersController.acceptInvite(listOfItems.getId());
+		this.products.forEach(product -> this.productService.deleteById(product.getId()));
+		this.categoryController.deleteById(this.category.getId());
+		this.oauthUsers.forEach(user -> this.userService.deleteById(user.getId()));
+	}
+	
+	private void saveComment(String comment) {
+		try {
+			
+			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
+			this.comments.add(commentDto);
+			assertThat(commentDto).isNotNull();
+			
+			commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
+			this.comments.add(commentDto);
+			assertThat(commentDto).isNotNull();
+			
+			ValidatorStatusResponsePost.isForbidden(mockMvc, oauthUsers.get(2), "/comment", comment);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

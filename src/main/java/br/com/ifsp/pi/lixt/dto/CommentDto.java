@@ -1,7 +1,5 @@
 package br.com.ifsp.pi.lixt.dto;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,8 +20,6 @@ public class CommentDto {
 	private Long productOfListId;
 	
 	private String content;
-	
-	private LocalDateTime date;
 	
 	private UserDto user;
 	

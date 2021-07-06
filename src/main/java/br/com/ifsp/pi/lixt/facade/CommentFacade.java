@@ -1,5 +1,6 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class CommentFacade {
 		Long ownerId = this.listOfItemsService.findOwnerIdByCommentId(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByCommentId(id);
 		
-		if(!ValidatorAccess.canAcces(membersIds) && !ValidatorAccess.canAcces(ownerId)) {
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 		
@@ -36,10 +37,11 @@ public class CommentFacade {
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(comment.getProductOfListId());
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(comment.getProductOfListId());
 		
-		if(!ValidatorAccess.canAcces(comment.getUserId()) || (!ValidatorAccess.canAcces(membersIds) || !ValidatorAccess.canAcces(ownerId))) {
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 		
+		comment.setDate(LocalDateTime.now());
 		comment.setUserId(Users.getUserId());
 		return this.commentService.save(comment);
 	}
@@ -48,7 +50,7 @@ public class CommentFacade {
 
 		Long userId = this.commentService.findUserIdByCommentId(id);
 
-		if(!comment.getId().equals(id) || !comment.getUserId().equals(userId))
+		if(!(comment.getId().equals(id) || comment.getUserId().equals(userId)))
 			throw new PrecoditionUpdateFailedException("Erro ao atualizar comentário");
 		
 		if(!ValidatorAccess.canAcces(comment.getUserId())) 
