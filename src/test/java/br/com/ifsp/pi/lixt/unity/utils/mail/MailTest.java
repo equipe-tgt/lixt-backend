@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.test.unity.utils.mail;
+package br.com.ifsp.pi.lixt.unity.utils.mail;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

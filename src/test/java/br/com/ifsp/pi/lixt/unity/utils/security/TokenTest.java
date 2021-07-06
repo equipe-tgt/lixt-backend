@@ -25,7 +25,7 @@ class TokenTest {
 	}
 	
 	private String generateBasicAuthToken(String clientID, String secretID) {
-		return Base64.getEncoder().encodeToString(clientID.concat(":").concat(clientID).getBytes(StandardCharsets.ISO_8859_1));
+		return Base64.getEncoder().encodeToString(clientID.concat(":").concat(secretID).getBytes(StandardCharsets.ISO_8859_1));
 	}
 
 }
