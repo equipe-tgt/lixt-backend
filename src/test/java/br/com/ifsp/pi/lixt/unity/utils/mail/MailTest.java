@@ -25,7 +25,7 @@ class MailTest {
 				.title("TESTE EMAIL")
 				.msgHTML("ENVIADO COM SUCESSO").build();
 
-		mailDto.setRecipientTo("leo_narita@hotmail.com");
+		mailDto.setRecipientTo("fabio.mendes@aluno.ifsp.edu.br");
 		
 		boolean response = senderMail.sendEmail(mailDto);
 		

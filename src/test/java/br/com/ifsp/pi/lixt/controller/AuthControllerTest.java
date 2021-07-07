@@ -11,8 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
@@ -63,6 +67,22 @@ class AuthControllerTest {
 		mockMvc.perform(get("/auth/data-user").headers(httpHeaders).accept("application/json;charset=UTF-8"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
+	}
+	
+	@Test
+	@DisplayName("Criar um usuário já existente")
+	void creatingExistingUser() throws Exception {
+		OauthUserDto existingUser = OauthUserDto.builder()
+				.name("user")
+				.username("user")
+				.email("user@hotmail.com")
+				.password("123")
+				.build();
+		
+		ResponseEntity<Object> response = authController.register(existingUser);
+		
+		assertThat(HttpStatus.CONFLICT.equals(response.getStatusCode()));
+		
 	}
 	
 	@AfterAll
