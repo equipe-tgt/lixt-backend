@@ -85,6 +85,18 @@ class AuthControllerTest {
 		
 	}
 	
+	@Test
+	@DisplayName("Gerar nova senha para usuário existente")
+	void newPasswordExistingUser() throws Exception {
+		assertThat(HttpStatus.OK.equals(authController.forgetPassword("user@hotmail.com").getStatusCode()));
+	}
+	
+	@Test
+	@DisplayName("Gerar nova senha para usuário inexistente")
+	void newPasswordUnexistingUser() throws Exception {
+		assertThat(HttpStatus.NOT_FOUND.equals(authController.forgetPassword("bob@email.com").getStatusCode()));
+	}
+	
 	@AfterAll
 	void deleteUser() {
 		this.userService.deleteById(createdUser.getId());
