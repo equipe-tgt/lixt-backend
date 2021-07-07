@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.unity.utils.conversion;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -13,6 +14,7 @@ import br.com.ifsp.pi.lixt.data.dto.ListOfItemsDtoDataJson;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 
 @SpringBootTest
+@DisplayName("Testar a conversão de JSON para Object")
 class JsonToObjectTest {
 	
 	@Test
