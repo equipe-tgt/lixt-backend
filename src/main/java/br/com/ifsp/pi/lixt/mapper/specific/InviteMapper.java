@@ -13,6 +13,7 @@ public class InviteMapper {
 			return null;
 		
 		return InviteDto.builder()
+				.id(entity.getId())
 				.nameList(entity.getList().getNameList())
 				.description(entity.getList().getDescription())
 				.statusListMember(entity.getStatusListMember())

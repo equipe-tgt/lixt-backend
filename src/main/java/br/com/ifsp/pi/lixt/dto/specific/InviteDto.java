@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class InviteDto {
+	
+	private Long id;
 
 	private String nameList;
 	

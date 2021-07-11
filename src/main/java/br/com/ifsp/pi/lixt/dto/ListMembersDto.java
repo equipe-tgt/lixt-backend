@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class ListMembersDto {
 
-	private Long id;	
+	private Long id;
 
 	private Long userId;
 	
