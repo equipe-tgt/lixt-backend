@@ -141,7 +141,7 @@ class AuthControllerTest {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		httpHeaders.add("Authorization", token);
 		
-		mockMvc.perform(post("/auth/data-user").headers(httpHeaders).accept("application/json;charset=UTF-8"))
+		mockMvc.perform(get("/auth/data-user").headers(httpHeaders).accept("application/json;charset=UTF-8"))
 			.andExpect(MockMvcResultMatchers.status().isOk())
 			.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
 	}

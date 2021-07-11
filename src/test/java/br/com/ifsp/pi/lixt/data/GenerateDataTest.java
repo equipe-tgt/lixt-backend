@@ -84,8 +84,6 @@ class GenerateDataTest {
 		});
 		
 		assertThat(this.authController.register(oauthUsers.get(0)).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
-//		assertThat(this.authController.forgetPassword(oauthUsers.get(0).getEmail()).getStatusCode()).isEqualTo(HttpStatus.OK);
-//		this.userService.updatePassword(oauthUsers.get(0).getEmail(), passwordEncoder.encode("123"));
 		
 		this.category = categoryController.save(CategoryDto.builder().name("Alimentação").build());		
 		this.products = this.productService.saveAll(ProductDtoData.initializeValues(category));
