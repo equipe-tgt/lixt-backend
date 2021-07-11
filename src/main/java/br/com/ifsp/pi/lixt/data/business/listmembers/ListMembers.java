@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
 import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import lombok.AllArgsConstructor;
@@ -52,5 +53,9 @@ public class ListMembers {
 	@ManyToOne
 	@JoinColumn(name = "id_user", insertable = false, updatable = false)
 	private User user;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_list", insertable = false, updatable = false)
+	private ListOfItems list;
 
 }

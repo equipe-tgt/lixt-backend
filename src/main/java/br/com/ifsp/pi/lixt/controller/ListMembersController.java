@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import br.com.ifsp.pi.lixt.dto.ListMembersDto;
+import br.com.ifsp.pi.lixt.dto.specific.InviteDto;
 import br.com.ifsp.pi.lixt.facade.ListMembersFacade;
 import br.com.ifsp.pi.lixt.mapper.ListMembersMapper;
+import br.com.ifsp.pi.lixt.mapper.specific.InviteMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -54,14 +56,14 @@ public class ListMembersController {
 	
 	@ApiOperation(value = "Encontrar convites enviados para participar de listas compartilhadas")
 	@GetMapping("/sent")
-	public List<ListMembersDto> findListMembersSentByUser() {
-		return this.listMembersFacade.findListMembersSentByUser().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList());
+	public List<InviteDto> findListMembersSentByUser() {
+		return this.listMembersFacade.findListMembersSentByUser().stream().map(InviteMapper::entityToDto).collect(Collectors.toList());
 	}
 	
 	@ApiOperation(value = "Encontrar convites recebidos para participar de listas compartilhadas")
 	@GetMapping("/received")
-	public List<ListMembersDto> findListMembersReceviedByUser() {
-		return this.listMembersFacade.findListMembersReceviedByUser().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList());
+	public List<InviteDto> findListMembersReceviedByUser() {
+		return this.listMembersFacade.findListMembersReceviedByUser().stream().map(InviteMapper::entityToDto).collect(Collectors.toList());
 	}
 
 }

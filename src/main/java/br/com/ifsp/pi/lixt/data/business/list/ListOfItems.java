@@ -12,11 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembers;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
+import br.com.ifsp.pi.lixt.data.business.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -55,5 +57,9 @@ public class ListOfItems {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_list", insertable = false, updatable = false)
 	private List<ListMembers> listMembers;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_user", insertable = false, updatable = false)
+	private User user;
 
 }
