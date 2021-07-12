@@ -1,32 +1,30 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
-import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
+import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
+import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Testar endpoint Auth")
+@TestMethodOrder(OrderAnnotation.class)
 class AuthControllerTest {
 
 	@Autowired
@@ -38,117 +36,52 @@ class AuthControllerTest {
 	@Autowired
 	private UserService userService;
 	
-	private String token;
-	private OauthUserDto createdUser;
+	private OauthUserDto user;
 	
 	@BeforeAll
 	void registerUser() throws Exception {
+		user = (OauthUserDto) authController.register(UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123")).getBody();
 		
-		OauthUserDto user = OauthUserDto.builder()
-				.name("user")
-				.username("user")
-				.email("user@hotmail.com")
-				.password("123")
-				.build();
-		
-		createdUser = (OauthUserDto) authController.register(user).getBody();
-		
-		assertThat(createdUser).isNotNull();
-		assertThat(createdUser.getPassword()).isNull();
-
-		token = RequestOauth2.authenticate(mockMvc, user);
-	}
-	
-	@Test
-	@DisplayName("Encontrar dados do usuário através do token previamente armazenado e não expirado")
-	void findDataUser() throws Exception {
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("Authorization", token);
-		
-		mockMvc.perform(get("/auth/data-user").headers(httpHeaders).accept("application/json;charset=UTF-8"))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
-	}
-	
-	@Test
-	@DisplayName("Criar um usuário já existente")
-	void creatingExistingUser() throws Exception {
-		OauthUserDto existingUser = OauthUserDto.builder()
-				.name("user")
-				.username("user")
-				.email("user@hotmail.com")
-				.password("123")
-				.build();
-		
-		ResponseEntity<Object> response = authController.register(existingUser);
-		
-		assertThat(HttpStatus.CONFLICT.equals(response.getStatusCode()));
-		
+		assertThat(user).isNotNull();
+		assertThat(user.getPassword()).isNull();
 	}
 	
 	@Test
 	@DisplayName("Atualizar senha")
-	void updatePassword() throws Exception{
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("Authorization", token);
-		
-		mockMvc.perform(post("/auth/update-password").headers(httpHeaders).contentType(MediaType.TEXT_PLAIN_VALUE).content("456")
-				.accept("application/json;charset=UTF-8"))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
-
+	@Order(1)
+	void updatePassword() throws Exception {
+		ValidatorStatusResponsePostPlainValue.isOk(mockMvc, UserDtoInstantior.createUser("user", "123"), "/auth/update-password", "456");
+	}
+	
+	@Test
+	@DisplayName("Encontrar dados do usuário através do token previamente armazenado e não expirado")
+	@Order(2)
+	void findDataUser() throws Exception {
+		ValidatorStatusResponseGet.isOk(mockMvc, UserDtoInstantior.createUser("user", "456"), "/auth/data-user");
+	}
+	
+	@Test
+	@DisplayName("Criar um usuário já existente, gerando exceção")
+	void creatingExistingUser() throws Exception {
+		OauthUserDto existingUser = UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123");
+		assertThat(authController.register(existingUser).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
 	}
 	
 	@Test
 	@DisplayName("Gerar nova senha para usuário existente")
 	void newPasswordExistingUser() throws Exception {
-		assertThat(HttpStatus.OK.equals(authController.forgetPassword("user@hotmail.com").getStatusCode()));
+		assertThat(authController.forgetPassword("user@hotmail.com").getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 	
 	@Test
 	@DisplayName("Gerar nova senha para usuário inexistente")
 	void newPasswordUnexistingUser() throws Exception {
-		assertThat(HttpStatus.NOT_FOUND.equals(authController.forgetPassword("bob@email.com").getStatusCode()));
-	}
-	
-	/*@Test
-	@DisplayName("Atualizar senha de usuário não encontrado")
-	void updatePasswordforUnexistingUser() throws Exception{
-		OauthUserDto user = OauthUserDto.builder()
-				.name("ana")
-				.username("ana")
-				.email("ana@hotmail.com")
-				.password("789")
-				.build();
-		
-		String fakeToken = RequestOauth2.authenticate(mockMvc, user);
-		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("Authorization", fakeToken);
-		
-		mockMvc.perform(post("/auth/update-password")
-				.headers(httpHeaders)
-				.contentType(MediaType.TEXT_PLAIN_VALUE)
-				.content("101"))
-				.andExpect(status().isNotFound());
-	}*/
-	
-	@Test
-	@DisplayName("Buscar dados do usuário através do token")
-	void findDataUserTest() throws Exception{
-		HttpHeaders httpHeaders = new HttpHeaders();
-		httpHeaders.add("Authorization", token);
-		
-		mockMvc.perform(get("/auth/data-user").headers(httpHeaders).accept("application/json;charset=UTF-8"))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
+		assertThat(authController.forgetPassword("bob@email.com").getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 	
 	@AfterAll
 	void deleteUser() {
-		this.userService.deleteById(createdUser.getId());
+		this.userService.deleteById(user.getId());
 	}
 
 }
