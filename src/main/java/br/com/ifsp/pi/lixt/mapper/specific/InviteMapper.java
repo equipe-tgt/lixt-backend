@@ -18,7 +18,7 @@ public class InviteMapper {
 				.description(entity.getList().getDescription())
 				.statusListMember(entity.getStatusListMember())
 				.userInvited(entity.getUser().getName())
-				.userWhoInvite(entity.getUser().getName())
+				.userWhoInvite(entity.getList().getUser().getName())
 				.build();
 	}
 	
