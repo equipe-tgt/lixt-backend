@@ -18,6 +18,7 @@ public abstract class ListOfItemsMapper {
 				.nameList(entity.getNameList())
 				.description(entity.getDescription())
 				.ownerId(entity.getOwnerId())
+				.owner(Objects.isNull(entity.getUser()) ? null : entity.getUser().getName())
 				.productsOfList(Objects.isNull(entity.getProductsOfList()) ? null : entity.getProductsOfList().stream().map(ProductOfListMapper::entityToDto).collect(Collectors.toList()))
 				.listMembers(Objects.isNull(entity.getListMembers()) ? null : entity.getListMembers().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList()))
 				.build();
