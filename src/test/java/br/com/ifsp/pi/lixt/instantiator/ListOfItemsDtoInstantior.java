@@ -10,6 +10,7 @@ public class ListOfItemsDtoInstantior {
 				"  \"listMembers\": null," + 
 				"  \"nameList\": \"" + name + "\"," + 
 				"  \"ownerId\": null," + 
+				"  \"owner\": null," + 
 				"  \"productsOfList\": null" + 
 				"}";
 	}

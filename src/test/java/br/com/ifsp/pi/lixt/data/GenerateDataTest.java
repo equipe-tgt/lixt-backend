@@ -110,7 +110,6 @@ class GenerateDataTest {
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(1), "/list/".concat(this.listOfItems.getId().toString()));
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/list/".concat(this.listOfItems.getId().toString()));
-		System.out.println(this.listOfItems.getId());
 	}
 	
 	@DisplayName("Criar produtos da lista")
