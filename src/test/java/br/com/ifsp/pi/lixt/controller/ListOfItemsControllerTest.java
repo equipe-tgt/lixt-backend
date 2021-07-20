@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.metamodel.PluralAttribute.CollectionType;
 
@@ -42,6 +43,7 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
+import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponseList;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 //import jdk.internal.org.objectweb.asm.TypeReference;
@@ -74,16 +76,13 @@ public class ListOfItemsControllerTest {
 	private ListOfItemsController listOfItemsController;
 	
 	private OauthUserDto user;
-	
 	private List<Product> listProducts = new ArrayList<>();
-	
 	private ListOfItemsDto listOfItems;
-	
 	private CategoryDto category;
-	
 	private List<OauthUserDto> oauthUsers = new ArrayList<>();
-	
 	private List<UserDto> users = new ArrayList<>();
+	
+	private ObjectMapper objectMapper = new ObjectMapper();
 
 	@BeforeAll
 	void registerUserAndList() throws Exception {
@@ -136,29 +135,19 @@ public class ListOfItemsControllerTest {
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
 		this.listOfItems = (ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
 		
-		//assertThat();
+//		ResultActions listResult = 
+//				mockMvc.perform(ResquestBuilder.createGetRequestJson("/list/by-user", token))
+//					.andExpect(MockMvcResultMatchers.status().isOk())
+//					.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
+//		
+//		String listString = listResult.andReturn().getResponse().getContentAsString();
+//		List<ListOfItemsDto> list = objectMapper.readValue(listString, objectMapper.getTypeFactory().constructCollectionType(List.class, ListOfItemsDto.class));
 		
-		/*MvcResult result = mockMvc.perform(get("/list/by-user").header("Authorization", token).contentType(MediaType.TEXT_PLAIN_VALUE))
-			.andExpect(MockMvcResultMatchers.status().isOk())
-			.andExpect(MockMvcResultMatchers.content().contentType("application/json"))//;
-			.andReturn();*/
-																																			// ArrayList.class
-		//ArrayList<ListOfItemsDto> list = (ArrayList<ListOfItemsDto>) RequestWithResponse.createGetRequestJson(mockMvc, "/list/by-user", token, new TypeReference<List<ListOfItemsDto>>() {});
+		List<ListOfItemsDto> list = RequestWithResponseList.createGetRequestJson(mockMvc, "/list/by-user", token, ListOfItemsDto.class)
+				.stream().map(element -> (ListOfItemsDto)element).collect(Collectors.toList());
 		
-		ResultActions listResult = 
-				mockMvc.perform(ResquestBuilder.createGetRequestJson("/list/by-user", token))
-					.andExpect(MockMvcResultMatchers.status().isOk())
-					.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
-		
-		//List<ListOfItemsDto> list = new ObjectMapper().readValue(listResult, new TypeReference<List<ListOfItemsDto>>() {});
-		
-		//System.out.println(list.get(0).getOwner());
-		//assertThat(list.get(0)).isEqualTo(listOfItems);
-			//.andExpect(MockMvcResultMatchers.content().json(convertObjectToJsonString(listOfItems)));
-		//System.out.println(result.getResponse().getContentAsString());
-		
-		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/by-user");
-		//ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
+		assertThat(list).hasSizeGreaterThan(0);
+		assertThat(list.get(0).getNameList()).isEqualTo(this.listOfItems.getNameList());
 	}
 	
 	
