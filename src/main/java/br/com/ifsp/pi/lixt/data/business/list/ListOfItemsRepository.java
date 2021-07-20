@@ -11,7 +11,7 @@ import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 
 public interface ListOfItemsRepository extends CrudRepository<ListOfItems, Long>, JpaSpecificationExecutor<ListOfItems> {
 
-	@Query("select l from ListOfItems l left join l.listMembers lm where l.ownerId = ?1 or (lm.userId = ?1 and lm.statusListMember = ?2)")
+	@Query("select distinct l from ListOfItems l left join l.listMembers lm where l.ownerId = ?1 or (lm.userId = ?1 and lm.statusListMember = ?2)")
 	List<ListOfItems> findUserLists(Long idUser, StatusListMember status);
 	
 	@Query("select l.ownerId from ListOfItems l where l.id = ?1")
