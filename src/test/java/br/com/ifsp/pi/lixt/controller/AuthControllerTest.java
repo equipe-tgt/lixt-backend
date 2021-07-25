@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
@@ -65,11 +66,27 @@ class AuthControllerTest {
 	}
 	
 	@Test
-	@DisplayName("Criar um usuário já existente, gerando exceção")
-	void creatingExistingUser() throws Exception {
+	@DisplayName("Criar um usuário já com email existente, gerando exceção")
+	void creatingExistingUserUsingEmail() throws Exception {
 		OauthUserDto existingUser = UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123");
-		assertThat(authController.register(existingUser).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+		ResponseEntity<Object> response = authController.register(existingUser);
+		
+		assertAll(
+				() -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT),
+				() -> assertThat(response.getBody()).isEqualTo("Email já cadastrado na plataforma")
+		);
 	}
+	
+	@Test
+	@DisplayName("Criar um usuário com username já existente, gerando exceção")
+	void creatingExistingUserUsingUsername() throws Exception {
+		OauthUserDto existingUser = UserDtoInstantior.createUser("user", "user", "tes@hotmail.com", "123");
+		ResponseEntity<Object> response = authController.register(existingUser);
+		
+		assertAll(
+				() -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT),
+				() -> assertThat(response.getBody()).isEqualTo("Usuário já cadastrado na plataforma")
+		);	}
 	
 	@Test
 	@DisplayName("Gerar nova senha para usuário existente")

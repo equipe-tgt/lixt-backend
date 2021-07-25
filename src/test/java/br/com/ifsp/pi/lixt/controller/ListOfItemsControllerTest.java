@@ -25,6 +25,7 @@ import br.com.ifsp.pi.lixt.data.dto.json.ListOfItemsDtoDataJson;
 import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.UserDto;
+import br.com.ifsp.pi.lixt.dto.specific.InviteDto;
 import br.com.ifsp.pi.lixt.instantiator.ListOfItemsDtoInstantior;
 import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
@@ -32,6 +33,8 @@ import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponseList;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
+import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
+import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePost;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePut;
 
 @SpringBootTest
@@ -171,6 +174,59 @@ class ListOfItemsControllerTest {
 		for(int i=1; i<oauthUsers.size(); i++) {
 			ValidatorStatusResponsePut.isPreconditionFailed(mockMvc, oauthUsers.get(i), "/list/" + 0, content);
 		}
+	}
+	
+	@DisplayName("Sair da lista com erro")
+	@Test
+	@Order(5)
+	void getoutListWithError() throws Exception {
+		for(int i=2; i<oauthUsers.size(); i++) {
+			ValidatorStatusResponseDelete.isForbidden(mockMvc, oauthUsers.get(i), "/membersList/" + this.listMembers.get(0).getId());
+		}
+	}
+	
+	@DisplayName("Alterar status do convite com erro")
+	@Test
+	@Order(6)
+	void alterStatusWithError() throws Exception {
+		for(int i=2; i<oauthUsers.size(); i++) {
+			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/membersList/accept-invite/" + this.listMembers.get(0).getId());
+		}
+	}
+	
+	@DisplayName("Enviar convite com erro")
+	@Test
+	@Order(7)
+	void sendInviteWithError() throws Exception {
+		ValidatorStatusResponsePost.isForbidden(mockMvc, oauthUsers.get(1), "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), "teste10");
+		ValidatorStatusResponsePost.isNotFound(mockMvc, oauthUsers.get(0), "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), "non-existente");
+		ValidatorStatusResponsePost.isConflict(mockMvc, oauthUsers.get(0), "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), "teste5");
+	}
+	
+	@DisplayName("Buscar convites enviados e recebidos")
+	@Test
+	@Order(8)
+	void findInvites() throws Exception {
+		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+		
+		List<InviteDto> invitesSent = RequestWithResponseList.createGetRequestJson(mockMvc, "/membersList/sent", token, InviteDto.class)
+				.stream().map(element -> (InviteDto)element).collect(Collectors.toList());
+		
+		List<InviteDto> invitesReceived = RequestWithResponseList.createGetRequestJson(mockMvc, "/membersList/received", token, InviteDto.class)
+				.stream().map(element -> (InviteDto)element).collect(Collectors.toList());	
+		
+		assertThat(invitesSent).hasSize(3);
+		assertThat(invitesReceived).hasSize(0);
+	}
+	
+	@DisplayName("Sair da lista")
+	@Test
+	@Order(9)
+	void getoutList() throws Exception {
+		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+		ListMembersDto invite = (ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), oauthUsers.get(6).getUsername(), token, ListMembersDto.class);
+		
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(6), "/membersList/" + invite.getId());
 	}
 	
 	@AfterAll

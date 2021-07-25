@@ -21,6 +21,10 @@ public class ValidatorStatusResponsePost {
 	public static void isConflict(MockMvc mockMvc, OauthUserDto user, String uri, String content) throws Exception {
 		validatePostStatusResponse(mockMvc, user, uri, content, MockMvcResultMatchers.status().isConflict());
 	}
+	
+	public static void isNotFound(MockMvc mockMvc, OauthUserDto user, String uri, String content) throws Exception {
+		validatePostStatusResponse(mockMvc, user, uri, content, MockMvcResultMatchers.status().isNotFound());
+	}
 
 	private static void validatePostStatusResponse(MockMvc mockMvc, OauthUserDto user, String uri, String content, ResultMatcher status) throws Exception {
 		String token = RequestOauth2.authenticate(mockMvc, user);
