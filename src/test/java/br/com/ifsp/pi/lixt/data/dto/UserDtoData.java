@@ -7,10 +7,9 @@ import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 public abstract class UserDtoData {
-	
-	private static List<OauthUserDto> users = new ArrayList<>();
-	
+		
 	public static List<OauthUserDto> initializeValues() {
+		List<OauthUserDto> users = new ArrayList<>();
 		
 		users.add(UserDtoInstantior.createUser("teste1", "teste1", "teste1@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste2", "teste2", "teste2@gmail.com", "123"));
@@ -20,6 +19,7 @@ public abstract class UserDtoData {
 	}
 	
 	public static List<OauthUserDto> dataForListControllerTest() {
+		List<OauthUserDto> users = new ArrayList<>();
 		
 		users.add(UserDtoInstantior.createUser("teste4", "teste4", "teste4@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste5", "teste5", "teste5@gmail.com", "123"));
