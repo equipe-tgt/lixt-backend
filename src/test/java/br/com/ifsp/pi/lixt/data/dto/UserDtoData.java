@@ -24,6 +24,10 @@ public abstract class UserDtoData {
 		users.add(UserDtoInstantior.createUser("teste4", "teste4", "teste4@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste5", "teste5", "teste5@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste6", "teste6", "teste6@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste7", "teste7", "teste7@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste8", "teste8", "teste8@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste9", "teste9", "teste9@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste10", "teste10", "teste10@gmail.com", "123"));
 		
 		return users;
 	}
