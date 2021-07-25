@@ -31,7 +31,7 @@ import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("Testar endpoint Auth")
+@DisplayName("Testar funcionalidades de login")
 @TestMethodOrder(OrderAnnotation.class)
 class LoginTest {
 
