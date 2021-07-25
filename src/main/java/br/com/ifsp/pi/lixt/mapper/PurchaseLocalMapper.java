@@ -7,10 +7,11 @@ import org.locationtech.jts.io.ParseException;
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 
 public abstract class PurchaseLocalMapper {
 	
-	public static PurchaseLocal dtoToEntity(PurchaseLocalDto dto) {
+	public static PurchaseLocal dtoToEntity(PurchaseLocalDto dto) throws PreconditionFailedException {
 		
 		if(Objects.isNull(dto)) 
 			return null;

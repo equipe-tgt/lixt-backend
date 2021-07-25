@@ -15,7 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
-import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -58,7 +58,7 @@ class CategoryControllerTest {
 	@DisplayName("Atualizar categoria com erro")
 	void updateCategoryWithError() {
 		category.setName("padaria");
-		assertThrows(PreconditionUpdateFailedException.class, () -> categoryController.update(category, 0l));
+		assertThrows(PreconditionFailedException.class, () -> categoryController.update(category, 0l));
 	}
 	
 	@AfterAll

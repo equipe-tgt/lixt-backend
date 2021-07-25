@@ -17,6 +17,10 @@ public class ValidatorStatusResponsePut {
 	public static void isForbidden(MockMvc mockMvc, OauthUserDto user, String uri, String content) throws Exception {
 		validatePostStatusResponse(mockMvc, user, uri, content, MockMvcResultMatchers.status().isForbidden());
 	}
+	
+	public static void isPreconditionFailed(MockMvc mockMvc, OauthUserDto user, String uri, String content) throws Exception {
+		validatePostStatusResponse(mockMvc, user, uri, content, MockMvcResultMatchers.status().isPreconditionFailed());
+	}
 
 	private static void validatePostStatusResponse(MockMvc mockMvc, OauthUserDto user, String uri, String content, ResultMatcher status) throws Exception {
 		String token = RequestOauth2.authenticate(mockMvc, user);

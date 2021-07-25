@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.dto.CommentDto;
 import br.com.ifsp.pi.lixt.facade.CommentFacade;
 import br.com.ifsp.pi.lixt.mapper.CommentMapper;
-import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,7 +41,7 @@ public class CommentController {
 	
 	@ApiOperation(value = "Atualizar comentário")
 	@PutMapping("/{id}")
-	public CommentDto update(@RequestBody(required = false) CommentDto comment, @PathVariable Long id) throws PreconditionUpdateFailedException {
+	public CommentDto update(@RequestBody(required = false) CommentDto comment, @PathVariable Long id) throws PreconditionFailedException {
 		return CommentMapper.entityToDto(this.commentFacade.update(CommentMapper.dtoToEntity(comment), id));
 	}
 	

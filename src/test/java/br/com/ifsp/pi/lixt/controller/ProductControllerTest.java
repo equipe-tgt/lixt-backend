@@ -21,7 +21,7 @@ import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
-import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -72,7 +72,7 @@ class ProductControllerTest {
 	@Order(3)
 	void updateCategoryWithError() {
 		product.setName("Maçã");
-		assertThrows(PreconditionUpdateFailedException.class, () -> productController.update(product, 0l));
+		assertThrows(PreconditionFailedException.class, () -> productController.update(product, 0l));
 	}
 	
 	@AfterAll

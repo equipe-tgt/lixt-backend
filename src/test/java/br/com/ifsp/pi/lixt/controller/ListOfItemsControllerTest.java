@@ -149,15 +149,27 @@ class ListOfItemsControllerTest {
 		assertThat(list.getDescription()).isEqualTo("MUDANDO DESC");
 	}
 	
-	@DisplayName("Atualizar lista com erro")
+	@DisplayName("Atualizar lista com erro forbidden")
 	@Test
 	@Order(4)
-	void updateListWithError() throws Exception {
+	void updateListWithErrorForbidden() throws Exception {
 		this.listsOfItems.get(0).setDescription("MUDANDO DESC 2");
 		String content = ListOfItemsDtoInstantior.updateListJson(this.listsOfItems.get(0));
 
 		for(int i=1; i<oauthUsers.size(); i++) {
 			ValidatorStatusResponsePut.isForbidden(mockMvc, oauthUsers.get(i), "/list/" + this.listsOfItems.get(0).getId(), content);
+		}
+	}
+	
+	@DisplayName("Atualizar lista com erro")
+	@Test
+	@Order(4)
+	void updateListWithError() throws Exception {
+		this.listsOfItems.get(0).setDescription("MUDANDO DESC 3");
+		String content = ListOfItemsDtoInstantior.updateListJson(this.listsOfItems.get(0));
+
+		for(int i=1; i<oauthUsers.size(); i++) {
+			ValidatorStatusResponsePut.isPreconditionFailed(mockMvc, oauthUsers.get(i), "/list/" + 0, content);
 		}
 	}
 	

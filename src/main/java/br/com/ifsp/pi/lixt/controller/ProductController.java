@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
-import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -43,10 +43,10 @@ public class ProductController {
 	
 	@ApiOperation(value = "Atualizar produto")
 	@PutMapping("/{id}")
-	public ProductDto update(@RequestBody(required = false) ProductDto product, @PathVariable Long id) throws PreconditionUpdateFailedException {
+	public ProductDto update(@RequestBody(required = false) ProductDto product, @PathVariable Long id) throws PreconditionFailedException {
 		
 		if(!product.getId().equals(id))
-			throw new PreconditionUpdateFailedException("Erro ao atualizar produto");
+			throw new PreconditionFailedException("Erro ao atualizar produto");
 		
 		return ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product)));
 	}

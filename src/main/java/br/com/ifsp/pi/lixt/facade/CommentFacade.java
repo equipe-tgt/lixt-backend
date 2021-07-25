@@ -8,7 +8,7 @@ import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.comment.CommentService;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
-import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
 import lombok.RequiredArgsConstructor;
@@ -46,12 +46,12 @@ public class CommentFacade {
 		return this.commentService.save(comment);
 	}
 	
-	public Comment update(Comment comment, Long id) throws PreconditionUpdateFailedException {
+	public Comment update(Comment comment, Long id) throws PreconditionFailedException {
 
 		Long userId = this.commentService.findUserIdByCommentId(id);
 
 		if(!(comment.getId().equals(id) || comment.getUserId().equals(userId)))
-			throw new PreconditionUpdateFailedException("Erro ao atualizar comentário");
+			throw new PreconditionFailedException("Erro ao atualizar comentário");
 		
 		if(!ValidatorAccess.canAcces(comment.getUserId())) 
 			throw new ForbiddenException();

@@ -187,6 +187,7 @@ class GenerateDataTest {
 		this.products.forEach(product -> this.productService.deleteById(product.getId()));
 		this.categoryController.deleteById(this.category.getId());
 		this.oauthUsers.forEach(user -> this.userService.deleteById(user.getId()));
+		this.purchaseLocalController.deleteById(purchaseLocal.getId());
 	}
 
 }
