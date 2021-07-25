@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
+import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -50,6 +52,13 @@ class CategoryControllerTest {
 		category.setName("padaria");
 		assertThat(categoryController.update(category, category.getId()).getName()).isEqualToIgnoringCase("padaria");
 		assertThat(categoryController.findById(category.getId()).getName()).isEqualTo(category.getName());
+	}
+	
+	@Test
+	@DisplayName("Atualizar categoria com erro")
+	void updateCategoryWithError() {
+		category.setName("padaria");
+		assertThrows(PrecoditionUpdateFailedException.class, () -> categoryController.update(category, 0l));
 	}
 	
 	@AfterAll

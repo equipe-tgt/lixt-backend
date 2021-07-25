@@ -148,7 +148,7 @@ class GenerateDataTest {
 	void testAcceptListMembers() throws Exception {
 		
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
-		listMembers = (ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listOfItems.getId(), token, ListMembersDto.class);
+		listMembers = (ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.getId(), token, ListMembersDto.class);
 		assertThat(listMembers).isNotNull();
 		
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
