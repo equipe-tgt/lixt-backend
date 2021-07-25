@@ -2,7 +2,6 @@ package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;

@@ -53,7 +53,7 @@ public class RequestOauth2 {
 		return "bearer ".concat(jsonParser.parseMap(resultString).get("access_token").toString());
 	}
 	
-	private static HttpHeaders getHeaders() {
+	public static HttpHeaders getHeaders() {
 		HttpHeaders httpHeaders = new HttpHeaders();
 		
 		httpHeaders.add("Authorization", "basic " + generateBasicAuthToken(CLIENT_ID, SECRET_ID));

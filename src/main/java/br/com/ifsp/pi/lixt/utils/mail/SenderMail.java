@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
+
 @Service
 public class SenderMail {
 	
@@ -37,6 +39,9 @@ public class SenderMail {
 	public boolean sendEmail(MailDto mail) {
 		
 		try {
+			if(!mail.isValid()) {
+				throw new PreconditionFailedException("Corpo de email inválido");
+			}
 
 			MimeMessage message = this.configMessage(mail, this.config());
 			Transport.send(message);

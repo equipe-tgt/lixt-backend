@@ -42,10 +42,6 @@ public class ProductOfListFacade {
 		return this.productOfListService.save(productOfList);
 	}
 	
-	public List<ProductOfList> saveAll(List<ProductOfList> productsOfList) {
-		return this.productOfListService.saveAll(productsOfList);
-	}
-	
 	public ProductOfList update(ProductOfList productOfList, Long id) throws PreconditionFailedException {
 		
 		if(!productOfList.getId().equals(id))
