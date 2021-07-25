@@ -40,7 +40,7 @@ import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePut;
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@DisplayName("Testar endpoint ListOfItems")
+@DisplayName("Testar endpoint ListOfItems e ListMembersController")
 @TestMethodOrder(OrderAnnotation.class)
 class ListOfItemsControllerTest {
 	
