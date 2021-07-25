@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembers;
 import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembersService;
-import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
@@ -26,7 +25,7 @@ public class ListMembersFacade {
 	private final ListMembersService listMembersService;
 	private final ListOfItemsService listOfItemsService;
 	
-	public ListMembers sendInvite(Long listId, String username) throws RuntimeException {
+	public ListMembers sendInvite(Long listId, String username) throws ForbiddenException, NotFoundException {
 		
 		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(listId);
 		
@@ -34,13 +33,13 @@ public class ListMembersFacade {
 			throw new ForbiddenException();
 		}
 		
-		User user = this.userService.findByUsernameOrEmail(username);
+		var user = this.userService.findByUsernameOrEmail(username);
 		
 		if(Objects.isNull(user)) {
 			throw new NotFoundException("Usuário não encontrado");
 		}
 		
-		ListMembers listMembers = this.listMembersService.findByListIdAndUserId(listId, user.getId());
+		var listMembers = this.listMembersService.findByListIdAndUserId(listId, user.getId());
 		
 		if(Objects.nonNull(listMembers)) {
 			throw new DuplicatedDataException("Convite já enviado para esse usuário");
@@ -56,9 +55,9 @@ public class ListMembersFacade {
 		return this.listMembersService.save(listMembers);
 	}
 	
-	public ListMembers alterStatusInvite(Long listMembersId, StatusListMember status) throws RuntimeException {
+	public ListMembers alterStatusInvite(Long listMembersId, StatusListMember status) throws ForbiddenException {
 		
-		ListMembers listMembers = this.listMembersService.findById(listMembersId);
+		var listMembers = this.listMembersService.findById(listMembersId);
 		
 		if(!ValidatorAccess.canAcces(listMembers.getUserId())) {
 			throw new ForbiddenException();
@@ -68,7 +67,7 @@ public class ListMembersFacade {
 		return this.listMembersService.save(listMembers);
 	}
 	
-	public void removeUserAtList(Long listMembersId) throws RuntimeException {
+	public void removeUserAtList(Long listMembersId) throws ForbiddenException {
 		
 		Long memberId = this.listMembersService.findUserIdByListMembersId(listMembersId);
 		Long ownerId = this.listOfItemsService.findOwnerIdByListMemberId(listMembersId);

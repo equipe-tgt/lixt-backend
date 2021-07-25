@@ -30,17 +30,36 @@ public class RequestOauth2 {
 		params.add("username", user.getUsername());
 		params.add("password", user.getPassword());
 		
-		HttpHeaders httpHeaders = new HttpHeaders();
-		
-		httpHeaders.add("Authorization", "basic " + generateBasicAuthToken(CLIENT_ID, SECRET_ID));
-		httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
-		
-		ResultActions result = mockMvc.perform(post("/oauth/token").params(params).headers(httpHeaders).accept("application/json;charset=UTF-8"))
+		ResultActions result = mockMvc.perform(post("/oauth/token").params(params).headers(getHeaders()).accept("application/json;charset=UTF-8"))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
 		
 		String resultString = result.andReturn().getResponse().getContentAsString();
 		return "bearer ".concat(jsonParser.parseMap(resultString).get("access_token").toString());
+	}
+	
+	public static String refreshToken(MockMvc mockMvc, String refreshToken) throws Exception {
+		
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+
+		params.add("grant_type", "refresh_token");
+		params.add("refresh_token", refreshToken);
+		
+		ResultActions result = mockMvc.perform(post("/oauth/token").params(params).headers(getHeaders()).accept("application/json;charset=UTF-8"))
+				.andExpect(MockMvcResultMatchers.status().isOk())
+				.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
+		
+		String resultString = result.andReturn().getResponse().getContentAsString();
+		return "bearer ".concat(jsonParser.parseMap(resultString).get("access_token").toString());
+	}
+	
+	private static HttpHeaders getHeaders() {
+		HttpHeaders httpHeaders = new HttpHeaders();
+		
+		httpHeaders.add("Authorization", "basic " + generateBasicAuthToken(CLIENT_ID, SECRET_ID));
+		httpHeaders.add("Content-Type", "application/x-www-form-urlencoded");
+		
+		return httpHeaders;
 	}
 
 	private static String generateBasicAuthToken(String clientID, String secretID) {

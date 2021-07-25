@@ -18,7 +18,6 @@ class TokenTest {
 	void generateClientToken() {
 		
 		String token = "Basic ".concat(generateBasicAuthToken("client", "123456"));
-		System.out.println(token);
 		
 		assertThat(token).startsWith("Basic ");
 		assertThat(token.replace("Basic ", "")).isBase64();

@@ -22,7 +22,7 @@ import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Testar endpoints na classe ProductController")
-public class ProductControllerTest {
+class ProductControllerTest {
 	
 	@Autowired
 	private ProductController productController;
@@ -49,17 +49,14 @@ public class ProductControllerTest {
 	@Test
 	@DisplayName("Salvar um produto")
 	void saveProduct() {
-		assertThat(productController.save( ProductMapper.entityToDto(product) ).getName())
-			.isEqualTo(ProductMapper.entityToDto(product).getName());
+		assertThat(productController.save(ProductMapper.entityToDto(product)).getName()).isEqualTo(ProductMapper.entityToDto(product).getName());
 	}
 	
 	@Test
 	@DisplayName("Busca de produtos cadastrados pelo usuário ou cujo user ID é null")
 	void searchProduct() {
-		assertThat(productController.findByName("Arroz").stream().filter(p -> p.getId() == product.getId()).count())
-			.isEqualTo(1);
-	}
-	
+		assertThat(productController.findByName("Arroz").stream().filter(p -> p.getId() == product.getId()).count()).isEqualTo(1);
+	}	
 	
 	@AfterAll
 	void deleteProducts() {

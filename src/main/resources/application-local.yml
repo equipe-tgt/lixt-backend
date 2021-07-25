@@ -2,5 +2,5 @@ spring:
   datasource:
     driverClassName:
     url: jdbc:mysql://localhost/lixt?useLegacyDatetimeCode=false&useTimezone=true&serverTimezone=America/Sao_Paulo
-    username: usuarioTeste
-    password: 123tres4
+    username: root
+    password: 123456

@@ -106,7 +106,8 @@ class GenerateDataTest {
 	void testList() throws Exception {
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
 		this.listOfItems = (ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
-
+		
+		assertThat(listOfItems).isNotNull();
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(1), "/list/".concat(this.listOfItems.getId().toString()));
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/list/".concat(this.listOfItems.getId().toString()));
@@ -124,8 +125,7 @@ class GenerateDataTest {
 			assertThat(product).isNotNull();
 		}
 		
-		assertThat(this.productsOfList.size()).isGreaterThan(0);
-		System.out.println(this.listOfItems.getId());
+		assertThat(this.productsOfList.size()).isPositive();
 	}
 	
 	@DisplayName("Criar convite e validar que apenas o dono e os membros da lista que aceitaram o convite tem acesso à ela")
@@ -134,13 +134,12 @@ class GenerateDataTest {
 	void testCreateListMembers() throws Exception {
 		
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		listMembers = (ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), "teste", token, ListMembersDto.class);
+		listMembers = (ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), token, ListMembersDto.class);
 		assertThat(listMembers).isNotNull();
 		
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(1), "/list/".concat(this.listOfItems.getId().toString()));
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/list/".concat(this.listOfItems.getId().toString()));
-		System.out.println(this.listOfItems.getId());
 	}
 	
 	@DisplayName("Aceitar convite e validar que apenas o dono e os membros da lista que aceitaram o convite tem acesso à ela")
@@ -174,7 +173,7 @@ class GenerateDataTest {
 			ValidatorStatusResponsePost.isForbidden(mockMvc, oauthUsers.get(2), "/comment", comment);
 		}
 		
-		assertThat(this.comments.size()).isGreaterThan(0);
+		assertThat(this.comments.size()).isPositive();
 		
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/comment/" + this.comments.get(0).getId());
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(1), "/comment/" + this.comments.get(0).getId());

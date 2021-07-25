@@ -18,6 +18,8 @@ import br.com.ifsp.pi.lixt.dto.specific.InviteDto;
 import br.com.ifsp.pi.lixt.facade.ListMembersFacade;
 import br.com.ifsp.pi.lixt.mapper.ListMembersMapper;
 import br.com.ifsp.pi.lixt.mapper.specific.InviteMapper;
+import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
+import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -32,25 +34,25 @@ public class ListMembersController {
 	
 	@ApiOperation(value = "Enviar um convite para ser membro da lista", consumes = MediaType.TEXT_PLAIN_VALUE)
 	@PostMapping("/send-invite/{listId}")
-	public ListMembersDto sendInvite(@PathVariable Long listId, @RequestBody String username) throws RuntimeException {
+	public ListMembersDto sendInvite(@PathVariable Long listId, @RequestBody String username) throws ForbiddenException, NotFoundException {
 		return ListMembersMapper.entityToDto(this.listMembersFacade.sendInvite(listId, username));
 	}
 	
 	@ApiOperation(value = "Aceitar um convite para ser membro da lista")
 	@GetMapping("/accept-invite/{listMembersId}")
-	public ListMembersDto acceptInvite(@PathVariable Long listMembersId) throws RuntimeException {
+	public ListMembersDto acceptInvite(@PathVariable Long listMembersId) throws ForbiddenException {
 		return ListMembersMapper.entityToDto(this.listMembersFacade.alterStatusInvite(listMembersId, StatusListMember.ACCEPT));
 	}
 	
 	@ApiOperation(value = "Recusar um convite para ser membro da lista")
 	@GetMapping("/reject-invite/{listMembersId}")
-	public ListMembersDto rejectInvite(@PathVariable Long listMembersId) throws RuntimeException {
+	public ListMembersDto rejectInvite(@PathVariable Long listMembersId) throws ForbiddenException {
 		return ListMembersMapper.entityToDto(this.listMembersFacade.alterStatusInvite(listMembersId, StatusListMember.REJECT));
 	}
 	
 	@ApiOperation(value = "Deletar uma membro da lista ou sair da lista")
 	@DeleteMapping("/{listMembersId}")
-	public void removeUserAtList(@PathVariable Long listMembersId) throws RuntimeException {
+	public void removeUserAtList(@PathVariable Long listMembersId) throws ForbiddenException {
 		this.listMembersFacade.removeUserAtList(listMembersId);
 	}
 	

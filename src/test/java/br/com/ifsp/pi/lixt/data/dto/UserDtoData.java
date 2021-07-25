@@ -12,9 +12,18 @@ public abstract class UserDtoData {
 	
 	public static List<OauthUserDto> initializeValues() {
 		
-		users.add(UserDtoInstantior.createUser("leo", "leo", "leo_narita@hotmail.com", "123"));
-		users.add(UserDtoInstantior.createUser("teste", "teste", "teste@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste1", "teste1", "teste1@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste2", "teste2", "teste2@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste3", "teste3", "teste3@gmail.com", "123"));
+		
+		return users;
+	}
+	
+	public static List<OauthUserDto> dataForListControllerTest() {
+		
+		users.add(UserDtoInstantior.createUser("teste4", "teste4", "teste4@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste5", "teste5", "teste5@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste6", "teste6", "teste6@gmail.com", "123"));
 		
 		return users;
 	}

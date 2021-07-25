@@ -35,21 +35,21 @@ class CategoryControllerTest {
 	@Test
 	@DisplayName("Buscar todas as categorias")
 	void findAllCategories() {
-		assertThat(categoryController.findAll().contains(category)).isEqualTo(true);
+		assertThat(categoryController.findAll().contains(category)).isTrue();
 	}
 	
 	@Test
 	@DisplayName("Encontrar categoria pelo ID")
 	void findCategoryById() {
-		assertThat(categoryController.findById(category.getId()).equals(category));
+		assertThat(categoryController.findById(category.getId())).isEqualTo(category);
 	}
 	
 	@Test
 	@DisplayName("Atualizar categoria")
 	void updateCategory() {
 		category.setName("padaria");
-		
-		assertThat(categoryController.update(category, category.getId()).getName().equalsIgnoreCase("padaria"));
+		assertThat(categoryController.update(category, category.getId()).getName()).isEqualToIgnoringCase("padaria");
+		assertThat(categoryController.findById(category.getId()).getName()).isEqualTo(category.getName());
 	}
 	
 	@AfterAll
