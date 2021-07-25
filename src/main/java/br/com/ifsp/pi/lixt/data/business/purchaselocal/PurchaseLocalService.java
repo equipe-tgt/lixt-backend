@@ -31,6 +31,10 @@ public class PurchaseLocalService {
 		this.purchaseLocalRepository.deleteById(id);
 	}
 	
+	public Integer updateNamePurchaseLocal(Long id, String name) {
+		return this.purchaseLocalRepository.updateNamePurchaseLocal(id, name);
+	}
+	
 	public List<PurchaseLocal> findPurchasesLocalNear(Point localization) {
 		return this.purchaseLocalRepository.findPurchasesLocalNear(localization, DISTANCE_IN_METERS_NEAR);
 	}

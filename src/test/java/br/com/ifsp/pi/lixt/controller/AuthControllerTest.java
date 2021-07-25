@@ -1,6 +1,8 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -42,8 +44,10 @@ class AuthControllerTest {
 	void registerUser() throws Exception {
 		user = (OauthUserDto) authController.register(UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123")).getBody();
 		
-		assertThat(user).isNotNull();
-		assertThat(user.getPassword()).isNull();
+		assertAll(
+				() -> assertThat(user).isNotNull(),
+				() -> assertThat(user.getPassword()).isNull()
+		);
 	}
 	
 	@Test

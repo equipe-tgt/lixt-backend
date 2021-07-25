@@ -23,4 +23,6 @@ public class CommentDto {
 	
 	private UserDto user;
 	
+//	private LocalDateTime date;
+	
 }

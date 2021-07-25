@@ -7,7 +7,7 @@ import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
 import lombok.RequiredArgsConstructor;
 
@@ -46,10 +46,10 @@ public class ProductOfListFacade {
 		return this.productOfListService.saveAll(productsOfList);
 	}
 	
-	public ProductOfList update(ProductOfList productOfList, Long id) throws PrecoditionUpdateFailedException {
+	public ProductOfList update(ProductOfList productOfList, Long id) throws PreconditionUpdateFailedException {
 		
 		if(!productOfList.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar produto da lista");
+			throw new PreconditionUpdateFailedException("Erro ao atualizar produto da lista");
 		
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);

@@ -17,7 +17,7 @@ import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocalService;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
 import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -42,14 +42,14 @@ public class PurchaseLocalController {
 		return PurchaseLocalMapper.entityToDto(this.purchaseLocalService.save(PurchaseLocalMapper.dtoToEntity(purchaseLocal)));
 	}
 	
-	@ApiOperation(value = "Atualizar local de compra")
+	@ApiOperation(value = "Atualizar o nome do local de compra")
 	@PutMapping("/{id}")
-	public PurchaseLocalDto update(@RequestBody(required = false) PurchaseLocalDto purchaseLocal, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+	public Integer update(@RequestBody(required = false) PurchaseLocalDto purchaseLocal, @PathVariable Long id) throws PreconditionUpdateFailedException {
 		
 		if(!purchaseLocal.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar local de compra");
+			throw new PreconditionUpdateFailedException("Erro ao atualizar local de compra");
 		
-		return PurchaseLocalMapper.entityToDto(this.purchaseLocalService.save(PurchaseLocalMapper.dtoToEntity(purchaseLocal)));
+		return this.purchaseLocalService.updateNamePurchaseLocal(id, purchaseLocal.getName());
 	}
 	
 	@ApiOperation(value = "Deletar um local de compra")

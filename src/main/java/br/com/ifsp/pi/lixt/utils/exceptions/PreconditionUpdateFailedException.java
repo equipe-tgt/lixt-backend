@@ -7,12 +7,12 @@ import lombok.Getter;
 
 @SuppressWarnings("serial")
 @ResponseStatus(value = HttpStatus.PRECONDITION_FAILED)
-public class PrecoditionUpdateFailedException extends RuntimeException {
+public class PreconditionUpdateFailedException extends RuntimeException {
 	
 	@Getter
 	private static final HttpStatus status = HttpStatus.PRECONDITION_FAILED;
 	
-	public PrecoditionUpdateFailedException(String message) {
+	public PreconditionUpdateFailedException(String message) {
 		super(message, null, false, false);
 	}
 

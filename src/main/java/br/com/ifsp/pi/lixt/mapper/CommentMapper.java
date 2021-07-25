@@ -17,6 +17,7 @@ public abstract class CommentMapper {
 				.userId(entity.getUserId())
 				.productOfListId(entity.getProductOfListId())
 				.content(entity.getContent())
+//				.date(entity.getDate())
 				.user(UserMapper.entityToDto(entity.getUser()))
 				.build();
 	}
@@ -31,6 +32,7 @@ public abstract class CommentMapper {
 				.userId(dto.getUserId())
 				.productOfListId(dto.getProductOfListId())
 				.content(dto.getContent())
+//				.date(dto.getDate())
 				.user(UserMapper.dtoToEntity(dto.getUser()))
 				.build();
 	}

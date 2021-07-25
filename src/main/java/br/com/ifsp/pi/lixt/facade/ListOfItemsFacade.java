@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +34,10 @@ public class ListOfItemsFacade {
 		return this.listOfItemsService.save(list);
 	}
 	
-	public ListOfItems update(ListOfItems list, Long id) throws PrecoditionUpdateFailedException {
+	public ListOfItems update(ListOfItems list, Long id) throws PreconditionUpdateFailedException {
 		
 		if(!list.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar lista");
+			throw new PreconditionUpdateFailedException("Erro ao atualizar lista");
 		
 		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(id);
 		

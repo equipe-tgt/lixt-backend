@@ -21,6 +21,14 @@ public class ResquestBuilder {
 				.accept("application/json;charset=UTF-8");
 	}
 	
+	public static RequestBuilder createPutRequestJson(String uri, String content, String token) {
+		return MockMvcRequestBuilders.put(uri)
+				.content(content)
+				.header("Authorization", token)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept("application/json;charset=UTF-8");
+	}
+	
 	public static RequestBuilder createDeleteRequestJson(String uri, String token) {
 		return MockMvcRequestBuilders.delete(uri)
 				.header("Authorization", token)

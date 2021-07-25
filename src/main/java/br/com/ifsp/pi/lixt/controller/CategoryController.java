@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.data.business.category.CategoryService;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -48,10 +48,10 @@ public class CategoryController {
 	
 	@ApiOperation(value = "Atualizar categoria")
 	@PutMapping("/{id}")
-	public CategoryDto update(@RequestBody(required = false) CategoryDto category, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+	public CategoryDto update(@RequestBody(required = false) CategoryDto category, @PathVariable Long id) throws PreconditionUpdateFailedException {
 		
 		if(!category.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar categoria");
+			throw new PreconditionUpdateFailedException("Erro ao atualizar categoria");
 		
 		return CategoryMapper.entityToDto(this.categoryService.save(CategoryMapper.dtoToEntity(category)));
 	}

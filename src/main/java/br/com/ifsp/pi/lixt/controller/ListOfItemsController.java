@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.facade.ListOfItemsFacade;
 import br.com.ifsp.pi.lixt.mapper.ListOfItemsMapper;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -42,7 +42,7 @@ public class ListOfItemsController {
 	
 	@ApiOperation(value = "Atualizar lista")
 	@PutMapping("/{id}")
-	public ListOfItemsDto update(@RequestBody(required = false) ListOfItemsDto list, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+	public ListOfItemsDto update(@RequestBody(required = false) ListOfItemsDto list, @PathVariable Long id) throws PreconditionUpdateFailedException {
 		return ListOfItemsMapper.entityToDto(this.listOfItemsFacade.update(ListOfItemsMapper.dtoToEntity(list), id));
 	}
 	

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.facade.ProductOfListFacade;
 import br.com.ifsp.pi.lixt.mapper.ProductOfListMapper;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionUpdateFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +39,7 @@ public class ProductOfListController {
 	
 	@ApiOperation(value = "Atualizar produto da lista")
 	@PutMapping("/{id}")
-	public ProductOfListDto update(@RequestBody(required = false) ProductOfListDto productOfList, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+	public ProductOfListDto update(@RequestBody(required = false) ProductOfListDto productOfList, @PathVariable Long id) throws PreconditionUpdateFailedException {
 		return ProductOfListMapper.entityToDto(this.productOfListFacade.update(ProductOfListMapper.dtoToEntity(productOfList), id));
 	}
 	
