@@ -24,10 +24,6 @@ public class CategoryService {
 		return this.categoryRepository.save(category);
 	}
 	
-	public List<Category> saveAll(List<Category> categories) {
-		return (List<Category>) this.categoryRepository.saveAll(categories);
-	}
-	
 	public void deleteById(Long id) {
 		this.categoryRepository.deleteById(id);
 	}

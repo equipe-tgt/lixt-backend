@@ -1,7 +1,5 @@
 package br.com.ifsp.pi.lixt.data.business.comment;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -18,10 +16,6 @@ public class CommentService {
 	
 	public Comment save(Comment comment) {
 		return this.commentRepository.save(comment);
-	}
-	
-	public List<Comment> saveAll(List<Comment> comments) {
-		return (List<Comment>) this.commentRepository.saveAll(comments);
 	}
 	
 	public void deleteById(Long id) {

@@ -20,10 +20,6 @@ public class ListMembersService {
 		return this.listMembersRepository.save(listMember);
 	}
 	
-	public List<ListMembers> saveAll(List<ListMembers> listMembers) {
-		return (List<ListMembers>) this.listMembersRepository.saveAll(listMembers);
-	}
-	
 	public void deleteById(Long id) {
 		this.listMembersRepository.deleteById(id);
 	}

@@ -22,10 +22,6 @@ public class ListOfItemsService {
 		return this.listOfItemsRepository.save(list);
 	}
 	
-	public List<ListOfItems> saveAll(List<ListOfItems> lists) {
-		return (List<ListOfItems>) this.listOfItemsRepository.saveAll(lists);
-	}
-	
 	public void deleteById(Long id) {
 		this.listOfItemsRepository.deleteById(id);
 	}
