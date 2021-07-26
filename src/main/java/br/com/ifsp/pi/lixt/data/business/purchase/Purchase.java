@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchase;
+import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -68,5 +69,9 @@ public class Purchase {
 	@ManyToOne
 	@JoinColumn(name = "id_purchase_local", insertable = false, updatable = false)
 	private PurchaseLocal purchaseLocal;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_list", insertable = false, updatable = false)
+	private ListOfItems list;
 
 }
