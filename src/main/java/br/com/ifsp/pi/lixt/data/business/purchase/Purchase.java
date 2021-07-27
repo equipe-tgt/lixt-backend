@@ -45,9 +45,6 @@ public class Purchase {
 	@Builder.Default
 	private Long id = null;
 	
-	@Column(name = "id_purchase_list", nullable = false)
-	private Long purcharseListId;
-	
 	@Column(name = "id_user", nullable = false)
 	private Long userId;
 	
@@ -65,7 +62,7 @@ public class Purchase {
 	private PurchaseLocal purchaseLocal;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_purchase_list", insertable = false, updatable = false)
+	@JoinColumn(name = "id_purchase", insertable = false, updatable = false)
 	private List<PurchaseList> purchaseLists;
 	
 }

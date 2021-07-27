@@ -1,5 +1,7 @@
 package br.com.ifsp.pi.lixt.data.business.purchaselist;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,10 @@ public class PurchaseListService {
 	
 	public PurchaseList save(PurchaseList purchaseList) {
 		return this.purchaseListRepository.save(purchaseList);
+	}
+	
+	public List<PurchaseList> saveAll(List<PurchaseList> purchasesList) {
+		return (List<PurchaseList>) this.purchaseListRepository.saveAll(purchasesList);
 	}
 	
 	public void deleteById(Long id) {

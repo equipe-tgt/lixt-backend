@@ -1,5 +1,7 @@
 package br.com.ifsp.pi.lixt.data.business.itemofpurchase;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,10 @@ public class ItemOfPurchaseService {
 	
 	public ItemOfPurchase save(ItemOfPurchase itemOfPurchase) {
 		return this.itemOfPurchaseRepository.save(itemOfPurchase);
+	}
+	
+	public List<ItemOfPurchase> saveAll(List<ItemOfPurchase> itemsOfPurchase) {
+		return (List<ItemOfPurchase>) this.itemOfPurchaseRepository.saveAll(itemsOfPurchase);
 	}
 	
 	public void deleteById(Long id) {

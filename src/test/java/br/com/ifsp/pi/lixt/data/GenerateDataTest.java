@@ -159,7 +159,7 @@ class GenerateDataTest {
 	@DisplayName("Criar comentário e validar que apenas o dono e os membros da lista que aceitaram o convite aos comentários e podem comentar")
 	@Test
 	@Order(5)
-	void createData() throws Exception {
+	void createComment() throws Exception {
 		
 		for(String comment : CommentDtoDataJson.initializeValues(this.users.get(0), this.productsOfList.get(0))) {
 			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);

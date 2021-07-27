@@ -47,7 +47,7 @@ public class PurchaseList {
 	private BigDecimal partialPurchasePrice;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_product_of_list", insertable = false, updatable = false)
+	@JoinColumn(name = "id_purchase_list", insertable = false, updatable = false)
 	private List<ItemOfPurchase> itemsOfPurchase;
 	
 }
