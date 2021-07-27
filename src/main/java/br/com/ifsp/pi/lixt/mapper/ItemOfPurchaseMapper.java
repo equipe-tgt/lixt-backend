@@ -13,8 +13,8 @@ public abstract class ItemOfPurchaseMapper {
 		
 		return ItemOfPurchaseDto.builder()
 				.id(entity.getId())
-				.purchaseId(entity.getPurchaseId())
 				.productId(entity.getProductId())
+				.purcharseListId(entity.getPurcharseListId())
 				.name(entity.getName())
 				.price(entity.getPrice())
 				.amount(entity.getAmount())
@@ -31,8 +31,8 @@ public abstract class ItemOfPurchaseMapper {
 		
 		return ItemOfPurchase.builder()
 				.id(dto.getId())
-				.purchaseId(dto.getPurchaseId())
 				.productId(dto.getProductId())
+				.purcharseListId(dto.getPurcharseListId())
 				.name(dto.getName())
 				.price(dto.getPrice())
 				.amount(dto.getAmount())

@@ -1,7 +1,6 @@
 package br.com.ifsp.pi.lixt.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -15,20 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class PurchaseDto {
-	
+public class PurchaseListDto {
+
 	private Long id;
 	
-	private Long userId;
-		
-	private Long purchaseLocalId;
+	private Long purchaseId;
 	
-	private BigDecimal purchasePrice;
+	private Long listId;
 	
-	private LocalDateTime purchaseDate;
-	
-	private PurchaseLocalDto purchaseLocal;
+	private BigDecimal partialPurchasePrice;
 
-	private List<PurchaseListDto> purchaseLists;
-	
+	private List<ItemOfPurchaseDto> itemsOfPurchase;
 }

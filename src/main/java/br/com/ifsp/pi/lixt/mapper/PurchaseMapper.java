@@ -17,11 +17,10 @@ public abstract class PurchaseMapper {
 		return Purchase.builder()
 				.id(dto.getId())
 				.userId(dto.getUserId())
-				.listId(dto.getListId())
 				.purchaseLocalId(dto.getPurchaseLocalId())
 				.purchaseDate(dto.getPurchaseDate())
 				.purchaseLocal(PurchaseLocalMapper.dtoToEntity(dto.getPurchaseLocal()))
-				.itemsOfPurchase(Objects.isNull(dto.getItemsOfPurchase()) ? null : dto.getItemsOfPurchase().stream().map(ItemOfPurchaseMapper::dtoToEntity).collect(Collectors.toList()))
+				.purchaseLists(Objects.isNull(dto.getPurchaseLists()) ? null : dto.getPurchaseLists().stream().map(PurchaseListMapper::dtoToEntity).collect(Collectors.toList()))
 				.build();
 	}
 	
@@ -33,11 +32,10 @@ public abstract class PurchaseMapper {
 		return PurchaseDto.builder()
 				.id(entity.getId())
 				.userId(entity.getUserId())
-				.listId(entity.getListId())
 				.purchaseLocalId(entity.getPurchaseLocalId())
 				.purchaseDate(entity.getPurchaseDate())
 				.purchaseLocal(PurchaseLocalMapper.entityToDto(entity.getPurchaseLocal()))
-				.itemsOfPurchase(Objects.isNull(entity.getItemsOfPurchase()) ? null : entity.getItemsOfPurchase().stream().map(ItemOfPurchaseMapper::entityToDto).collect(Collectors.toList()))
+				.purchaseLists(Objects.isNull(entity.getPurchaseLists()) ? null : entity.getPurchaseLists().stream().map(PurchaseListMapper::entityToDto).collect(Collectors.toList()))
 				.build();
 	}
 

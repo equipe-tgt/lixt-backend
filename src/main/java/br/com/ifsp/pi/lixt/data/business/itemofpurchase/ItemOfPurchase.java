@@ -29,7 +29,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @EqualsAndHashCode
 @Table(name = "tb_item_of_purchase", indexes = { 
-		@Index(columnList = "id_purchase", name = "fk_itemOfPurchase_purchase"),
 		@Index(columnList = "id_product", name = "fk_itemOfPurchase_product"),
 		@Index(columnList = "st_name", name = "idx_itemOfPurchase_name"),
 })
@@ -42,11 +41,11 @@ public class ItemOfPurchase {
 	@Builder.Default
 	private Long id = null;
 	
-	@Column(name = "id_purchase")
-	private Long purchaseId;
-	
 	@Column(name = "id_product", nullable = false)
 	private Long productId;
+	
+	@Column(name = "id_purchase_list", nullable = false)
+	private Long purcharseListId;
 	
 	@Column(name = "st_name", nullable = false)
 	private String name;

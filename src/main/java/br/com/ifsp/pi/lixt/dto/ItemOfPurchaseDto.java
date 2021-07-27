@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 public class ItemOfPurchaseDto {
 
 	private Long id;
-	
-	private Long purchaseId;
-	
+		
 	private Long productId;
+	
+	private Long purcharseListId;
 	
 	private String name;
 	

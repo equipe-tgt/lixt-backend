@@ -18,8 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchase;
-import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
+import br.com.ifsp.pi.lixt.data.business.purchaselist.PurchaseList;
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,7 +34,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @Table(name = "tb_purchase", indexes = { 
 		@Index(columnList = "id_user", name = "fk_purchase_user"),
-		@Index(columnList = "id_list", name = "fk_purchase_list"),
 		@Index(columnList = "id_purchase_local", name = "fk_purchase_groceryLocal"),
 })
 public class Purchase {
@@ -47,11 +45,11 @@ public class Purchase {
 	@Builder.Default
 	private Long id = null;
 	
+	@Column(name = "id_purchase_list", nullable = false)
+	private Long purcharseListId;
+	
 	@Column(name = "id_user", nullable = false)
 	private Long userId;
-	
-	@Column(name = "id_list", nullable = false)
-	private Long listId;
 	
 	@Column(name = "id_purchase_local", nullable = false)
 	private Long purchaseLocalId;
@@ -62,16 +60,12 @@ public class Purchase {
 	@Column(name = "dt_purchase_date")
 	private LocalDateTime purchaseDate;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_purchase", insertable = false, updatable = false)
-	private List<ItemOfPurchase> itemsOfPurchase;
-	
 	@ManyToOne
 	@JoinColumn(name = "id_purchase_local", insertable = false, updatable = false)
 	private PurchaseLocal purchaseLocal;
-	
-	@ManyToOne
-	@JoinColumn(name = "id_list", insertable = false, updatable = false)
-	private ListOfItems list;
 
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_purchase_list", insertable = false, updatable = false)
+	private List<PurchaseList> purchaseLists;
+	
 }

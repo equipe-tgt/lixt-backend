@@ -9,7 +9,6 @@ public class CommentDtoInstantior {
 				"  \"date\": \"2021-07-05T20:39:23.579Z\"," + 
 				"  \"id\": null," + 
 				"  \"productOfListId\": " + productId  + "," + 
-//				"  \"date\": null," +
 				"  \"user\": null," +
 				"  \"userId\": " + userId + 
 				"}";
