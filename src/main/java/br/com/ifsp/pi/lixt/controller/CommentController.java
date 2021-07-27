@@ -13,7 +13,6 @@ import br.com.ifsp.pi.lixt.dto.CommentDto;
 import br.com.ifsp.pi.lixt.facade.CommentFacade;
 import br.com.ifsp.pi.lixt.mapper.CommentMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
-import br.com.ifsp.pi.lixt.utils.security.Users;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +34,6 @@ public class CommentController {
 	@ApiOperation(value = "Salvar um comentário")
 	@PostMapping
 	public CommentDto save(@RequestBody(required = false) CommentDto comment) {
-		comment.setUserId(Users.getUserId());
 		return CommentMapper.entityToDto(this.commentFacade.save(CommentMapper.dtoToEntity(comment)));
 	}
 	

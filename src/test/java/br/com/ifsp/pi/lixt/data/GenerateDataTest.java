@@ -156,29 +156,29 @@ class GenerateDataTest {
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/list/".concat(this.listOfItems.getId().toString()));
 	}
 	
-//	@DisplayName("Criar comentário e validar que apenas o dono e os membros da lista que aceitaram o convite aos comentários e podem comentar")
-//	@Test
-//	@Order(5)
-//	void createData() throws Exception {
-//		
-//		for(String comment : CommentDtoDataJson.initializeValues(this.users.get(0), this.productsOfList.get(0))) {
-//			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
-//			this.comments.add(commentDto);
-//			assertThat(commentDto).isNotNull();
-//			
-//			commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
-//			this.comments.add(commentDto);
-//			assertThat(commentDto).isNotNull();
-//			
-//			ValidatorStatusResponsePost.isForbidden(mockMvc, oauthUsers.get(2), "/comment", comment);
-//		}
-//		
-//		assertThat(this.comments.size()).isPositive();
-//		
-//		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/comment/" + this.comments.get(0).getId());
-//		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(1), "/comment/" + this.comments.get(0).getId());
-//		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/comment/" + this.comments.get(0).getId());		
-//	}
+	@DisplayName("Criar comentário e validar que apenas o dono e os membros da lista que aceitaram o convite aos comentários e podem comentar")
+	@Test
+	@Order(5)
+	void createData() throws Exception {
+		
+		for(String comment : CommentDtoDataJson.initializeValues(this.users.get(0), this.productsOfList.get(0))) {
+			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
+			this.comments.add(commentDto);
+			assertThat(commentDto).isNotNull();
+			
+			commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
+			this.comments.add(commentDto);
+			assertThat(commentDto).isNotNull();
+			
+			ValidatorStatusResponsePost.isForbidden(mockMvc, oauthUsers.get(2), "/comment", comment);
+		}
+		
+		assertThat(this.comments.size()).isPositive();
+		
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/comment/" + this.comments.get(0).getId());
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(1), "/comment/" + this.comments.get(0).getId());
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/comment/" + this.comments.get(0).getId());		
+	}
 	
 	@AfterAll
 	void deleteData() throws Exception {

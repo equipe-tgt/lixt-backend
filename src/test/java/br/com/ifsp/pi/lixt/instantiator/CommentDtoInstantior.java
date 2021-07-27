@@ -6,7 +6,8 @@ public class CommentDtoInstantior {
 		
 		return 	"{" + 
 				"  \"content\": \"" + name +"\"," + 
-				"  \"date\": \"2021-07-05T20:39:23.579Z\"," + 
+				"  \"date\": null," + 
+			//	"  \"date\": \"2021-07-26T23:02:05.021662900\"," + 
 				"  \"id\": null," + 
 				"  \"productOfListId\": " + productId  + "," + 
 				"  \"user\": null," +

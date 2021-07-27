@@ -5,6 +5,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
@@ -40,6 +42,8 @@ public class RequestWithResponse {
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Object createPostRequestJson(MockMvc mockMvc, String uri, String content, OauthUserDto user, Class clazz) throws Exception {
+		objectMapper.registerModule(new JavaTimeModule());
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		
 		String token = RequestOauth2.authenticate(mockMvc, user);
 		
