@@ -3,6 +3,7 @@ package br.com.ifsp.pi.lixt.facade;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
@@ -67,6 +68,18 @@ public class ProductOfListFacade {
 		}
 		
 		this.productOfListService.deleteById(id);
+	}
+	
+	public List<Comment> findCommentsByProductOfListId(Long id) {
+		
+		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
+		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
+		
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
+			throw new ForbiddenException();
+		}
+		
+		return this.productOfListService.findCommentsByProductOfListId(id);
 	}
 
 }

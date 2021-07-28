@@ -1,7 +1,6 @@
 package br.com.ifsp.pi.lixt.mapper;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
@@ -26,7 +25,7 @@ public abstract class ProductOfListMapper {
 				.measureType(entity.getMeasureType())
 				.measureValue(entity.getMeasureValue())
 				.product(ProductMapper.entityToDto(entity.getProduct()))
-				.comments(Objects.isNull(entity.getComments()) ? null : entity.getComments().stream().map(CommentMapper::entityToDto).collect(Collectors.toList()))
+				.amountComment(Objects.isNull(entity.getComments()) ? null : entity.getComments().size())
 				.build();
 	}
 	
@@ -48,7 +47,6 @@ public abstract class ProductOfListMapper {
 				.measureType(dto.getMeasureType())
 				.measureValue(dto.getMeasureValue())
 				.product(ProductMapper.dtoToEntity(dto.getProduct()))
-				.comments(Objects.isNull(dto.getComments()) ? null : dto.getComments().stream().map(CommentMapper::dtoToEntity).collect(Collectors.toList()))
 				.build();
 	}
 }

@@ -7,7 +7,7 @@ public class ProductOfListDtoInstantior {
 		return "{" + 
 				"  \"amount\": " + amount + "," + 
 				"  \"assignedUserId\": null," + 
-				"  \"comments\": null," + 
+				"  \"amountComment\": null," + 
 				"  \"id\": null," + 
 				"  \"isMarked\": false," + 
 				"  \"listId\": " + listId + "," + 

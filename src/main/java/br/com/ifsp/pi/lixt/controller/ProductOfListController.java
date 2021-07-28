@@ -1,5 +1,8 @@
 package br.com.ifsp.pi.lixt.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ifsp.pi.lixt.dto.CommentDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.facade.ProductOfListFacade;
+import br.com.ifsp.pi.lixt.mapper.CommentMapper;
 import br.com.ifsp.pi.lixt.mapper.ProductOfListMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import io.swagger.annotations.Api;
@@ -47,6 +52,12 @@ public class ProductOfListController {
 	@DeleteMapping("/{id}")
 	public void deleteById(@PathVariable Long id) {
 		this.productOfListFacade.deleteById(id);
+	}
+	
+	@ApiOperation(value = "Buscar comentários pertencentes ao produto da lista por id")
+	@GetMapping("/{id}/comments")
+	public List<CommentDto> findCommentsByProductOfListId(@PathVariable Long id) {
+		return this.productOfListFacade.findCommentsByProductOfListId(id).stream().map(CommentMapper::entityToDto).collect(Collectors.toList());
 	}
 
 }
