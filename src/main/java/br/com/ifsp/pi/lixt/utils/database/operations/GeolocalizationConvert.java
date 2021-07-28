@@ -7,7 +7,9 @@ import org.locationtech.jts.io.WKTReader;
 
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 
-public class GeolocalizationConvert {
+public abstract class GeolocalizationConvert {
+	
+	private GeolocalizationConvert() {}
 
 	public static Point convertCoordsToPoint(Double latitude, Double longitude) throws ParseException, PreconditionFailedException {
 		

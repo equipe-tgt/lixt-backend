@@ -8,6 +8,8 @@ import br.com.ifsp.pi.lixt.dto.PurchaseListDto;
 
 public abstract class PurchaseListMapper {
 	
+	private PurchaseListMapper() {}
+	
 	public static PurchaseList dtoToEntity(PurchaseListDto dto) {
 		
 		if(Objects.isNull(dto)) 

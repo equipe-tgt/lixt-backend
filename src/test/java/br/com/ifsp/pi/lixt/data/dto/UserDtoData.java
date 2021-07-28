@@ -31,5 +31,17 @@ public abstract class UserDtoData {
 		
 		return users;
 	}
+	
+	public static List<OauthUserDto> dataForProductOfListControllerTest() {
+		List<OauthUserDto> users = new ArrayList<>();
+		
+		users.add(UserDtoInstantior.createUser("teste11", "teste11", "teste11@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste12", "teste12", "teste12@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste13", "teste13", "teste13@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste14", "teste14", "teste14@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste15", "teste15", "teste15@gmail.com", "123"));
+		
+		return users;
+	}
 
 }

@@ -5,7 +5,9 @@ import java.util.Objects;
 import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembers;
 import br.com.ifsp.pi.lixt.dto.specific.InviteDto;
 
-public class InviteMapper {
+public abstract class InviteMapper {
+	
+	private InviteMapper() {}
 
 	public static InviteDto entityToDto(ListMembers entity) {
 

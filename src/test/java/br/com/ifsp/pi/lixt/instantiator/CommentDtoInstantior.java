@@ -1,5 +1,7 @@
 package br.com.ifsp.pi.lixt.instantiator;
 
+import br.com.ifsp.pi.lixt.dto.CommentDto;
+
 public class CommentDtoInstantior {
 
 	public static String createCommentJson(String name, Long productId, Long userId) {
@@ -12,6 +14,18 @@ public class CommentDtoInstantior {
 				"  \"productOfListId\": " + productId  + "," + 
 				"  \"user\": null," +
 				"  \"userId\": " + userId + 
+				"}";
+	}
+	
+	public static String createCommentJson(CommentDto comment) {
+		
+		return 	"{" + 
+				"  \"content\": \"" + comment.getContent() +"\"," + 
+				"  \"date\": \"" + comment.getDate() +"\"," + 
+				"  \"id\": \"" + comment.getId() +"\"," + 
+				"  \"productOfListId\": " + comment.getProductOfListId()  + "," + 
+				"  \"user\": null," +
+				"  \"userId\": " + comment.getUserId() + 
 				"}";
 	}
 	

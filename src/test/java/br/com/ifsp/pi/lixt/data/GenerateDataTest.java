@@ -35,8 +35,6 @@ import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
-import br.com.ifsp.pi.lixt.dto.UserDto;
-import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
@@ -74,7 +72,6 @@ class GenerateDataTest {
 	private CategoryDto category;
 	private List<ProductOfListDto> productsOfList = new ArrayList<>();
 	private ListOfItemsDto listOfItems;
-	private List<UserDto> users = new ArrayList<>();
 	private PurchaseLocalDto purchaseLocal;
 	private ListMembersDto listMembers;
 	private List<CommentDto> comments = new ArrayList<>();
@@ -84,7 +81,6 @@ class GenerateDataTest {
 
 		UserDtoData.initializeValues().forEach(user -> {
 			oauthUsers.add((OauthUserDto) this.authController.register(user).getBody());
-			users.add(UserMapper.dtoOauthToDto(oauthUsers.get(oauthUsers.size() - 1)));
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
 		});
 		
@@ -161,7 +157,7 @@ class GenerateDataTest {
 	@Order(5)
 	void createComment() throws Exception {
 		
-		for(String comment : CommentDtoDataJson.initializeValues(this.users.get(0), this.productsOfList.get(0))) {
+		for(String comment : CommentDtoDataJson.initializeValues(this.oauthUsers.get(0), this.productsOfList.get(0))) {
 			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
 			this.comments.add(commentDto);
 			assertThat(commentDto).isNotNull();

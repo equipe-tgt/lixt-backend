@@ -7,6 +7,8 @@ import br.com.ifsp.pi.lixt.dto.CommentDto;
 
 public abstract class CommentMapper {
 	
+	private CommentMapper() {}
+	
 	public static CommentDto entityToDto(Comment entity) {
 
 		if(Objects.isNull(entity))

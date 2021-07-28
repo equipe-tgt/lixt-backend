@@ -46,13 +46,6 @@ class ProductControllerTest {
 		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
 	}
 	
-//	@Test
-//	@DisplayName("Busca de produtos cadastrados pelo usuário ou cujo user ID é null")
-//	@Order(1)
-//	void searchProduct() {
-//		assertThat(productController.findByName("rro").stream().filter(p -> p.getId() == product.getId()).count()).isEqualTo(1);
-//	}
-	
 	@Test
 	@DisplayName("Atualizar um produto")
 	@Order(2)

@@ -8,15 +8,18 @@ import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.instantiator.ProductOfListDtoInstantior;
 
 public class ProductOfListDtoDataJson {
-	
-	private static List<String> productsOfList = new ArrayList<>();
-	
-	public static List<String> initializeValues(ListOfItemsDto listOfItems, Product product) {
 		
+	public static List<String> initializeValues(ListOfItemsDto listOfItems, Product product) {
+		List<String> productsOfList = new ArrayList<>();
+
 		productsOfList.add(ProductOfListDtoInstantior.createProductOfListJson(2, listOfItems.getId(), "KG", "5", product.getId(), "Arroz branco"));
 		productsOfList.add(ProductOfListDtoInstantior.createProductOfListJson(2, listOfItems.getId(), "KG", "5", product.getId(), "Arroz integral"));
 		
 		return productsOfList;
+	}
+	
+	public static String createValue(ListOfItemsDto listOfItems, Product product) {
+		return ProductOfListDtoInstantior.createProductOfListJson(2, listOfItems.getId(), "KG", "5", product.getId(), "Arroz integral");
 	}
 
 }

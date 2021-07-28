@@ -6,6 +6,8 @@ import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 
 public abstract class ProductOfListMapper {
+	
+	private ProductOfListMapper() {}
 
 	public static ProductOfListDto entityToDto(ProductOfList entity) {
 

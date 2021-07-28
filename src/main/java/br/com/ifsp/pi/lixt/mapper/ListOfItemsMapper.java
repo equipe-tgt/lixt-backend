@@ -8,6 +8,8 @@ import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 
 public abstract class ListOfItemsMapper {
 	
+	private ListOfItemsMapper() {}
+	
 	public static ListOfItemsDto entityToDto(ListOfItems entity) {
 
 		if(Objects.isNull(entity))

@@ -39,8 +39,6 @@ public class LixtBackendApplication {
 	 * 
 	 * 2. Analisar casos de segurança
 	 * 
-	 * 3. Códigos comentados: Mapper/dto comment + ProductControllerTest
-	 * 
 	 */
 
 }

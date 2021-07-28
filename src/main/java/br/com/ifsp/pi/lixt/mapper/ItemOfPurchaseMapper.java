@@ -6,6 +6,8 @@ import br.com.ifsp.pi.lixt.dto.ItemOfPurchaseDto;
 
 public abstract class ItemOfPurchaseMapper {
 
+	private ItemOfPurchaseMapper() {}
+	
 	public static ItemOfPurchaseDto entityToDto(ItemOfPurchase entity) {
 
 		if(Objects.isNull(entity))

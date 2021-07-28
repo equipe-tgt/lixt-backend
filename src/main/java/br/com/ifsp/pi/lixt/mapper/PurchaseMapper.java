@@ -9,6 +9,8 @@ import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 
 public abstract class PurchaseMapper {
 	
+	private PurchaseMapper() {}
+	
 	public static Purchase dtoToEntity(PurchaseDto dto) throws PreconditionFailedException {
 		
 		if(Objects.isNull(dto)) 

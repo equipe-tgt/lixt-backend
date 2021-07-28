@@ -11,6 +11,8 @@ import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 
 public abstract class PurchaseLocalMapper {
 	
+	private PurchaseLocalMapper() {}
+	
 	public static PurchaseLocal dtoToEntity(PurchaseLocalDto dto) throws PreconditionFailedException {
 		
 		if(Objects.isNull(dto)) 

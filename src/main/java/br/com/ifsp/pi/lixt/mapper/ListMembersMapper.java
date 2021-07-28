@@ -7,6 +7,8 @@ import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 
 public abstract class ListMembersMapper {
 	
+	private ListMembersMapper() {}
+	
 	public static ListMembersDto entityToDto(ListMembers entity) {
 
 		if(Objects.isNull(entity))

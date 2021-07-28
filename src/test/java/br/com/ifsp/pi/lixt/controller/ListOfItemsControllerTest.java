@@ -24,10 +24,8 @@ import br.com.ifsp.pi.lixt.data.dto.UserDtoData;
 import br.com.ifsp.pi.lixt.data.dto.json.ListOfItemsDtoDataJson;
 import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.dto.specific.InviteDto;
 import br.com.ifsp.pi.lixt.instantiator.ListOfItemsDtoInstantior;
-import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
@@ -55,7 +53,6 @@ class ListOfItemsControllerTest {
 	
 	private List<ListOfItemsDto> listsOfItems = new ArrayList<>();
 	private List<OauthUserDto> oauthUsers = new ArrayList<>();
-	private List<UserDto> users = new ArrayList<>();
 	private List<ListMembersDto> listMembers = new ArrayList<>();
 	private String token;
 	
@@ -64,7 +61,6 @@ class ListOfItemsControllerTest {
 		
 		UserDtoData.dataForListControllerTest().forEach(user -> {
 			oauthUsers.add((OauthUserDto) this.authController.register(user).getBody());
-			users.add(UserMapper.dtoOauthToDto(oauthUsers.get(oauthUsers.size() - 1)));
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
 		});
 		

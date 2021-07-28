@@ -8,6 +8,8 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 public abstract class UserMapper {
 	
+	private UserMapper() {}
+	
 	public static UserDto entityToDto(User entity) {
 
 		if(Objects.isNull(entity))

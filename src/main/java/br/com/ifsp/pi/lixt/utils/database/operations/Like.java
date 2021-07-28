@@ -2,6 +2,8 @@ package br.com.ifsp.pi.lixt.utils.database.operations;
 
 public abstract class Like {
 	
+	private Like() {}
+	
 	public static String contains(String value) {
 		return "%".concat(value).concat("%");
 	}

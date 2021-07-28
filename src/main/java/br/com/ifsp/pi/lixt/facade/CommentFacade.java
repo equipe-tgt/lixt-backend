@@ -50,7 +50,7 @@ public class CommentFacade {
 
 		Long userId = this.commentService.findUserIdByCommentId(id);
 
-		if(!(comment.getId().equals(id) || comment.getUserId().equals(userId)))
+		if(!(comment.getId().equals(id) && comment.getUserId().equals(userId)))
 			throw new PreconditionFailedException("Erro ao atualizar comentário");
 		
 		if(!ValidatorAccess.canAcces(comment.getUserId())) 
