@@ -6,6 +6,8 @@ import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 
 public abstract class ProductOfListMapper {
+	
+	private ProductOfListMapper() {}
 
 	public static ProductOfListDto entityToDto(ProductOfList entity) {
 
@@ -25,6 +27,7 @@ public abstract class ProductOfListMapper {
 				.measureType(entity.getMeasureType())
 				.measureValue(entity.getMeasureValue())
 				.product(ProductMapper.entityToDto(entity.getProduct()))
+				.amountComment(Objects.isNull(entity.getComments()) ? null : entity.getComments().size())
 				.build();
 	}
 	

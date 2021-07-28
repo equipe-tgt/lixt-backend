@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.facade.AuthFacade;
-import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
+import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
+import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +32,9 @@ public class AuthController {
 	
 	@PostMapping("/register")
 	@ApiOperation(value = "Registrar usuário na plataforma")
-	public ResponseEntity<Object> register(@RequestBody(required = false) UserDto user) {
+	public ResponseEntity<Object> register(@RequestBody(required = false) OauthUserDto user) {
 		try {
-			return new ResponseEntity<>(UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user))), HttpStatus.OK);
+			return new ResponseEntity<>(OauthUserMapper.entityToDto(authFacade.register(OauthUserMapper.dtoToEntity(user))), HttpStatus.OK);
 		} catch (DuplicatedDataException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		}
@@ -62,7 +62,7 @@ public class AuthController {
 	@GetMapping("/data-user")
 	@ApiOperation(value = "Buscar dados não-sensíveis do usuário através do token")
 	public UserDetails findDataUser(@AuthenticationPrincipal UserDetails userDetails) {
-		UserDto user = (UserDto) userDetails;
+		OauthUserDto user = (OauthUserDto) userDetails;
 		user.eraseCredentials();
 		return user;
 	}

@@ -4,22 +4,22 @@ import java.util.Objects;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
+import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 public abstract class Users {
 
-	private static UserDto getUserAuthenticated() {
+	private static OauthUserDto getUserAuthenticated() {
 		var authentication = SecurityContextHolder.getContext().getAuthentication();
 		
 		if(Objects.isNull(authentication)) {
 			return null;
 		}
 		
-		return (UserDto) authentication.getPrincipal();
+		return (OauthUserDto) authentication.getPrincipal();
 	}
 	
 	public static Long getUserId() {
-		UserDto user = getUserAuthenticated();
+		OauthUserDto user = getUserAuthenticated();
 		
 		if(Objects.isNull(user)) {
 			return null;
@@ -29,7 +29,7 @@ public abstract class Users {
 	}
 	
 	public static String getEmail() {
-		UserDto user = getUserAuthenticated();
+		OauthUserDto user = getUserAuthenticated();
 		
 		if(Objects.isNull(user)) {
 			return null;

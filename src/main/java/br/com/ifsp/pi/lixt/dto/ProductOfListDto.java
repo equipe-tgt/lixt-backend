@@ -39,5 +39,7 @@ public class ProductOfListDto {
 	private MeasureType measureType;
 	
 	private ProductDto product;
-
+	
+	private Integer amountComment;
+	
 }

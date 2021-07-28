@@ -17,7 +17,7 @@ import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocalService;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
 import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -32,42 +32,35 @@ public class PurchaseLocalController {
 
 	@ApiOperation(value = "Buscar local de compra por id")
 	@GetMapping("/{id}")
-	public PurchaseLocalDto findById(@PathVariable Long id) {
+	public PurchaseLocalDto findById(@PathVariable Long id) throws PreconditionFailedException {
 		return PurchaseLocalMapper.entityToDto(this.purchaseLocalService.findById(id));
 	}
 	
 	@ApiOperation(value = "Salvar um local de compra")
 	@PostMapping
-	public PurchaseLocalDto save(@RequestBody(required = false) PurchaseLocalDto purchaseLocal) {
+	public PurchaseLocalDto save(@RequestBody(required = false) PurchaseLocalDto purchaseLocal) throws PreconditionFailedException {
 		return PurchaseLocalMapper.entityToDto(this.purchaseLocalService.save(PurchaseLocalMapper.dtoToEntity(purchaseLocal)));
 	}
 	
-	@ApiOperation(value = "Salvar vários locais de compra")
-	@PostMapping("/save-all")
-	public List<PurchaseLocalDto> saveAll(@RequestBody(required = false) List<PurchaseLocalDto> purchasesLocal) {
-		return this.purchaseLocalService.saveAll(purchasesLocal.stream().map(PurchaseLocalMapper::dtoToEntity).collect(Collectors.toList()))
-				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
-	}
-	
-	@ApiOperation(value = "Atualizar local de compra")
+	@ApiOperation(value = "Atualizar o nome do local de compra")
 	@PutMapping("/{id}")
-	public PurchaseLocalDto update(@RequestBody(required = false) PurchaseLocalDto purchaseLocal, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+	public Integer update(@RequestBody(required = false) PurchaseLocalDto purchaseLocal, @PathVariable Long id) throws PreconditionFailedException {
 		
 		if(!purchaseLocal.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar local de compra");
+			throw new PreconditionFailedException("Erro ao atualizar local de compra");
 		
-		return PurchaseLocalMapper.entityToDto(this.purchaseLocalService.save(PurchaseLocalMapper.dtoToEntity(purchaseLocal)));
+		return this.purchaseLocalService.updateNamePurchaseLocal(id, purchaseLocal.getName());
 	}
 	
 	@ApiOperation(value = "Deletar um local de compra")
 	@DeleteMapping("/{id}")
-	public void deleteById(@PathVariable Long id) {
+	public void deleteById(@PathVariable Long id) throws PreconditionFailedException {
 		this.purchaseLocalService.deleteById(id);
 	}
 	
 	@ApiOperation(value = "Encontrar locais de compra a 10 metros de proximidade")
 	@GetMapping("/find-near/{latitude}/{longitude}")
-	public List<PurchaseLocalDto> findPurchasesLocalNear(@PathVariable double latitude, @PathVariable double longitude) throws ParseException {
+	public List<PurchaseLocalDto> findPurchasesLocalNear(@PathVariable double latitude, @PathVariable double longitude) throws ParseException, PreconditionFailedException {
 		return this.purchaseLocalService.findPurchasesLocalNear(GeolocalizationConvert.convertCoordsToPoint(latitude, longitude))
 				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
 	}

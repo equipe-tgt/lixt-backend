@@ -37,13 +37,7 @@ public class LixtBackendApplication {
 	 * 
 	 * 1. Oauth2 : Definir TokenStore (inMemory ou Redis) + ExpirationTime
 	 * 
-	 * 2. Endpoints : Possivelmente ajustar DTOs e Mappers
-	 * 
-	 * 3. Analisar pontos passiveis de exceções
-	 * 
-	 * 4. Refatorar scripts de teste
-	 * 
-	 * 5. Analisar casos de segurança
+	 * 2. Analisar casos de segurança
 	 * 
 	 */
 

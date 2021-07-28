@@ -21,7 +21,11 @@ public class ListOfItemsDto {
 	
 	private Long ownerId;
 	
+	private String owner;
+	
 	private String description;
 	
 	private List<ProductOfListDto> productsOfList;
+	
+	private List<ListMembersDto> listMembers;
 }

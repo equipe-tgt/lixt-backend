@@ -6,6 +6,8 @@ import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 
 public abstract class ProductMapper {
+	
+	private ProductMapper() {}
 
 	public static ProductDto entityToDto(Product entity) {
 

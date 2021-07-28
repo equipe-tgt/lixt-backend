@@ -23,12 +23,12 @@ public class PurchaseLocalService {
 		return this.purchaseLocalRepository.save(purchaseLocal);
 	}
 	
-	public List<PurchaseLocal> saveAll(List<PurchaseLocal> purchasesLocal) {
-		return (List<PurchaseLocal>) this.purchaseLocalRepository.saveAll(purchasesLocal);
-	}
-	
 	public void deleteById(Long id) {
 		this.purchaseLocalRepository.deleteById(id);
+	}
+	
+	public Integer updateNamePurchaseLocal(Long id, String name) {
+		return this.purchaseLocalRepository.updateNamePurchaseLocal(id, name);
 	}
 	
 	public List<PurchaseLocal> findPurchasesLocalNear(Point localization) {

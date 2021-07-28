@@ -3,9 +3,12 @@ package br.com.ifsp.pi.lixt.mapper;
 import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.user.User;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.UserDto;
+import br.com.ifsp.pi.lixt.dto.UserDto;
+import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 public abstract class UserMapper {
+	
+	private UserMapper() {}
 	
 	public static UserDto entityToDto(User entity) {
 
@@ -30,7 +33,19 @@ public abstract class UserMapper {
 				.name(dto.getName())
 				.username(dto.getUsername())
 				.email(dto.getEmail())
-				.password(dto.getPassword())
+				.build();
+	}
+	
+	public static UserDto dtoOauthToDto(OauthUserDto dtoOauth) {
+		
+		if(Objects.isNull(dtoOauth))
+			return null;
+		
+		return UserDto.builder()
+				.id(dtoOauth.getId())
+				.name(dtoOauth.getName())
+				.username(dtoOauth.getUsername())
+				.email(dtoOauth.getEmail())
 				.build();
 	}
 

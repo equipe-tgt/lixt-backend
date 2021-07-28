@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
-import br.com.ifsp.pi.lixt.utils.exceptions.PrecoditionUpdateFailedException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,19 +41,12 @@ public class ProductController {
 		return ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product)));
 	}
 	
-	@ApiOperation(value = "Salvar vários produtos")
-	@PostMapping("/save-all")
-	public List<ProductDto> saveAll(@RequestBody(required = false) List<ProductDto> products) {
-		return this.productService.saveAll(products.stream().map(ProductMapper::dtoToEntity).collect(Collectors.toList()))
-				.stream().map(ProductMapper::entityToDto).collect(Collectors.toList());
-	}
-	
 	@ApiOperation(value = "Atualizar produto")
 	@PutMapping("/{id}")
-	public ProductDto update(@RequestBody(required = false) ProductDto product, @PathVariable Long id) throws PrecoditionUpdateFailedException {
+	public ProductDto update(@RequestBody(required = false) ProductDto product, @PathVariable Long id) throws PreconditionFailedException {
 		
 		if(!product.getId().equals(id))
-			throw new PrecoditionUpdateFailedException("Erro ao atualizar produto");
+			throw new PreconditionFailedException("Erro ao atualizar produto");
 		
 		return ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product)));
 	}

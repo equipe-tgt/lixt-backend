@@ -7,6 +7,8 @@ import br.com.ifsp.pi.lixt.dto.CategoryDto;
 
 public abstract class CategoryMapper {
 	
+	private CategoryMapper() {}
+	
 	public static CategoryDto entityToDto(Category entity) {
 
 		if(Objects.isNull(entity))

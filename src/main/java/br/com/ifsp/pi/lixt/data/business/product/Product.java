@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -26,7 +27,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode
-@Table(name = "tb_product")
+@Table(name = "tb_product", indexes = {
+		@Index(columnList = "id_user", name = "fk_product_user"),
+		@Index(columnList = "id_category", name = "fk_product_category"),
+		@Index(columnList = "st_name", name = "idx_product_name"),
+		@Index(columnList = "st_barcode", name = "idx_product_barcode")
+})
 public class Product {
 	
 	@Id
@@ -39,7 +45,7 @@ public class Product {
 	@Column(name = "st_name", nullable = false)
 	private String name;
 	
-	@Column(name = "id_user")
+	@Column(name = "id_user", updatable = false)
 	private Long userId;
 	
 	@Column(name = "id_category", nullable = false)

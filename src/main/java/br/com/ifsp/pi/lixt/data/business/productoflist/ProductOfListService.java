@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,12 +21,12 @@ public class ProductOfListService {
 		return this.productOfListRepository.save(productOfLists);
 	}
 	
-	public List<ProductOfList> saveAll(List<ProductOfList> productOfLists) {
-		return (List<ProductOfList>) this.productOfListRepository.saveAll(productOfLists);
-	}
-	
 	public void deleteById(Long id) {
 		this.productOfListRepository.deleteById(id);
+	}
+	
+	public List<Comment> findCommentsByProductOfListId(Long id) {
+		return this.productOfListRepository.findCommentsByProductOfListId(id);
 	}
 
 }

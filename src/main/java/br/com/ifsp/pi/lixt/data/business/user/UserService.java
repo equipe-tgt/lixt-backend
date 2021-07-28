@@ -32,6 +32,10 @@ public class UserService {
 		return this.userRepository.save(user);
 	}
 	
+	public void deleteById(Long id) {
+		this.userRepository.deleteById(id);
+	}
+	
 	public Integer activeAccount(String email, String password) {
 		return this.userRepository.updatePassword(password, email);
 	}

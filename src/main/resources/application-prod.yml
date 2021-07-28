@@ -1,6 +1,6 @@
 spring:
   datasource:
     driverClassName: software.aws.rds.jdbc.Driver
-    url: jdbc:mysql:aws://lixt-db-main-vpc-cluster.cluster-cpqytoinpxge.us-east-1.rds.amazonaws.com:3306/lixt
+    url: jdbc:mysql:aws://lixt-db-cluster.cluster-cpqytoinpxge.us-east-1.rds.amazonaws.com:3306
     username: root
     password: dMh71CPycRIjKk0tJ8DQ
