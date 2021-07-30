@@ -2,7 +2,6 @@ package br.com.ifsp.pi.lixt.data.business.purchaselocal;
 
 import java.util.List;
 
-import org.locationtech.jts.geom.Point;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class PurchaseLocalService {
 	
 	private final PurchaseLocalRepository purchaseLocalRepository;
+	private final PurchaseLocalSpecRepository purchaseLocalSpecRepository;
 	
 	private static final double DISTANCE_IN_METERS_NEAR = 10;
 	
@@ -31,8 +31,8 @@ public class PurchaseLocalService {
 		return this.purchaseLocalRepository.updateNamePurchaseLocal(id, name);
 	}
 	
-	public List<PurchaseLocal> findPurchasesLocalNear(Point localization) {
-		return this.purchaseLocalRepository.findPurchasesLocalNear(localization, DISTANCE_IN_METERS_NEAR);
+	public List<PurchaseLocal> findPurchasesLocalNear(PurchaseLocal purchaseLocal) {
+		return this.purchaseLocalSpecRepository.findPurchasesLocalNear(purchaseLocal, DISTANCE_IN_METERS_NEAR);
 	}
 
 }

@@ -2,6 +2,8 @@ package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
+import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
 
@@ -56,6 +59,7 @@ class AuthControllerTest {
 	@Order(1)
 	void updatePassword() throws Exception {
 		ValidatorStatusResponsePostPlainValue.isOk(mockMvc, UserDtoInstantior.createUser("user", "123"), "/auth/update-password", "456");
+		assertNotNull(RequestOauth2.authenticate(mockMvc, UserDtoInstantior.createUser("user", "456")));
 	}
 	
 	@Test
@@ -86,7 +90,8 @@ class AuthControllerTest {
 		assertAll(
 				() -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT),
 				() -> assertThat(response.getBody()).isEqualTo("Usuário já cadastrado na plataforma")
-		);	}
+		);	
+	}
 	
 	@Test
 	@DisplayName("Gerar nova senha para usuário existente")

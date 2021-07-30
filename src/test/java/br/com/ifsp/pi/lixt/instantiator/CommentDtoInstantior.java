@@ -2,8 +2,10 @@ package br.com.ifsp.pi.lixt.instantiator;
 
 import br.com.ifsp.pi.lixt.dto.CommentDto;
 
-public class CommentDtoInstantior {
+public abstract class CommentDtoInstantior {
 
+	private CommentDtoInstantior() {}
+	
 	public static String createCommentJson(String name, Long productId, Long userId) {
 		
 		return 	"{" + 

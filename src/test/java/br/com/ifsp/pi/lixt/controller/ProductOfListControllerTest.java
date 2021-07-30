@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.instantiator.CommentDtoInstantior;
 import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
+import br.com.ifsp.pi.lixt.instantiator.ProductOfListDtoInstantior;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
@@ -212,6 +214,16 @@ class ProductOfListControllerTest {
 						RequestWithResponse.createGetRequestJson(
 								mockMvc, "/productOfList/" + this.productsOfList.get(j).getId(), token, ProductOfListDto.class)
 				).isNotNull();
+				
+				this.productsOfList.get(j).setIsMarked(true);
+				ValidatorStatusResponsePut.isOk(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(j).getId(), ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(j)));
+				
+				ProductOfListDto productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
+						mockMvc, "/productOfList/" + this.productsOfList.get(j).getId(), token, ProductOfListDto.class);
+				
+				assertTrue(productTemp.getIsMarked());
+				
+				ValidatorStatusResponsePut.isPreconditionFailed(mockMvc, oauthUsers.get(i), "/productOfList/0", ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(j)));
 			}
 		}
 		
@@ -219,6 +231,8 @@ class ProductOfListControllerTest {
 			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId());
 			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(1).getId());
 			ValidatorStatusResponsePost.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList", ProductOfListDtoDataJson.createValue(this.listOfItems, ProductMapper.dtoToEntity(this.product)));
+			ValidatorStatusResponsePut.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId(), ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
+			ValidatorStatusResponseDelete.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId());
 		}
 	}
 
@@ -230,6 +244,12 @@ class ProductOfListControllerTest {
 				if(userToTryDelete.getId().equals(comment.getUserId()))
 					ValidatorStatusResponseDelete.isOk(mockMvc, userToTryDelete, "/comment/" + comment.getId());
 			}
+		}
+
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/productOfList/" + productsOfList.get(0).getId());
+		
+		for(int i=1; i<4; i++) {
+			ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(1), "/productOfList/" + productsOfList.get(i).getId());
 		}
 		
 		for(ListMembersDto listMember: listMembers)

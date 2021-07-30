@@ -40,7 +40,7 @@ public class MailDto {
 	}
 	
 	public boolean isValid() {
-		return ValidatorData.validateString(msgHTML) && ValidatorData.validateString(title) && Objects.nonNull(this.recipientsTO) && this.recipientsTO.size() > 0;
+		return ValidatorData.validateString(msgHTML) && ValidatorData.validateString(title) && Objects.nonNull(this.recipientsTO) && !this.recipientsTO.isEmpty();
 	}
 
 }

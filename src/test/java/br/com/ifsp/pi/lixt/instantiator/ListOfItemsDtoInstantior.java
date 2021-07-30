@@ -2,8 +2,10 @@ package br.com.ifsp.pi.lixt.instantiator;
 
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 
-public class ListOfItemsDtoInstantior {
+public abstract class ListOfItemsDtoInstantior {
 
+	private ListOfItemsDtoInstantior() {}
+	
 	public static String createListJson(String name, String description) {
 		
 		return "{" + 

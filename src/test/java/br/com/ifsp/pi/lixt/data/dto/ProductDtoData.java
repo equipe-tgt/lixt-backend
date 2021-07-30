@@ -9,7 +9,9 @@ import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
 
 public class ProductDtoData {
-		
+	
+	private ProductDtoData() {}
+	
 	public static List<Product> initializeValues(CategoryDto category) {
 		List<Product> products = new ArrayList<>();
 		

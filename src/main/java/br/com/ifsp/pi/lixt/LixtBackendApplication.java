@@ -31,14 +31,5 @@ public class LixtBackendApplication {
 	SmtpAuthenticator mailerAccount(@Value("${lixt.mail.username}") String username, @Value("${lixt.mail.password}") String password) {
 		return new SmtpAuthenticator(username, password);
 	}
-	
-	/*
-	 * TODO
-	 * 
-	 * 1. Oauth2 : Definir TokenStore (inMemory ou Redis) + ExpirationTime
-	 * 
-	 * 2. Analisar casos de segurança
-	 * 
-	 */
 
 }

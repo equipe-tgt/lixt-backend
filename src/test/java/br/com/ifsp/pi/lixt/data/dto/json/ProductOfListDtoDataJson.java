@@ -7,8 +7,10 @@ import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.instantiator.ProductOfListDtoInstantior;
 
-public class ProductOfListDtoDataJson {
-		
+public abstract class ProductOfListDtoDataJson {
+	
+	private ProductOfListDtoDataJson() {}
+	
 	public static List<String> initializeValues(ListOfItemsDto listOfItems, Product product) {
 		List<String> productsOfList = new ArrayList<>();
 

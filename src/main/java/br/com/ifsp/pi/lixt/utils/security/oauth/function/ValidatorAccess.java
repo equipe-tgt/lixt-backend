@@ -6,6 +6,8 @@ import br.com.ifsp.pi.lixt.utils.security.Users;
 
 public abstract class ValidatorAccess {
 	
+	private ValidatorAccess() {}
+	
 	public static boolean canAcces(Long id) {
 		return Users.getUserId().equals(id);
 	}

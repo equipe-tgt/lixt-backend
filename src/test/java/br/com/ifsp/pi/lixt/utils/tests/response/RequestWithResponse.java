@@ -12,9 +12,11 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
 
-public class RequestWithResponse {
+public abstract class RequestWithResponse {
 	
 	private static ObjectMapper objectMapper = new ObjectMapper();
+	
+	private RequestWithResponse() {}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Object createPostRequestJson(MockMvc mockMvc, String uri, String content, String token, Class clazz) throws Exception {

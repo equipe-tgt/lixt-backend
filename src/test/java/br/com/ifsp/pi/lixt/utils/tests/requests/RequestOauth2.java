@@ -15,12 +15,14 @@ import org.springframework.util.MultiValueMap;
 
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
-public class RequestOauth2 {
+public abstract class RequestOauth2 {
 	
 	private static JacksonJsonParser jsonParser = new JacksonJsonParser();
 	
 	private static final String CLIENT_ID = "client";
 	private static final String SECRET_ID = "123456";
+	
+	private RequestOauth2() {}
 	
 	public static String authenticate(MockMvc mockMvc, OauthUserDto user) throws Exception {
 		

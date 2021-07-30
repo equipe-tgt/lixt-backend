@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.unity.utils.security;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 import org.junit.jupiter.api.AfterAll;
@@ -75,7 +76,7 @@ class LoginTest {
 	@Test
 	@DisplayName("Autenticação corretamente por username")
 	void loginWithUsername() throws Exception {
-		RequestOauth2.authenticate(mockMvc, user);
+		assertNotNull(RequestOauth2.authenticate(mockMvc, user));
 	}
 	
 	@Test
