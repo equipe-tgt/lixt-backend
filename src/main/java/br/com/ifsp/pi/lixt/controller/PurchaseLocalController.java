@@ -58,7 +58,7 @@ public class PurchaseLocalController {
 	}
 	
 	@ApiOperation(value = "Encontrar locais de compra a 10 metros de proximidade")
-	@GetMapping("/find-near")
+	@PostMapping("/find-near")
 	public List<PurchaseLocalDto> findPurchasesLocalNear(@RequestBody(required = false) PurchaseLocalDto purchaseLocal) throws ParseException, PreconditionFailedException {
 		return this.purchaseLocalService.findPurchasesLocalNear(PurchaseLocalMapper.dtoToEntity(purchaseLocal))
 				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
