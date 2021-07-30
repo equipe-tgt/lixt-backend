@@ -4,7 +4,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-public class ResquestBuilder {
+public abstract class ResquestBuilder {
+	
+	private ResquestBuilder() {}
 	
 	public static RequestBuilder createGetRequestJson(String uri, String token) {
 		return MockMvcRequestBuilders.get(uri)

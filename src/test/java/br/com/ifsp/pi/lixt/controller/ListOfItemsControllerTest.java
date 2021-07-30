@@ -212,7 +212,7 @@ class ListOfItemsControllerTest {
 				.stream().map(element -> (InviteDto)element).collect(Collectors.toList());	
 		
 		assertThat(invitesSent).hasSize(3);
-		assertThat(invitesReceived).hasSize(0);
+		assertThat(invitesReceived).isEmpty();
 	}
 	
 	@DisplayName("Sair da lista")

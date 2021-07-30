@@ -5,6 +5,8 @@ import java.util.Map;
 
 public abstract class CreatorParametersMail {
 	
+	private CreatorParametersMail() {}
+	
 	public static Map<String, String> createParamsResetPassword(String username, String password) {
 		Map<String, String> map = new HashMap<>();
 		

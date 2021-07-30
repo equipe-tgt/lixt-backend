@@ -4,6 +4,8 @@ import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 
 public abstract class ForgetPasswordTemplate {
 	
+	private ForgetPasswordTemplate() {}
+	
 	public static MailDto getTemplate() {
 		
 		return MailDto.builder()

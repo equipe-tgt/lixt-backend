@@ -8,7 +8,9 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
 
-public class ValidatorStatusResponsePost {
+public abstract class ValidatorStatusResponsePost {
+	
+	private ValidatorStatusResponsePost() {}
 	
 	public static void isOk(MockMvc mockMvc, OauthUserDto user, String uri, String content) throws Exception {
 		validatePostStatusResponse(mockMvc, user, uri, content, MockMvcResultMatchers.status().isOk());

@@ -28,10 +28,10 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 @SpringBootTest
 @DisplayName("Testar mappers do sistema")
-public class MappersTest {
+class MappersTest {
 	
 	@Test
-	void testConversionNull() {
+	void dtoToEntityNull() {
 		assertNull(CategoryMapper.dtoToEntity(null));
 		assertNull(CommentMapper.dtoToEntity(null));
 		assertNull(ItemOfPurchaseMapper.dtoToEntity(null));
@@ -43,7 +43,10 @@ public class MappersTest {
 		assertNull(PurchaseListMapper.dtoToEntity(null));
 		assertNull(PurchaseLocalMapper.dtoToEntity(null));
 		assertNull(UserMapper.dtoToEntity(null));
-		
+	}
+	
+	@Test
+	void entityToDtoNull() {
 		assertNull(CategoryMapper.entityToDto(null));
 		assertNull(CommentMapper.entityToDto(null));
 		assertNull(ItemOfPurchaseMapper.entityToDto(null));
@@ -55,15 +58,16 @@ public class MappersTest {
 		assertNull(PurchaseListMapper.entityToDto(null));
 		assertNull(PurchaseLocalMapper.entityToDto(null));
 		assertNull(UserMapper.entityToDto(null));
-		
+	}
+	
+	@Test
+	void casesNull() {
 		assertNull(UserMapper.dtoOauthToDto(null));
 		assertNull(InviteMapper.entityToDto(null));
 		
 		assertNotNull(ListMembersMapper.dtoToEntity(new ListMembersDto()));
 		assertNotNull(UserMapper.dtoOauthToDto(new OauthUserDto()));
 		assertNotNull(UserMapper.dtoToEntity(new UserDto()));
-		
-		// ItemOfPurchaseMapper, PurchaseListMapper, PurchaseMapper
 	}
 	
 	@Test

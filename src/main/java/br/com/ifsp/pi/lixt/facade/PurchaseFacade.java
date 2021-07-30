@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchase;
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchaseService;
@@ -38,8 +37,8 @@ public class PurchaseFacade {
 		
 		List<PurchaseList> purchaseLists = new ArrayList<>();
 		
-		for(int i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
-			PurchaseList purchaseListTemp = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
+		for(var i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
+			var purchaseListTemp = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
 			purchaseListTemp.setPurchaseId(result.getId());
 			purchaseListTemp.setItemsOfPurchase(null);
 			purchaseLists.add(purchaseListTemp);
@@ -47,13 +46,13 @@ public class PurchaseFacade {
 		
 		result.setPurchaseLists(this.purchaseListService.saveAll(purchaseLists));
 		
-		for(int i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
+		for(var i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
 			
-			PurchaseList purchaseList = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
+			var purchaseList = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
 			List<ItemOfPurchase> itemsOfPurchase = new ArrayList<>();
 			
-			for(int j=0; j<purchaseList.getItemsOfPurchase().size(); j++) {
-				ItemOfPurchase itemOfPurchaseTemp = purchaseList.getItemsOfPurchase().get(j);
+			for(var j=0; j<purchaseList.getItemsOfPurchase().size(); j++) {
+				var itemOfPurchaseTemp = purchaseList.getItemsOfPurchase().get(j);
 				itemOfPurchaseTemp.setPurcharseListId(result.getPurchaseLists().get(i).getId());
 				itemsOfPurchase.add(itemOfPurchaseTemp);
 			}
@@ -70,9 +69,8 @@ public class PurchaseFacade {
 		return this.purchaseService.findUserPurchases(Users.getUserId());
 	}
 	
-	@Transactional
 	private Purchase createPurchase(PurchaseDto purchaseDto) {
-		Purchase purchase = PurchaseMapper.dtoToEntity(purchaseDto);
+		var purchase = PurchaseMapper.dtoToEntity(purchaseDto);
 		purchase.setPurchaseLists(null);		
 		return this.purchaseService.save(purchase);
 	}

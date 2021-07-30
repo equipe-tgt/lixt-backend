@@ -7,7 +7,9 @@ import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 public abstract class UserDtoData {
-		
+	
+	private UserDtoData() {}
+	
 	public static List<OauthUserDto> initializeValues() {
 		List<OauthUserDto> users = new ArrayList<>();
 		

@@ -58,7 +58,6 @@ class PurchaseLocalCrudTest {
 		assertAll(
 				() -> assertThat(this.purchaseLocalController.update(purchaseLocal, purchaseLocal.getId())).isOne(),
 				() -> assertThat(this.purchaseLocalController.findById(this.purchaseLocal.getId()).getName()).isEqualTo(this.purchaseLocal.getName())
-
 		);	
 	}
 	
@@ -74,9 +73,17 @@ class PurchaseLocalCrudTest {
 	@DisplayName("Encontrar mercados próximos")
 	@Order(4)
 	void findNearPurchaseLocals() throws ParseException {
-		assertThat(this.purchaseLocalController.findPurchasesLocalNear(23.66666, 20.77777)).hasSize(1);
-		assertThat(this.purchaseLocalController.findPurchasesLocalNear(23.66667, 20.77778)).hasSize(1);
-		assertThat(this.purchaseLocalController.findPurchasesLocalNear(23.66676, 20.77787)).hasSize(0);
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().longitude(20.77777).latitude(23.66666).build())).hasSize(1);
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().longitude(20.77778).latitude(23.66667).build())).hasSize(1);
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().longitude(20.77787).latitude(23.66676).build())).isEmpty();
+		
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().name("Mercado Açaí").longitude(20.77777).latitude(23.66666).build())).hasSize(1);
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().name("Mercado Açaí").longitude(20.77778).latitude(23.66667).build())).hasSize(1);
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().name("Mercado Açaí").longitude(20.77787).latitude(23.66676).build())).isEmpty();
+		
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().name("Mercado Extra").longitude(20.77777).latitude(23.66666).build())).isEmpty();
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().name("Mercado Extra").longitude(20.77778).latitude(23.66667).build())).isEmpty();
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().name("Mercado Extra").longitude(20.77787).latitude(23.66676).build())).isEmpty();
 	}
 	
 	@Test

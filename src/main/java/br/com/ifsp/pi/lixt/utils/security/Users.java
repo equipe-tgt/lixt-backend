@@ -8,6 +8,8 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 public abstract class Users {
 
+	private Users() {}
+	
 	private static OauthUserDto getUserAuthenticated() {
 		var authentication = SecurityContextHolder.getContext().getAuthentication();
 		

@@ -10,9 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
 
-public class RequestWithResponseList {
+public abstract class RequestWithResponseList {
 	
 	private static ObjectMapper objectMapper = new ObjectMapper();
+	
+	private RequestWithResponseList() {}
 	
 	@SuppressWarnings({ "rawtypes" })
 	public static List<Object> createGetRequestJson(MockMvc mockMvc, String uri, String token, Class clazz) throws Exception {

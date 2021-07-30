@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocalService;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
-import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,9 +58,9 @@ public class PurchaseLocalController {
 	}
 	
 	@ApiOperation(value = "Encontrar locais de compra a 10 metros de proximidade")
-	@GetMapping("/find-near/{latitude}/{longitude}")
-	public List<PurchaseLocalDto> findPurchasesLocalNear(@PathVariable double latitude, @PathVariable double longitude) throws ParseException, PreconditionFailedException {
-		return this.purchaseLocalService.findPurchasesLocalNear(GeolocalizationConvert.convertCoordsToPoint(latitude, longitude))
+	@GetMapping("/find-near")
+	public List<PurchaseLocalDto> findPurchasesLocalNear(@RequestBody(required = false) PurchaseLocalDto purchaseLocal) throws ParseException, PreconditionFailedException {
+		return this.purchaseLocalService.findPurchasesLocalNear(PurchaseLocalMapper.dtoToEntity(purchaseLocal))
 				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
 	}
 	
