@@ -9,6 +9,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
 
+import br.com.ifsp.pi.lixt.utils.database.operations.Like;
+
 @Repository
 public class PurchaseLocalSpecRepository {
 
@@ -27,8 +29,8 @@ public class PurchaseLocalSpecRepository {
 		parameters.put("distance", distance);
 		
 		if(Objects.nonNull(purchaseLocal.getName())) {
-			sql = sql.concat("and st_name = :name ");
-			parameters.put("name", purchaseLocal.getName());
+			sql = sql.concat("AND st_name LIKE :name ");
+			parameters.put("name", Like.contains(purchaseLocal.getName()));
 		}
 		
 		sql = sql.concat("order by point_location");
