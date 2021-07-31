@@ -20,6 +20,8 @@ public class ItemOfPurchaseDto {
 		
 	private Long productId;
 	
+	private Long productOfListId;
+	
 	private Long purcharseListId;
 	
 	private String name;

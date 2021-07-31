@@ -57,5 +57,11 @@ public class ListOfItemsController {
 	public List<ListOfItemsDto> findUserLists() {
 		return this.listOfItemsFacade.findUserLists().stream().map(ListOfItemsMapper::entityToDto).collect(Collectors.toList());
 	}
+	
+	@ApiOperation(value = "Limpar itens marcados na lista")
+	@GetMapping("/{id}/clean-marked-itens")
+	public Integer cleanUserIdAtProductsOfList(@PathVariable Long id) {
+		return this.listOfItemsFacade.cleanUserIdAtProductsOfList(id);
+	}
 
 }

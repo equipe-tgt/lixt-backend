@@ -28,5 +28,13 @@ public class ProductOfListService {
 	public List<Comment> findCommentsByProductOfListId(Long id) {
 		return this.productOfListRepository.findCommentsByProductOfListId(id);
 	}
+	
+	public Integer cleanUserIdAtProductsOfList(Long listId) {
+		return this.productOfListRepository.cleanUserIdAtProductsOfList(listId);
+	}
+	
+	public Integer markProducts(Long userId, List<Long> productsId) {
+		return this.productOfListRepository.markProducts(userId, productsId);
+	}
 
 }

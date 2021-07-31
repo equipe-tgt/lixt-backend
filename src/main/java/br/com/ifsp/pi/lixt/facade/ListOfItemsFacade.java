@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
+import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ListOfItemsFacade {
 
+	private final ProductOfListService productOfListService;
 	private final ListOfItemsService listOfItemsService;
 	
 	public ListOfItems findById(Long id) {
@@ -59,5 +61,14 @@ public class ListOfItemsFacade {
 
 	public List<ListOfItems> findUserLists() {
 		return this.listOfItemsService.findUserLists(Users.getUserId());
+	}
+	
+	public Integer cleanUserIdAtProductsOfList(Long listId) {
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(listId);
+		
+		if(!ValidatorAccess.canAcces(ownerIdList))
+			throw new ForbiddenException();
+		
+		return this.productOfListService.cleanUserIdAtProductsOfList(listId);
 	}
 }
