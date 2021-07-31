@@ -38,45 +38,24 @@ public class PurchaseFacade {
 		
 		var result = createPurchase(purchaseDto);
 		
+		markItensAtList(purchaseDto);
+		savePurchasesList(purchaseDto, result);
+		saveItensOfPurchase(purchaseDto, result);
+		
+		return result;
+	}
+	
+	public List<Purchase> findUserPurchases() {
+		return this.purchaseService.findUserPurchases(Users.getUserId());
+	}
+	
+	private void markItensAtList(PurchaseDto purchaseDto) {
 		this.productOfListService.markProducts(Users.getUserId(), 
 				purchaseDto.getPurchaseLists().stream().map(
 						purchaseList -> purchaseList.getItemsOfPurchase()
 								.stream().map(itemOfPurchase -> itemOfPurchase.getProductOfListId()).collect(Collectors.toList())
 				).collect(Collectors.toList()).stream().flatMap(List::stream).collect(Collectors.toList())
 		);
-
-		List<PurchaseList> purchaseLists = new ArrayList<>();
-		
-		for(var i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
-			var purchaseListTemp = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
-			purchaseListTemp.setPurchaseId(result.getId());
-			purchaseListTemp.setItemsOfPurchase(null);
-			purchaseLists.add(purchaseListTemp);
-		}
-		
-		result.setPurchaseLists(this.purchaseListService.saveAll(purchaseLists));
-		
-		for(var i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
-			
-			var purchaseList = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
-			List<ItemOfPurchase> itemsOfPurchase = new ArrayList<>();
-			
-			for(var j=0; j<purchaseList.getItemsOfPurchase().size(); j++) {
-				var itemOfPurchaseTemp = purchaseList.getItemsOfPurchase().get(j);
-				itemOfPurchaseTemp.setPurcharseListId(result.getPurchaseLists().get(i).getId());
-				itemsOfPurchase.add(itemOfPurchaseTemp);
-			}
-			
-			result.getPurchaseLists().get(i).setItemsOfPurchase(
-					this.itemOfPurchaseService.saveAll(itemsOfPurchase)
-			);
-		}
-
-		return result;
-	}
-	
-	public List<Purchase> findUserPurchases() {
-		return this.purchaseService.findUserPurchases(Users.getUserId());
 	}
 	
 	private Purchase createPurchase(PurchaseDto purchaseDto) {
@@ -85,5 +64,36 @@ public class PurchaseFacade {
 		return this.purchaseService.save(purchase);
 	}
 	
+	private void savePurchasesList(PurchaseDto purchaseDto, Purchase purchase) {
+		
+		List<PurchaseList> purchaseLists = new ArrayList<>();
+
+		for(var i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
+			var purchaseListTemp = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
+			purchaseListTemp.setPurchaseId(purchase.getId());
+			purchaseListTemp.setItemsOfPurchase(null);
+			purchaseLists.add(purchaseListTemp);
+		}
+		
+		purchase.setPurchaseLists(this.purchaseListService.saveAll(purchaseLists));
+	}
+	
+	private void saveItensOfPurchase(PurchaseDto purchaseDto, Purchase purchase) {
+		for(var i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
+			
+			var purchaseList = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
+			List<ItemOfPurchase> itemsOfPurchase = new ArrayList<>();
+			
+			for(var j=0; j<purchaseList.getItemsOfPurchase().size(); j++) {
+				var itemOfPurchaseTemp = purchaseList.getItemsOfPurchase().get(j);
+				itemOfPurchaseTemp.setPurcharseListId(purchase.getPurchaseLists().get(i).getId());
+				itemsOfPurchase.add(itemOfPurchaseTemp);
+			}
+			
+			purchase.getPurchaseLists().get(i).setItemsOfPurchase(
+					this.itemOfPurchaseService.saveAll(itemsOfPurchase)
+			);
+		}
+	}
 	
 }
