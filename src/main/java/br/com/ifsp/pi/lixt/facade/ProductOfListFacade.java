@@ -1,6 +1,8 @@
 package br.com.ifsp.pi.lixt.facade;
 
 import java.util.List;
+import java.util.Objects;
+
 import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
@@ -92,7 +94,25 @@ public class ProductOfListFacade {
 			throw new ForbiddenException();
 		}
 		
-		return this.productOfListService.assignedItemToUser(Users.getUserId(), productOfListId);
+		Long oldAssignedUserId = this.productOfListService.findById(productOfListId).getAssignedUserId();
+		
+		if(Objects.isNull(oldAssignedUserId)) {
+			return this.productOfListService.assignedItemToUser(Users.getUserId(), productOfListId);
+		}
+		if(Users.getUserId().equals(oldAssignedUserId)) {
+			return this.productOfListService.assignedItemToUser(null, productOfListId);
+		}
+		
+		return 0;
+	}
+	
+	public Integer assignedItemToUser(Long userId, Long productOfListId) {
+		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
+		
+		if(!ValidatorAccess.canAcces(ownerId)) {
+			throw new ForbiddenException();
+		}
+		return this.productOfListService.assignedItemToUser(userId, productOfListId);
 	}
 
 }

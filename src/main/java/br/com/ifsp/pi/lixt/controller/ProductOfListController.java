@@ -65,5 +65,11 @@ public class ProductOfListController {
 	public Integer assignedItemToMe(@PathVariable Long id) {
 		return this.productOfListFacade.assignedItemToMe(id);
 	}
+	
+	@ApiOperation(value = "Atribuir ao usuário informado o item a ser comprado")
+	@GetMapping("/{productOfListId}/assigned-to/{userId}")
+	public Integer assignedItemToUser(@PathVariable Long productOfListId, @PathVariable Long userId) {
+		return this.productOfListFacade.assignedItemToUser(userId, productOfListId);
+	}
 
 }

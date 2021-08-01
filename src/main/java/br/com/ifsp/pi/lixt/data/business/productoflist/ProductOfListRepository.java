@@ -25,10 +25,10 @@ public interface ProductOfListRepository extends CrudRepository<ProductOfList, L
 	@Transactional
 	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = ?1, p.isMarked = true WHERE p.id IN (?2)")
 	Integer markProducts(Long userId, List<Long> productsId);
-	
+
 	@Modifying(clearAutomatically = true)
 	@Transactional
-	@Query("UPDATE ProductOfList p SET p.assignedUserId = ?1, p.isMarked = true WHERE p.id = ?2 AND p.assignedUserId IS NULL")
+	@Query("UPDATE ProductOfList p SET p.assignedUserId = ?1 WHERE p.id = ?2")
 	Integer assignedItemToUser(Long userId, Long productOfListId);
 	
 }
