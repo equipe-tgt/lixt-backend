@@ -1,6 +1,6 @@
 spring:
   datasource:
-    driverClassName: software.aws.rds.jdbc.Driver
-    url: jdbc:mysql:aws://lixt-db.cluster-cpqytoinpxge.us-east-1.rds.amazonaws.com:3306
-    username: root
-    password: senhasupersergura
+    driverClassName:
+    url: jdbc:mysql://lixt-db.mysql.database.azure.com:3306/lixt_db?useSSL=true&requireSSL=false
+    username: lixt_root@lixt-db
+    password: SenhadaAzure123!
