@@ -5,11 +5,11 @@ public abstract class ValidatorResponse {
 	private ValidatorResponse() {}
 	
 	public static boolean wasUpdated(Integer response) {
-		return response == 1;
+		return response > 0;
 	}
 	
 	public static boolean wasDeleted(Integer response) {
-		return response == 1;
+		return response > 0;
 	}
 
 }

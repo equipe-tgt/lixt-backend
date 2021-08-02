@@ -59,5 +59,17 @@ public class ProductOfListController {
 	public List<CommentDto> findCommentsByProductOfListId(@PathVariable Long id) {
 		return this.productOfListFacade.findCommentsByProductOfListId(id).stream().map(CommentMapper::entityToDto).collect(Collectors.toList());
 	}
+	
+	@ApiOperation(value = "Atribuir ao usuário solicitante o item a ser comprado, retornando se foi aprovado essa atribuição ou não")
+	@GetMapping("/{id}/assigned-to-me")
+	public Integer assignedItemToMe(@PathVariable Long id) {
+		return this.productOfListFacade.assignedItemToMe(id);
+	}
+	
+	@ApiOperation(value = "Atribuir ao usuário informado o item a ser comprado")
+	@GetMapping("/{productOfListId}/assigned-to/{userId}")
+	public Integer assignedItemToUser(@PathVariable Long productOfListId, @PathVariable Long userId) {
+		return this.productOfListFacade.assignedItemToUser(userId, productOfListId);
+	}
 
 }
