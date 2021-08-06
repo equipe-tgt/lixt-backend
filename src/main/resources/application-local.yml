@@ -1,6 +1,6 @@
 spring:
   datasource:
     driverClassName:
-    url: jdbc:mysql://lixt-db.mysql.database.azure.com:3306/lixt_db?useSSL=true&requireSSL=false
-    username: lixt_root@lixt-db
-    password: SenhadaAzure123!
+    url: jdbc:mysql://localhost/lixt?useLegacyDatetimeCode=false&useTimezone=true&serverTimezone=America/Sao_Paulo
+    username: root
+    password: 123456
