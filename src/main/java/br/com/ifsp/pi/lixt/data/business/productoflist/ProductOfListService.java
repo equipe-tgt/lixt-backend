@@ -40,5 +40,9 @@ public class ProductOfListService {
 	public Integer assignedItemToUser(Long userId, Long productOfListId) {
 		return this.productOfListRepository.assignedItemToUser(userId, productOfListId);
 	}
+	
+	public Integer assignedItemToUser(Long userId, boolean isMarked, Long productOfListId) {
+		return this.productOfListRepository.assignedItemToUser(userId, isMarked, productOfListId);
+	}
 
 }

@@ -97,10 +97,10 @@ public class ProductOfListFacade {
 		Long oldAssignedUserId = this.productOfListService.findById(productOfListId).getAssignedUserId();
 		
 		if(Objects.isNull(oldAssignedUserId)) {
-			return this.productOfListService.assignedItemToUser(Users.getUserId(), productOfListId);
+			return this.productOfListService.assignedItemToUser(Users.getUserId(), true, productOfListId);
 		}
 		if(Users.getUserId().equals(oldAssignedUserId)) {
-			return this.productOfListService.assignedItemToUser(null, productOfListId);
+			return this.productOfListService.assignedItemToUser(null, false, productOfListId);
 		}
 		
 		return 0;
@@ -109,9 +109,15 @@ public class ProductOfListFacade {
 	public Integer assignedItemToUser(Long userId, Long productOfListId) {
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
 		
-		if(!ValidatorAccess.canAcces(ownerId)) {
+		if(!ValidatorAccess.canAcces(ownerId))
 			throw new ForbiddenException();
+		
+		var productOfList = this.productOfListService.findById(productOfListId);
+		
+		if(productOfList.getIsMarked()) {
+			return 0;
 		}
+		
 		return this.productOfListService.assignedItemToUser(userId, productOfListId);
 	}
 
