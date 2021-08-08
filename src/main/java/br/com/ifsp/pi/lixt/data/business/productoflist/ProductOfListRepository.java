@@ -19,7 +19,17 @@ public interface ProductOfListRepository extends CrudRepository<ProductOfList, L
 	@Modifying(clearAutomatically = true)
 	@Transactional
 	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.assignedUserId = null WHERE p.listId = ?1")
+	Integer cleanProductOfList(Long productOfListId);
+	
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.assignedUserId = null WHERE p.listId = ?1")
 	Integer cleanUserIdAtProductsOfList(Long listId);
+	
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = ?1, p.isMarked = true WHERE p.id = ?2")
+	Integer markProduct(Long userId, Long productId);
 	
 	@Modifying(clearAutomatically = true)
 	@Transactional

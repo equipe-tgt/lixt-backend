@@ -85,6 +85,32 @@ public class ProductOfListFacade {
 		return this.productOfListService.findCommentsByProductOfListId(id);
 	}
 	
+	public Integer markProduct(Long productId) {
+		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productId);
+		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(productId);
+		
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
+			throw new ForbiddenException();
+		}
+		
+		var productOfList = this.productOfListService.findById(productId);
+		
+		if(productOfList.getIsMarked()) {
+			return 0;
+		}
+		
+		return this.productOfListService.markProduct(Users.getUserId(), productId);
+	}
+	
+	public Integer cleanProductOfList(Long productOfListId) {
+		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(productOfListId);
+		
+		if(!ValidatorAccess.canAcces(ownerIdList))
+			throw new ForbiddenException();
+		
+		return this.productOfListService.cleanProductOfList(productOfListId);
+	}
+	
 	public Integer assignedItemToMe(Long productOfListId) {
 		
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
