@@ -51,7 +51,7 @@ public class AuthFacade {
 		User userCreated = this.userService.save(user);
 		
 		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.CREATE_ACCOUNT);
-		Map<String, String> params = CreatorParametersMail.createParamsCreateAccount(baseUrl, user.getFirstAccessToken());
+		Map<String, String> params = CreatorParametersMail.createParamsCreateAccount(user.getUsername(), baseUrl, user.getFirstAccessToken());
 		mail = FormatterMail.formatMail(mail, params);
 		mail.setRecipientTo(user.getEmail());
 		senderMail.sendEmail(mail);
