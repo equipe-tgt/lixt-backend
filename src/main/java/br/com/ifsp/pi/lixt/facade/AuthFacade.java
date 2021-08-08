@@ -22,7 +22,7 @@ import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.CreatorParametersMail;
 import br.com.ifsp.pi.lixt.utils.security.Users;
-import br.com.ifsp.pi.lixt.utils.security.oauth.function.PasswordGenerator;
+import br.com.ifsp.pi.lixt.utils.security.oauth.function.SecurityGenerator;
 import br.com.ifsp.pi.lixt.utils.views.ActiveAccountView;
 import br.com.ifsp.pi.lixt.utils.views.InvalidTokenView;
 import lombok.RequiredArgsConstructor;
@@ -47,8 +47,9 @@ public class AuthFacade {
 			throw new DuplicatedDataException("Usuário já cadastrado na plataforma");
 		}
 		
-		user.setFirstAccessToken(passwordEncoder.encode(user.getUsername()));
-		user.setPassword(passwordEncoder.encode(user.getPassword()));		
+		user.setFirstAccessToken(SecurityGenerator.generateToken(user.getEmail()));
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		
 		User userCreated = this.userService.save(user);
 		
 		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.CREATE_ACCOUNT);
@@ -73,7 +74,7 @@ public class AuthFacade {
 			throw new NotFoundException("Usuário não encontrado");
 		}
 		
-		String password = PasswordGenerator.generateRandomPassword();
+		String password = SecurityGenerator.generateRandomPassword();
 		
 		Integer responseUpdate = this.userService.updatePassword(email, passwordEncoder.encode(password));
 		
