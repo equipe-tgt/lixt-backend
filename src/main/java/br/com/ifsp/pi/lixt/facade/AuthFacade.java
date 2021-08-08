@@ -37,6 +37,7 @@ public class AuthFacade {
 	
 	@Value("${lixt.base.url}") String baseUrl;
 	
+	@Transactional
 	public User register(User user) {
 
 		if(userService.findByEmail(user.getEmail()) != null) {
@@ -96,7 +97,7 @@ public class AuthFacade {
 	public String activeUser(String token) {
 		Integer result = this.userService.activeAccount(token);
 		
-		if(result == 1)
+		if(ValidatorResponse.wasUpdated(result))
 			return ActiveAccountView.getView();
 		else
 			return InvalidTokenView.getView();

@@ -72,7 +72,7 @@ public abstract class InvalidTokenView {
 				"        <div id=\"active-account\">\r\n" + 
 				"\r\n" + 
 				"            <div class=\"header\">\r\n" + 
-				"                <h1><center>Token Inválido!</center></h1>\r\n" + 
+				"                <h1><center>Página Não Encontrada!</center></h1>\r\n" + 
 				"            </div>\r\n" + 
 				"\r\n" + 
 				"            <div class=\"body\">\r\n" + 
