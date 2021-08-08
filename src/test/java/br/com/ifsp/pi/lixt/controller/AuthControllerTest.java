@@ -20,8 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
@@ -42,11 +42,12 @@ class AuthControllerTest {
 	@Autowired
 	private UserService userService;
 	
-	private OauthUserDto user;
+	private UserDto user;
 	
 	@BeforeAll
 	void registerUser() throws Exception {
-		user = (OauthUserDto) authController.register(UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123")).getBody();
+		user = (UserDto) authController.register(UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123")).getBody();
+		this.authController.activeUser(this.userService.findFirstAccesTokenById(user.getId()));
 		
 		assertAll(
 				() -> assertThat(user).isNotNull(),
@@ -72,7 +73,7 @@ class AuthControllerTest {
 	@Test
 	@DisplayName("Criar um usuário já com email existente, gerando exceção")
 	void creatingExistingUserUsingEmail() throws Exception {
-		OauthUserDto existingUser = UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123");
+		UserDto existingUser = UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123");
 		ResponseEntity<Object> response = authController.register(existingUser);
 		
 		assertAll(
@@ -84,7 +85,7 @@ class AuthControllerTest {
 	@Test
 	@DisplayName("Criar um usuário com username já existente, gerando exceção")
 	void creatingExistingUserUsingUsername() throws Exception {
-		OauthUserDto existingUser = UserDtoInstantior.createUser("user", "user", "tes@hotmail.com", "123");
+		UserDto existingUser = UserDtoInstantior.createUser("user", "user", "tes@hotmail.com", "123");
 		ResponseEntity<Object> response = authController.register(existingUser);
 		
 		assertAll(

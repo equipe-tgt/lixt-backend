@@ -8,7 +8,8 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum TypeMail {
 	
-	RESET_PASSWORD(1);
+	RESET_PASSWORD(1),
+	CREATE_ACCOUNT(2);
 	
 	private int id;
 

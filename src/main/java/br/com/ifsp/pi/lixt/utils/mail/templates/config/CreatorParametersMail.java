@@ -15,5 +15,14 @@ public abstract class CreatorParametersMail {
 		
 		return map;
 	}
+	
+	public static Map<String, String> createParamsCreateAccount(String baseUrl, String token) {
+		Map<String, String> map = new HashMap<>();
+		
+		map.put("$BASE_URL", baseUrl);
+		map.put("$TOKEN", token);
+		
+		return map;
+	}
 
 }

@@ -3,15 +3,15 @@ package br.com.ifsp.pi.lixt.data.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
 public abstract class UserDtoData {
 	
 	private UserDtoData() {}
 	
-	public static List<OauthUserDto> initializeValues() {
-		List<OauthUserDto> users = new ArrayList<>();
+	public static List<UserDto> initializeValues() {
+		List<UserDto> users = new ArrayList<>();
 		
 		users.add(UserDtoInstantior.createUser("teste1", "teste1", "teste1@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste2", "teste2", "teste2@gmail.com", "123"));
@@ -20,8 +20,8 @@ public abstract class UserDtoData {
 		return users;
 	}
 	
-	public static List<OauthUserDto> dataForListControllerTest() {
-		List<OauthUserDto> users = new ArrayList<>();
+	public static List<UserDto> dataForListControllerTest() {
+		List<UserDto> users = new ArrayList<>();
 		
 		users.add(UserDtoInstantior.createUser("teste4", "teste4", "teste4@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste5", "teste5", "teste5@gmail.com", "123"));
@@ -34,8 +34,8 @@ public abstract class UserDtoData {
 		return users;
 	}
 	
-	public static List<OauthUserDto> dataForProductOfListControllerTest() {
-		List<OauthUserDto> users = new ArrayList<>();
+	public static List<UserDto> dataForProductOfListControllerTest() {
+		List<UserDto> users = new ArrayList<>();
 		
 		users.add(UserDtoInstantior.createUser("teste11", "teste11", "teste11@gmail.com", "123"));
 		users.add(UserDtoInstantior.createUser("teste12", "teste12", "teste12@gmail.com", "123"));

@@ -13,7 +13,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
+import br.com.ifsp.pi.lixt.dto.UserDto;
 
 public abstract class RequestOauth2 {
 	
@@ -24,7 +24,7 @@ public abstract class RequestOauth2 {
 	
 	private RequestOauth2() {}
 	
-	public static String authenticate(MockMvc mockMvc, OauthUserDto user) throws Exception {
+	public static String authenticate(MockMvc mockMvc, UserDto user) throws Exception {
 		
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 

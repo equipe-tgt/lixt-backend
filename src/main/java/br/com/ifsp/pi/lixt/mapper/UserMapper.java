@@ -33,6 +33,7 @@ public abstract class UserMapper {
 				.name(dto.getName())
 				.username(dto.getUsername())
 				.email(dto.getEmail())
+				.password(dto.getPassword())
 				.build();
 	}
 	

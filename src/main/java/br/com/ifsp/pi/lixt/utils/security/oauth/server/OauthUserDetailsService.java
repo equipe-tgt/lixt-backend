@@ -29,7 +29,7 @@ public class OauthUserDetailsService implements UserDetailsService {
 					.username(user.getUsername())
 					.email(user.getEmail())
 					.password(user.getPassword())
-					.enabled(true)
+					.enabled(user.isActivated())
 					.build();
 		}
 		
