@@ -103,10 +103,12 @@ public class ProductOfListFacade {
 	}
 	
 	public Integer cleanProductOfList(Long productOfListId) {
-		Long ownerIdList = this.listOfItemsService.findOwnerIdByListId(productOfListId);
+		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
+		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(productOfListId);
 		
-		if(!ValidatorAccess.canAcces(ownerIdList))
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
+		}
 		
 		return this.productOfListService.cleanProductOfList(productOfListId);
 	}
