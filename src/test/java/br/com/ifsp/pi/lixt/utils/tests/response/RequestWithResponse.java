@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
+import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
 
@@ -43,7 +43,7 @@ public abstract class RequestWithResponse {
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Object createPostRequestJson(MockMvc mockMvc, String uri, String content, OauthUserDto user, Class clazz) throws Exception {
+	public static Object createPostRequestJson(MockMvc mockMvc, String uri, String content, UserDto user, Class clazz) throws Exception {
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		

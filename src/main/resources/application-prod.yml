@@ -4,3 +4,8 @@ spring:
     url: jdbc:mysql://lixt-db.mysql.database.azure.com:3306/lixt?useSSL=true&requireSSL=false
     username: lixt_root@lixt-db
     password: SenhadaAzure123!
+
+lixt:
+  base:
+    url: https://lixt-ws.azurewebsites.net/
+    

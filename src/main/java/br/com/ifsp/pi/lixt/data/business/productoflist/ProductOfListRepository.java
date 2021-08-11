@@ -18,8 +18,18 @@ public interface ProductOfListRepository extends CrudRepository<ProductOfList, L
 	
 	@Modifying(clearAutomatically = true)
 	@Transactional
+	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.assignedUserId = null WHERE p.id = ?1")
+	Integer cleanProductOfList(Long productOfListId);
+	
+	@Modifying(clearAutomatically = true)
+	@Transactional
 	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.assignedUserId = null WHERE p.listId = ?1")
 	Integer cleanUserIdAtProductsOfList(Long listId);
+	
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = ?1, p.isMarked = true WHERE p.id = ?2")
+	Integer markProduct(Long userId, Long productId);
 	
 	@Modifying(clearAutomatically = true)
 	@Transactional
@@ -28,7 +38,12 @@ public interface ProductOfListRepository extends CrudRepository<ProductOfList, L
 
 	@Modifying(clearAutomatically = true)
 	@Transactional
-	@Query("UPDATE ProductOfList p SET p.assignedUserId = ?1 WHERE p.id = ?2")
+	@Query("UPDATE ProductOfList p SET p.assignedUserId = ?1, p.userWhoMarkedId = null, p.isMarked = false WHERE p.id = ?2")
 	Integer assignedItemToUser(Long userId, Long productOfListId);
+	
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query("UPDATE ProductOfList p SET p.assignedUserId = ?1, p.userWhoMarkedId = ?1, p.isMarked = ?2 WHERE p.id = ?3")
+	Integer assignedItemToUser(Long userId, boolean isMarked, Long productOfListId);
 	
 }

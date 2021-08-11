@@ -35,7 +35,7 @@ import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
+import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
@@ -67,7 +67,7 @@ class GenerateDataTest {
 	@Autowired
 	private UserService userService;
 	
-	private List<OauthUserDto> oauthUsers = new ArrayList<>();
+	private List<UserDto> oauthUsers = new ArrayList<>();
 	private List<Product> products = new ArrayList<>();
 	private CategoryDto category;
 	private List<ProductOfListDto> productsOfList = new ArrayList<>();
@@ -80,8 +80,9 @@ class GenerateDataTest {
 	void initializeData() throws Exception {
 
 		UserDtoData.initializeValues().forEach(user -> {
-			oauthUsers.add((OauthUserDto) this.authController.register(user).getBody());
+			oauthUsers.add((UserDto) this.authController.register(user).getBody());
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
+			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()));
 		});
 		
 		assertThat(this.authController.register(oauthUsers.get(0)).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);

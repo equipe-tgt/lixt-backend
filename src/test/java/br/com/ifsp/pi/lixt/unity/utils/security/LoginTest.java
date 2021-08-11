@@ -24,8 +24,8 @@ import org.springframework.util.MultiValueMap;
 
 import br.com.ifsp.pi.lixt.controller.AuthController;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
 
@@ -46,11 +46,12 @@ class LoginTest {
 	private MockMvc mockMvc;
 	
 	private JacksonJsonParser jsonParser = new JacksonJsonParser();
-	private OauthUserDto user;
+	private UserDto user;
 	
 	@BeforeAll
 	void registerUser() throws Exception {
-		user = (OauthUserDto) authController.register(UserDtoInstantior.createUser("user2", "user2", "user2@hotmail.com", "123")).getBody();
+		user = (UserDto) authController.register(UserDtoInstantior.createUser("user2", "user2", "user2@hotmail.com", "123")).getBody();
+		this.authController.activeUser(this.userService.findFirstAccesTokenById(user.getId()));
 		
 		assertAll(
 				() -> assertThat(user).isNotNull(),

@@ -32,11 +32,11 @@ import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.CommentDtoInstantior;
 import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
 import br.com.ifsp.pi.lixt.instantiator.ProductOfListDtoInstantior;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponseList;
@@ -74,7 +74,7 @@ class ProductOfListControllerTest {
 	private ListOfItemsDto listOfItems;
 	private CategoryDto category;
 	private ProductDto product;
-	private List<OauthUserDto> oauthUsers = new ArrayList<>();
+	private List<UserDto> oauthUsers = new ArrayList<>();
 	private String token;
 	private List<ListMembersDto> listMembers = new ArrayList<>();
 	private List<CommentDto> comments = new ArrayList<>();
@@ -85,8 +85,9 @@ class ProductOfListControllerTest {
 		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
 
 		UserDtoData.dataForProductOfListControllerTest().forEach(user -> {
-			oauthUsers.add((OauthUserDto) this.authController.register(user).getBody());
+			oauthUsers.add((UserDto) this.authController.register(user).getBody());
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
+			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()));
 		});
 	}
 	
@@ -153,7 +154,7 @@ class ProductOfListControllerTest {
 				
 			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
 			
-			for(OauthUserDto userToTryUpdate : oauthUsers) {
+			for(UserDto userToTryUpdate : oauthUsers) {
 				
 				if(userToTryUpdate.getId().equals(commentDto.getUserId())) {
 					commentDto.setContent("CARROZ");
@@ -175,7 +176,7 @@ class ProductOfListControllerTest {
 				ValidatorStatusResponsePut.isForbidden(mockMvc, userToTryUpdate, "/comment/" + commentDto.getId(), CommentDtoInstantior.createCommentJson(commentDto));
 			}
 			
-			for(OauthUserDto userToTryDelete : oauthUsers) {
+			for(UserDto userToTryDelete : oauthUsers) {
 				
 				if(userToTryDelete.getId().equals(commentDto.getUserId()))
 					continue;
@@ -240,7 +241,7 @@ class ProductOfListControllerTest {
 	void deleteData() throws Exception {
 		
 		for(CommentDto comment : comments) {
-			for(OauthUserDto userToTryDelete : oauthUsers) {
+			for(UserDto userToTryDelete : oauthUsers) {
 				if(userToTryDelete.getId().equals(comment.getUserId()))
 					ValidatorStatusResponseDelete.isOk(mockMvc, userToTryDelete, "/comment/" + comment.getId());
 			}

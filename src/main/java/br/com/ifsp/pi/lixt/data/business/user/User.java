@@ -41,9 +41,12 @@ public class User {
 
 	@Column(name = "st_password")
 	private String password;
+	
+	@Column(name = "st_first_access_token")
+	private String firstAccessToken;
 
 	@Builder.Default
 	@Column(name = "bl_activated")
-	private boolean activated = true;
+	private boolean activated = false;
 
 } 

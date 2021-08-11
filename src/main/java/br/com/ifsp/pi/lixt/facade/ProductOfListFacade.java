@@ -85,6 +85,34 @@ public class ProductOfListFacade {
 		return this.productOfListService.findCommentsByProductOfListId(id);
 	}
 	
+	public Integer markProduct(Long productId) {
+		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productId);
+		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(productId);
+		
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
+			throw new ForbiddenException();
+		}
+		
+		var productOfList = this.productOfListService.findById(productId);
+		
+		if(productOfList.getIsMarked()) {
+			return 0;
+		}
+		
+		return this.productOfListService.markProduct(Users.getUserId(), productId);
+	}
+	
+	public Integer cleanProductOfList(Long productOfListId) {
+		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
+		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(productOfListId);
+		
+		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
+			throw new ForbiddenException();
+		}
+		
+		return this.productOfListService.cleanProductOfList(productOfListId);
+	}
+	
 	public Integer assignedItemToMe(Long productOfListId) {
 		
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
@@ -97,10 +125,10 @@ public class ProductOfListFacade {
 		Long oldAssignedUserId = this.productOfListService.findById(productOfListId).getAssignedUserId();
 		
 		if(Objects.isNull(oldAssignedUserId)) {
-			return this.productOfListService.assignedItemToUser(Users.getUserId(), productOfListId);
+			return this.productOfListService.assignedItemToUser(Users.getUserId(), true, productOfListId);
 		}
 		if(Users.getUserId().equals(oldAssignedUserId)) {
-			return this.productOfListService.assignedItemToUser(null, productOfListId);
+			return this.productOfListService.assignedItemToUser(null, false, productOfListId);
 		}
 		
 		return 0;
@@ -109,9 +137,15 @@ public class ProductOfListFacade {
 	public Integer assignedItemToUser(Long userId, Long productOfListId) {
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
 		
-		if(!ValidatorAccess.canAcces(ownerId)) {
+		if(!ValidatorAccess.canAcces(ownerId))
 			throw new ForbiddenException();
+		
+		var productOfList = this.productOfListService.findById(productOfListId);
+		
+		if(productOfList.getIsMarked()) {
+			return 0;
 		}
+		
 		return this.productOfListService.assignedItemToUser(userId, productOfListId);
 	}
 

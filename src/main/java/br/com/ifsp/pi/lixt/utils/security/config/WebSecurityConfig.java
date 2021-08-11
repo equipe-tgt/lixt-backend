@@ -24,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 				.antMatchers("/auth/register")
 				.antMatchers("/auth/forget-password/**")
+				.antMatchers("/auth/active-user")
 				.antMatchers(HttpMethod.OPTIONS,"/**")
 				.antMatchers(AUTH_WHITELIST)
 				.antMatchers(HttpMethod.OPTIONS,"/**");
@@ -35,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(AUTH_WHITELIST).permitAll()
 			.antMatchers("/auth/register").permitAll()
 			.antMatchers("/auth/forget-password/**").permitAll()
+			.antMatchers("/auth/active-user").permitAll()
 			.anyRequest().authenticated()
 			.and()
 			.formLogin().disable()

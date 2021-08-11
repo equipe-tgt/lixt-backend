@@ -2,13 +2,10 @@ package br.com.ifsp.pi.lixt.facade;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchase;
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchaseService;
-import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
 import br.com.ifsp.pi.lixt.data.business.purchase.Purchase;
 import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseService;
 import br.com.ifsp.pi.lixt.data.business.purchaselist.PurchaseList;
@@ -26,7 +23,6 @@ public class PurchaseFacade {
 	private final PurchaseService purchaseService;
 	private final ItemOfPurchaseService itemOfPurchaseService;
 	private final PurchaseListService purchaseListService;
-	private final ProductOfListService productOfListService;
 	
 	public Purchase findById(Long id) {
 		return this.purchaseService.findById(id);
@@ -38,7 +34,6 @@ public class PurchaseFacade {
 		
 		var result = createPurchase(purchaseDto);
 		
-		markItensAtList(purchaseDto);
 		savePurchasesList(purchaseDto, result);
 		saveItensOfPurchase(purchaseDto, result);
 		
@@ -47,15 +42,6 @@ public class PurchaseFacade {
 	
 	public List<Purchase> findUserPurchases() {
 		return this.purchaseService.findUserPurchases(Users.getUserId());
-	}
-	
-	private void markItensAtList(PurchaseDto purchaseDto) {
-		this.productOfListService.markProducts(Users.getUserId(), 
-				purchaseDto.getPurchaseLists().stream().map(
-						purchaseList -> purchaseList.getItemsOfPurchase()
-								.stream().map(itemOfPurchase -> itemOfPurchase.getProductOfListId()).collect(Collectors.toList())
-				).collect(Collectors.toList()).stream().flatMap(List::stream).collect(Collectors.toList())
-		);
 	}
 	
 	private Purchase createPurchase(PurchaseDto purchaseDto) {

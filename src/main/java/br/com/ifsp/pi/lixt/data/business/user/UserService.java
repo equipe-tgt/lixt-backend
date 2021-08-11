@@ -36,12 +36,8 @@ public class UserService {
 		this.userRepository.deleteById(id);
 	}
 	
-	public Integer activeAccount(String email, String password) {
-		return this.userRepository.updatePassword(password, email);
-	}
-	
-	public Integer activeAccount(Long id) {
-		return this.userRepository.activeAccount(id);
+	public Integer activeAccount(String token) {
+		return this.userRepository.activeAccount(token);
 	}
 	
 	public Integer desactiveAccount(Long id) {
@@ -54,6 +50,10 @@ public class UserService {
 	
 	public String findUsernameByEmail(String email) {
 		return this.userRepository.findUsernameByEmail(email);
+	}
+	
+	public String findFirstAccesTokenById(Long id) {
+		return this.userRepository.findFirstAccesTokenById(id);
 	}
 	
 }

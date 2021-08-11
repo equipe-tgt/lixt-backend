@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Index;
 import javax.persistence.Table;
 
 import org.locationtech.jts.geom.Point;
@@ -22,7 +23,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @EqualsAndHashCode
-@Table(name = "tb_purchase_local")
+@Table(name = "tb_purchase_local", indexes = {
+		@Index(columnList = "point_location", name = "fk_purchaseLocal_local")
+})
 public class PurchaseLocal {
 
 	@Id

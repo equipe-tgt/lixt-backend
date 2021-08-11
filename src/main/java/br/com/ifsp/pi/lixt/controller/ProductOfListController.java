@@ -60,6 +60,18 @@ public class ProductOfListController {
 		return this.productOfListFacade.findCommentsByProductOfListId(id).stream().map(CommentMapper::entityToDto).collect(Collectors.toList());
 	}
 	
+	@ApiOperation(value = "Marcar produto da lista")
+	@GetMapping("/mark/{productOfListId}")
+	public Integer markProduct(@PathVariable Long productOfListId) {
+		return this.productOfListFacade.markProduct(productOfListId);
+	}
+	
+	@ApiOperation(value = "Limpar dados de compra no produto da lista")
+	@GetMapping("/clean/{productOfListId}")
+	public Integer cleanProductOfList(@PathVariable Long productOfListId) {
+		return this.productOfListFacade.cleanProductOfList(productOfListId);
+	}
+	
 	@ApiOperation(value = "Atribuir ao usuário solicitante o item a ser comprado, retornando se foi aprovado essa atribuição ou não")
 	@GetMapping("/{id}/assigned-to-me")
 	public Integer assignedItemToMe(@PathVariable Long id) {
