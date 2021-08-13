@@ -56,7 +56,12 @@ public class AuthFacade {
 		Map<String, String> params = CreatorParametersMail.createParamsCreateAccount(user.getUsername(), baseUrl, user.getFirstAccessToken());
 		mail = FormatterMail.formatMail(mail, params);
 		mail.setRecipientTo(user.getEmail());
-		senderMail.sendEmail(mail);
+
+		boolean responseSendMail = senderMail.sendEmail(mail);
+		
+		if(!responseSendMail) {
+			throw new SendMailException();
+		}
 		
 		return userCreated;
 	}

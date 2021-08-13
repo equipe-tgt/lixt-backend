@@ -5,6 +5,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
 
 import br.com.ifsp.pi.lixt.utils.security.oauth.OauthManager;
 import br.com.ifsp.pi.lixt.utils.security.oauth.server.OauthUserDetailsService;
@@ -17,10 +19,12 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 	private final OauthManager oauthManager;
 	private final PasswordEncoder passwordEncoder;
 	private final OauthUserDetailsService userDetailsService;
+	private final TokenStore tokenStore;
+	private final DefaultTokenServices tokenServices;
 	
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-		endpoints.authenticationManager(oauthManager).userDetailsService(userDetailsService);
+		endpoints.tokenStore(tokenStore).tokenServices(tokenServices).authenticationManager(oauthManager).userDetailsService(userDetailsService);
 	}
 
 	@Override
