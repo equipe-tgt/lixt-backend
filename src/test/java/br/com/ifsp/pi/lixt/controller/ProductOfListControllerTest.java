@@ -114,32 +114,32 @@ class ProductOfListControllerTest {
 	void testList() throws Exception {
 
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		this.listOfItems = (ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
+		this.listOfItems = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
 		
 		assertThat(listOfItems).isNotNull();
 		
 		for(int i=1; i<4; i++) {
 			listMembers.add(
-					(ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(i).getUsername(), token, ListMembersDto.class)
+					RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(i).getUsername(), token, ListMembersDto.class)
 			);
 		}
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
 		listMembers.set(
 				0, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(0).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(0).getId(), token, ListMembersDto.class)
 		);
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(2));
 		listMembers.set(
 				1, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(1).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(1).getId(), token, ListMembersDto.class)
 		);
 		
 		for(int i=0; i<2; i++) {
 			for(String productOfList : ProductOfListDtoDataJson.initializeValues(this.listOfItems, ProductMapper.dtoToEntity(this.product))) {
 				String tokenUser = RequestOauth2.authenticate(mockMvc, oauthUsers.get(i));
-				ProductOfListDto product = (ProductOfListDto) RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
+				ProductOfListDto product = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
 				this.productsOfList.add(product);
 			}
 		}
@@ -152,7 +152,7 @@ class ProductOfListControllerTest {
 				
 		for(String comment : CommentDtoDataJson.initializeValues(oauthUsers.get(1), this.productsOfList.get(0))) {
 				
-			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
+			CommentDto commentDto = RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
 			
 			for(UserDto userToTryUpdate : oauthUsers) {
 				
@@ -161,7 +161,7 @@ class ProductOfListControllerTest {
 					ValidatorStatusResponsePut.isOk(mockMvc, userToTryUpdate, "/comment/" + commentDto.getId(), CommentDtoInstantior.createCommentJson(commentDto));
 					
 					token = RequestOauth2.authenticate(mockMvc, userToTryUpdate);
-					CommentDto commentTemp = (CommentDto) RequestWithResponse.createGetRequestJson(mockMvc, "/comment/" + commentDto.getId(), token, CommentDto.class);
+					CommentDto commentTemp = RequestWithResponse.createGetRequestJson(mockMvc, "/comment/" + commentDto.getId(), token, CommentDto.class);
 					assertThat(commentTemp.getContent()).isEqualTo(commentDto.getContent());
 					
 					ValidatorStatusResponsePut.isPreconditionFailed(mockMvc, userToTryUpdate, "/comment/0", CommentDtoInstantior.createCommentJson(commentTemp));
@@ -219,8 +219,7 @@ class ProductOfListControllerTest {
 				this.productsOfList.get(j).setIsMarked(true);
 				ValidatorStatusResponsePut.isOk(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(j).getId(), ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(j)));
 				
-				ProductOfListDto productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
-						mockMvc, "/productOfList/" + this.productsOfList.get(j).getId(), token, ProductOfListDto.class);
+				ProductOfListDto productTemp = RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(j).getId(), token, ProductOfListDto.class);
 				
 				assertTrue(productTemp.getIsMarked());
 				

@@ -5,7 +5,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -69,7 +68,7 @@ class ListOfItemsControllerTest {
 			token = RequestOauth2.authenticate(mockMvc, oauthUser);
 			
 			listsOfItems.add(
-					(ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class)
+					RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class)
 			);
 		}
 		
@@ -77,32 +76,32 @@ class ListOfItemsControllerTest {
 
 		for(int i=1; i<5; i++) {
 			listMembers.add(
-					(ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), oauthUsers.get(i).getUsername(), token, ListMembersDto.class)
+					RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), oauthUsers.get(i).getUsername(), token, ListMembersDto.class)
 			);
 		}
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
 		listMembers.set(
 				0, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(0).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(0).getId(), token, ListMembersDto.class)
 		);
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(2));
 		listMembers.set(
 				1, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(1).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(1).getId(), token, ListMembersDto.class)
 		);
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(3));
 		listMembers.set(
 				2, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(2).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(2).getId(), token, ListMembersDto.class)
 		);
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(4));
 		listMembers.set(
 				3, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(3).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(3).getId(), token, ListMembersDto.class)
 		);
 		
 		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/membersList/" + listMembers.get(3).getId());
@@ -119,8 +118,7 @@ class ListOfItemsControllerTest {
 		for(int i=0; i<oauthUsers.size(); i++) {
 			token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(i));
 			
-			List<ListOfItemsDto> list = RequestWithResponseList.createGetRequestJson(mockMvc, "/list/by-user", token, ListOfItemsDto.class)
-					.stream().map(element -> (ListOfItemsDto)element).collect(Collectors.toList());
+			List<ListOfItemsDto> list = RequestWithResponseList.createGetRequestJson(mockMvc, "/list/by-user", token, ListOfItemsDto.class);
 			
 			assertThat(list).hasSizeGreaterThan(0);
 			assertThat(list).hasSize(expectedValues.get(i));
@@ -145,7 +143,7 @@ class ListOfItemsControllerTest {
 		ValidatorStatusResponsePut.isOk(mockMvc, oauthUsers.get(0), "/list/" + this.listsOfItems.get(0).getId(), content);
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		ListOfItemsDto list = (ListOfItemsDto) RequestWithResponse.createGetRequestJson(mockMvc, "/list/" + this.listsOfItems.get(0).getId(), token, ListOfItemsDto.class);
+		ListOfItemsDto list = RequestWithResponse.createGetRequestJson(mockMvc, "/list/" + this.listsOfItems.get(0).getId(), token, ListOfItemsDto.class);
 		assertThat(list.getDescription()).isEqualTo("MUDANDO DESC");
 	}
 	
@@ -206,11 +204,8 @@ class ListOfItemsControllerTest {
 	void findInvites() throws Exception {
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
 		
-		List<InviteDto> invitesSent = RequestWithResponseList.createGetRequestJson(mockMvc, "/membersList/sent", token, InviteDto.class)
-				.stream().map(element -> (InviteDto)element).collect(Collectors.toList());
-		
-		List<InviteDto> invitesReceived = RequestWithResponseList.createGetRequestJson(mockMvc, "/membersList/received", token, InviteDto.class)
-				.stream().map(element -> (InviteDto)element).collect(Collectors.toList());	
+		List<InviteDto> invitesSent = RequestWithResponseList.createGetRequestJson(mockMvc, "/membersList/sent", token, InviteDto.class);
+		List<InviteDto> invitesReceived = RequestWithResponseList.createGetRequestJson(mockMvc, "/membersList/received", token, InviteDto.class);	
 		
 		assertThat(invitesSent).hasSize(3);
 		assertThat(invitesReceived).isEmpty();
@@ -221,7 +216,7 @@ class ListOfItemsControllerTest {
 	@Order(9)
 	void getoutList() throws Exception {
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		ListMembersDto invite = (ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), oauthUsers.get(6).getUsername(), token, ListMembersDto.class);
+		ListMembersDto invite = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listsOfItems.get(0).getId(), oauthUsers.get(6).getUsername(), token, ListMembersDto.class);
 		
 		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(6), "/membersList/" + invite.getId());
 	}

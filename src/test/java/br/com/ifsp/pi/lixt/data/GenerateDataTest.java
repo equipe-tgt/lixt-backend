@@ -102,7 +102,7 @@ class GenerateDataTest {
 	@Order(1)
 	void testList() throws Exception {
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		this.listOfItems = (ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
+		this.listOfItems = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
 		
 		assertThat(listOfItems).isNotNull();
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
@@ -117,7 +117,7 @@ class GenerateDataTest {
 		
 		for(String productOfList : ProductOfListDtoDataJson.initializeValues(this.listOfItems, this.products.get(0))) {
 			String tokenUser = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-			ProductOfListDto product = (ProductOfListDto) RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
+			ProductOfListDto product = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
 			this.productsOfList.add(product);
 			assertThat(product).isNotNull();
 		}
@@ -131,7 +131,7 @@ class GenerateDataTest {
 	void testCreateListMembers() throws Exception {
 		
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		listMembers = (ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), token, ListMembersDto.class);
+		listMembers = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), token, ListMembersDto.class);
 		assertThat(listMembers).isNotNull();
 		
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
@@ -145,7 +145,7 @@ class GenerateDataTest {
 	void testAcceptListMembers() throws Exception {
 		
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
-		listMembers = (ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.getId(), token, ListMembersDto.class);
+		listMembers = RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.getId(), token, ListMembersDto.class);
 		assertThat(listMembers).isNotNull();
 		
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
@@ -159,11 +159,11 @@ class GenerateDataTest {
 	void createComment() throws Exception {
 		
 		for(String comment : CommentDtoDataJson.initializeValues(this.oauthUsers.get(0), this.productsOfList.get(0))) {
-			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
+			CommentDto commentDto = RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
 			this.comments.add(commentDto);
 			assertThat(commentDto).isNotNull();
 			
-			commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
+			commentDto = RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
 			this.comments.add(commentDto);
 			assertThat(commentDto).isNotNull();
 			
