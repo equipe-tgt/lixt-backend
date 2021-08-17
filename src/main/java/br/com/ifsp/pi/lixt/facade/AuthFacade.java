@@ -66,7 +66,7 @@ public class AuthFacade {
 		return userCreated;
 	}
 	
-	public Integer updatePassword(String password) throws NotFoundException {		
+	public Integer updatePassword(String password) {		
 		return this.userService.updatePassword(Users.getEmail(), passwordEncoder.encode(password));
 	}
 	

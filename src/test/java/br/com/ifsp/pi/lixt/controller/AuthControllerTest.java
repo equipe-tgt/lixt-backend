@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.AfterAll;
@@ -25,6 +26,7 @@ import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
+import br.com.ifsp.pi.lixt.utils.views.InvalidTokenView;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -104,6 +106,14 @@ class AuthControllerTest {
 	@DisplayName("Gerar nova senha para usuário inexistente")
 	void newPasswordUnexistingUser() throws Exception {
 		assertThat(authController.forgetPassword("bob@email.com").getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+	
+	@Test
+	@DisplayName("Ativar usuário sem sucesso")
+	void activeUserUncessfully() {
+		assertEquals(this.authController.activeUser(""), InvalidTokenView.getView());
+		assertEquals(this.authController.activeUser("abc"), InvalidTokenView.getView());
+		assertEquals(this.authController.activeUser(null), InvalidTokenView.getView());
 	}
 	
 	@AfterAll

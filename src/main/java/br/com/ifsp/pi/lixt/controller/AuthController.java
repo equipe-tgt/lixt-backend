@@ -41,6 +41,9 @@ public class AuthController {
 		} catch (DuplicatedDataException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		}
+		catch(SendMailException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
+		}
 	}
 	
 	@PostMapping("/forget-password/{email}")
