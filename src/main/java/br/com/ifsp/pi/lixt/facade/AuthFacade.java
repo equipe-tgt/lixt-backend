@@ -18,13 +18,14 @@ import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.ChooserTemplateMail;
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
 import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.CreatorParametersMail;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.SecurityGenerator;
-import br.com.ifsp.pi.lixt.utils.views.ActiveAccountView;
-import br.com.ifsp.pi.lixt.utils.views.InvalidTokenView;
+import br.com.ifsp.pi.lixt.utils.views.activeaccount.ActiveAccountView;
+import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenView;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -38,7 +39,7 @@ public class AuthFacade {
 	@Value("${lixt.base.url}") String baseUrl;
 	
 	@Transactional
-	public User register(User user) {
+	public User register(User user, Languages language) {
 
 		if(userService.findByEmail(user.getEmail()) != null) {
 			throw new DuplicatedDataException("Email já cadastrado na plataforma");
@@ -52,8 +53,8 @@ public class AuthFacade {
 		
 		User userCreated = this.userService.save(user);
 		
-		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.CREATE_ACCOUNT);
-		Map<String, String> params = CreatorParametersMail.createParamsCreateAccount(user.getUsername(), baseUrl, user.getFirstAccessToken());
+		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.CREATE_ACCOUNT, language);
+		Map<String, String> params = CreatorParametersMail.createParamsCreateAccount(user.getUsername(), baseUrl, user.getFirstAccessToken(), language);
 		mail = FormatterMail.formatMail(mail, params);
 		mail.setRecipientTo(user.getEmail());
 
@@ -71,7 +72,7 @@ public class AuthFacade {
 	}
 	
 	@Transactional
-	public Integer forgetPassword(String email) {
+	public Integer forgetPassword(String email, Languages language) {
 		
 		var user = this.userService.findByEmail(email);
 		
@@ -85,7 +86,7 @@ public class AuthFacade {
 		
 		if(ValidatorResponse.wasUpdated(responseUpdate)) {
 			
-			MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD);
+			MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD, language);
 			Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), password);
 			mail = FormatterMail.formatMail(mail, params);
 			mail.setRecipientTo(email);
@@ -100,13 +101,13 @@ public class AuthFacade {
 		return responseUpdate;
 	}
 	
-	public String activeUser(String token) {
+	public String activeUser(String token, Languages language) {
 		Integer result = this.userService.activeAccount(token);
 		
 		if(ValidatorResponse.wasUpdated(result))
-			return ActiveAccountView.getView();
+			return ActiveAccountView.getView(language);
 		else
-			return InvalidTokenView.getView();
+			return InvalidTokenView.getView(language);
 	}
 
 }

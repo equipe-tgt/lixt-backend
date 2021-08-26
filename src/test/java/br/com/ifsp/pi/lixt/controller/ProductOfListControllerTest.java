@@ -85,9 +85,9 @@ class ProductOfListControllerTest {
 		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
 
 		UserDtoData.dataForProductOfListControllerTest().forEach(user -> {
-			oauthUsers.add((UserDto) this.authController.register(user).getBody());
+			oauthUsers.add((UserDto) this.authController.register(user, null).getBody());
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
-			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()));
+			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()), null);
 		});
 	}
 	

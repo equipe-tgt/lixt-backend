@@ -1,7 +1,5 @@
 package br.com.ifsp.pi.lixt.utils.pagination;
 
-import org.springframework.data.domain.PageRequest;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,14 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class Page {
-
-	private int pageNumber;
-
-	private int size;
+public class PageFilter<T> {
 	
-	public PageRequest getPaginationParams() {
-		return PageRequest.of(pageNumber, size);
-	}
+	private T filter;
+
+	private Page page;
 
 }

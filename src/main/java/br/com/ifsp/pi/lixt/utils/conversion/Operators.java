@@ -1,6 +1,5 @@
 package br.com.ifsp.pi.lixt.utils.conversion;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 import lombok.AccessLevel;
@@ -28,28 +27,9 @@ public abstract class Operators {
 				.concat(QUOTATION_MARK).concat(value.toString()).concat(QUOTATION_MARK);
 	}
 	
-	protected static String createJsonLine(String key, Long value) {
+	protected static <T extends Object> String createJsonLine(String key, T value) {
 		return QUOTATION_MARK.concat(key).concat(QUOTATION_MARK)
 				.concat(COLON)
 				.concat(Objects.isNull(value) ? "null" : value.toString());
 	}
-	
-	protected static String createJsonLine(String key, Integer value) {
-		return QUOTATION_MARK.concat(key).concat(QUOTATION_MARK)
-				.concat(COLON)
-				.concat(Objects.isNull(value) ? "null" : value.toString());
-	}
-	
-	protected static String createJsonLine(String key, Boolean value) {
-		return QUOTATION_MARK.concat(key).concat(QUOTATION_MARK)
-				.concat(COLON)
-				.concat(Objects.isNull(value) ? "false" : value.toString());
-	}
-	
-	protected static String createJsonLine(String key, BigDecimal value) {
-		return QUOTATION_MARK.concat(key).concat(QUOTATION_MARK)
-				.concat(COLON)
-				.concat(Objects.isNull(value) ? "null" : value.toString());
-	}
-
 }

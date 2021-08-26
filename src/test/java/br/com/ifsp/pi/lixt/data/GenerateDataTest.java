@@ -80,12 +80,12 @@ class GenerateDataTest {
 	void initializeData() throws Exception {
 
 		UserDtoData.initializeValues().forEach(user -> {
-			oauthUsers.add((UserDto) this.authController.register(user).getBody());
+			oauthUsers.add((UserDto) this.authController.register(user, null).getBody());
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
-			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()));
+			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()), null);
 		});
 		
-		assertThat(this.authController.register(oauthUsers.get(0)).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+		assertThat(this.authController.register(oauthUsers.get(0), null).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
 		
 		this.category = categoryController.save(CategoryDto.builder().name("Alimentação").build());		
 		this.products = this.productService.saveAll(ProductDtoData.initializeValues(category));

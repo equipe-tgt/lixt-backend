@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.dto.UserDto;
@@ -20,10 +21,12 @@ import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Api(value = "Controller de autenticação, registro e busca de dados do usuário")
 @RestController
@@ -35,9 +38,9 @@ public class AuthController {
 	
 	@PostMapping("/register")
 	@ApiOperation(value = "Registrar usuário na plataforma")
-	public ResponseEntity<Object> register(@RequestBody(required = false) UserDto user) {
+	public ResponseEntity<Object> register(@RequestBody(required = false) UserDto user, @RequestParam(defaultValue = "en-us", required = false) String language) {
 		try {
-			return new ResponseEntity<>(UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user))), HttpStatus.OK);
+			return ResponseEntity.ok(UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user), Languages.convertStringToEnum(language))));
 		} catch (DuplicatedDataException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
 		}
@@ -48,9 +51,9 @@ public class AuthController {
 	
 	@PostMapping("/forget-password/{email}")
 	@ApiOperation(value = "Gera uma nova senha de um usuário na plataforma que será enviado por email")
-	public ResponseEntity<Integer> forgetPassword(@PathVariable String email) {
+	public ResponseEntity<Integer> forgetPassword(@PathVariable String email, @RequestParam(defaultValue = "en-us", required = false) String language) {
 		try {
-			return new ResponseEntity<>(this.authFacade.forgetPassword(email), HttpStatus.OK);
+			return ResponseEntity.ok(this.authFacade.forgetPassword(email, Languages.convertStringToEnum(language)));
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
 		}
@@ -67,15 +70,16 @@ public class AuthController {
 	
 	@GetMapping("/data-user")
 	@ApiOperation(value = "Buscar dados não-sensíveis do usuário através do token")
-	public UserDetails findDataUser(@AuthenticationPrincipal UserDetails userDetails) {
+	public UserDetails findDataUser(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
 		OauthUserDto user = (OauthUserDto) userDetails;
 		user.eraseCredentials();
 		return user;
 	}
 	
 	@GetMapping("/active-user")
-	public String activeUser(@PathParam(value = "token") String token) {
-		return authFacade.activeUser(token);
+	@ApiOperation(value = "Ativar conta de usuário na plataforma")
+	public String activeUser(@PathParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language) {
+		return authFacade.activeUser(token, Languages.convertStringToEnum(language));
 	}
 	
 }

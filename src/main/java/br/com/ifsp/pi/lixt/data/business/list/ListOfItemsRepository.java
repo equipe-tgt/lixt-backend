@@ -17,28 +17,28 @@ public interface ListOfItemsRepository extends CrudRepository<ListOfItems, Long>
 	@Query("select l.ownerId from ListOfItems l where l.id = ?1")
 	Long findOwnerIdByListId(Long listId);
 	
-	@Query("select lm.userId from ListOfItems l join l.listMembers lm where l.id = ?1 and lm.statusListMember = ?2")
+	@Query("select distinct lm.userId from ListOfItems l join l.listMembers lm where l.id = ?1 and lm.statusListMember = ?2")
 	List<Long> findMembersIdsByListId(Long listId, StatusListMember status);
 	
-	@Query("select lm from ListOfItems l join l.listMembers lm where l.ownerId = ?1")
+	@Query("select distinct lm from ListOfItems l join l.listMembers lm where l.ownerId = ?1")
 	List<ListMembers> findListMembersSentByUser(Long userId);
 	
 	
-	@Query("select l.ownerId from ListOfItems l left join l.productsOfList p where p.id = ?1")
+	@Query("select distinct l.ownerId from ListOfItems l left join l.productsOfList p where p.id = ?1")
 	Long findOwnerIdByProductOfListId(Long productOfListId);
 	
-	@Query("select lm.userId from ListOfItems l join l.productsOfList p join l.listMembers lm where p.id = ?1 and lm.statusListMember = ?2")
+	@Query("select distinct lm.userId from ListOfItems l join l.productsOfList p join l.listMembers lm where p.id = ?1 and lm.statusListMember = ?2")
 	List<Long> findMembersIdsByProductOfListId(Long productOfListId, StatusListMember status);
 	
 	
-	@Query("select l.ownerId from ListOfItems l join l.listMembers lm where lm.id = ?1")
+	@Query("select distinct l.ownerId from ListOfItems l join l.listMembers lm where lm.id = ?1")
 	Long findOwnerIdByListMemberId(Long listMembersId);
 	
 	
-	@Query("select l.ownerId from ListOfItems l join l.productsOfList p join p.comments c where c.id = ?1")
+	@Query("select distinct l.ownerId from ListOfItems l join l.productsOfList p join p.comments c where c.id = ?1")
 	Long findOwnerIdByCommentId(Long commentId);
 	
-	@Query("select lm.userId from ListOfItems l join l.productsOfList p join p.comments c join l.listMembers lm where c.id = ?1 and lm.statusListMember = ?2")
+	@Query("select distinct lm.userId from ListOfItems l join l.productsOfList p join p.comments c join l.listMembers lm where c.id = ?1 and lm.statusListMember = ?2")
 	List<Long> findMembersIdsByCommentId(Long commentId, StatusListMember status);
 	
 }
