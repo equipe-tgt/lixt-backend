@@ -34,5 +34,5 @@ lixt:
   version: @project.version@
   mail:
     username: noreply.lixt@gmail.com
-    password: lixtapp2021!
+    password: lixtapp2021!!
 
