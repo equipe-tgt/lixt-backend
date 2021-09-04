@@ -1,7 +1,5 @@
 package br.com.ifsp.pi.lixt.controller;
 
-import javax.websocket.server.PathParam;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,8 +41,7 @@ public class AuthController {
 			return ResponseEntity.ok(UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user), Languages.convertStringToEnum(language))));
 		} catch (DuplicatedDataException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
-		}
-		catch(SendMailException e) {
+		} catch(SendMailException e) {
 			return new ResponseEntity<>(e.getMessage(), HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -56,8 +53,7 @@ public class AuthController {
 			return ResponseEntity.ok(this.authFacade.forgetPassword(email, Languages.convertStringToEnum(language)));
 		} catch (NotFoundException e) {
 			return new ResponseEntity<>(0, HttpStatus.NOT_FOUND);
-		}
-		catch(SendMailException e) {
+		} catch(SendMailException e) {
 			return new ResponseEntity<>(0, HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
@@ -78,7 +74,7 @@ public class AuthController {
 	
 	@GetMapping("/active-user")
 	@ApiOperation(value = "Ativar conta de usuário na plataforma")
-	public String activeUser(@PathParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language) {
+	public String activeUser(@RequestParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language) {
 		return authFacade.activeUser(token, Languages.convertStringToEnum(language));
 	}
 	
