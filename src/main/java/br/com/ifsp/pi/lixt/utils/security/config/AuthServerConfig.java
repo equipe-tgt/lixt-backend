@@ -1,5 +1,6 @@
 package br.com.ifsp.pi.lixt.utils.security.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -16,6 +17,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 	
+	@Value("${lixt.basic.auth.clientId}") String clientId;
+	@Value("${lixt.basic.auth.secretId}") String secretId;
+	
 	private final OauthManager oauthManager;
 	private final PasswordEncoder passwordEncoder;
 	private final OauthUserDetailsService userDetailsService;
@@ -30,10 +34,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-        	.withClient("client")
+        	.withClient(clientId)
         	.authorizedGrantTypes("password", "authorization_code", "refresh_token", "client_credentials").scopes("all")
         	.refreshTokenValiditySeconds(300000)
-        	.secret(passwordEncoder.encode("123456"))
+        	.secret(passwordEncoder.encode(secretId))
         	.accessTokenValiditySeconds(50000);
 	}
 

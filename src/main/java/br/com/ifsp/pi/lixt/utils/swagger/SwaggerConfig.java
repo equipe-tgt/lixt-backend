@@ -29,6 +29,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
+	@Value("${lixt.basic.auth.clientId}") String clientId;
+	@Value("${lixt.basic.auth.secretId}") String secretId;
+	
 	@Bean
 	public Docket generateDocumentationSwagger(@Value("${lixt.version}") String version, @Value("${lixt.base.url}") String baseUrl) {	
 
@@ -55,7 +58,7 @@ public class SwaggerConfig {
 	
 	@Bean
 	public SecurityConfiguration securityInfo() {
-		return SecurityConfigurationBuilder.builder().clientId("client").clientSecret("123456").build();
+		return SecurityConfigurationBuilder.builder().clientId(clientId).clientSecret(secretId).build();
 	}
 	
 	private ApiInfo metaInfo(String version) {
