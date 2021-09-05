@@ -19,7 +19,7 @@ import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
-import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
+import br.com.ifsp.pi.lixt.utils.security.Oauth2Service;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +32,7 @@ import springfox.documentation.annotations.ApiIgnore;
 public class AuthController {
 
 	private final AuthFacade authFacade;
+	private final Oauth2Service oauth2Service;
 	
 	@PostMapping("/register")
 	@ApiOperation(value = "Registrar usuário na plataforma")
@@ -66,15 +67,19 @@ public class AuthController {
 	@GetMapping("/data-user")
 	@ApiOperation(value = "Buscar dados não-sensíveis do usuário através do token")
 	public UserDetails findDataUser(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
-		OauthUserDto user = (OauthUserDto) userDetails;
-		user.eraseCredentials();
-		return user;
+		return oauth2Service.findDataUser(userDetails);
 	}
 	
 	@GetMapping("/active-user")
 	@ApiOperation(value = "Ativar conta de usuário na plataforma")
 	public String activeUser(@RequestParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language) {
 		return authFacade.activeUser(token, Languages.convertStringToEnum(language));
+	}
+	
+	@GetMapping("/revoke-token")
+	@ApiOperation(value = "Remover tokens ao realizar logoff")
+	public void revokeToken() {
+		oauth2Service.revokeToken();
 	}
 	
 }
