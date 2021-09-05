@@ -19,11 +19,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
+import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
+import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponseList;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
 import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewHtml;
@@ -120,6 +124,21 @@ class AuthControllerTest {
 		assertEquals(this.authController.activeUser("", null), view);
 		assertEquals(this.authController.activeUser("abc", null), view);
 		assertEquals(this.authController.activeUser(null, null), view);
+	}
+	
+	@Test
+	@DisplayName("Revogar token")
+	void revokeToken() throws Exception {
+		UserDto userTR = (UserDto) authController.register(UserDtoInstantior.createUser("userTR", "userTR", "userTR@hotmail.com", "123"), null).getBody();
+		userTR.setPassword("123");
+		this.authController.activeUser(this.userService.findFirstAccesTokenById(userTR.getId()), null);
+		
+		String token = RequestOauth2.authenticate(mockMvc, userTR);
+		assertNotNull(RequestWithResponseList.createGetRequestJson(mockMvc, "/category", token, CategoryDto.class));
+		ValidatorStatusResponseGet.isOk(mockMvc, userTR, "/auth/revoke-token");
+		mockMvc.perform(ResquestBuilder.createDeleteRequestJson("/category", token)).andExpect(MockMvcResultMatchers.status().isUnauthorized());
+		
+		this.userService.deleteById(userTR.getId());
 	}
 	
 	@AfterAll
