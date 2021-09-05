@@ -28,8 +28,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
-	
-	// TODO Adaptar /forget-password
 
 	@Bean
 	public Docket generateDocumentationSwagger(@Value("${lixt.version}") String version, @Value("${lixt.base.url}") String baseUrl) {	

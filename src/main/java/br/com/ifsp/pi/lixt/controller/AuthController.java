@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,9 +45,9 @@ public class AuthController {
 		}
 	}
 	
-	@PostMapping("/forget-password/{email}")
+	@PostMapping(value = "/forget-password", consumes = MediaType.TEXT_PLAIN_VALUE)
 	@ApiOperation(value = "Gera uma nova senha de um usuário na plataforma que será enviado por email")
-	public ResponseEntity<Integer> forgetPassword(@PathVariable String email, @RequestParam(defaultValue = "en-us", required = false) String language) {
+	public ResponseEntity<Integer> forgetPassword(@RequestParam String email, @RequestParam(defaultValue = "en-us", required = false) String language) {
 		try {
 			return ResponseEntity.ok(this.authFacade.forgetPassword(email, Languages.convertStringToEnum(language)));
 		} catch (NotFoundException e) {
