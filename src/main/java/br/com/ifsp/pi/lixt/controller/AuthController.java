@@ -48,7 +48,7 @@ public class AuthController {
 	
 	@PostMapping(value = "/forget-password", consumes = MediaType.TEXT_PLAIN_VALUE)
 	@ApiOperation(value = "Gera uma nova senha de um usuário na plataforma que será enviado por email")
-	public ResponseEntity<Integer> forgetPassword(@RequestParam String email, @RequestParam(defaultValue = "en-us", required = false) String language) {
+	public ResponseEntity<Integer> forgetPassword(@RequestBody String email, @RequestParam(defaultValue = "en-us", required = false) String language) {
 		try {
 			return ResponseEntity.ok(this.authFacade.forgetPassword(email, Languages.convertStringToEnum(language)));
 		} catch (NotFoundException e) {
