@@ -69,7 +69,7 @@ public class ProductOfList {
 	private Boolean isMarked = false;
 
 	@Column(name = "nr_amount")
-	private Integer amount;
+	private Integer plannedAmount;
 	
 	@Column(name = "nr_price")
 	private BigDecimal price;

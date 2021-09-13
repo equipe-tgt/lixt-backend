@@ -6,10 +6,10 @@ public abstract class ProductOfListDtoInstantior {
 
 	private ProductOfListDtoInstantior() {}
 	
-	public static String createProductOfListJson(int amount, Long listId, String measureType, String measureValue, Long productId, String name) {
+	public static String createProductOfListJson(int plannedAmount, Long listId, String measureType, String measureValue, Long productId, String name) {
 		
 		return "{" + 
-				"  \"amount\": " + amount + "," + 
+				"  \"plannedAmount\": " + plannedAmount + "," +
 				"  \"assignedUserId\": null," + 
 				"  \"amountComment\": null," + 
 				"  \"id\": null," + 
@@ -28,7 +28,7 @@ public abstract class ProductOfListDtoInstantior {
 	public static String createProductOfListJson(ProductOfListDto productOfList) {
 		
 		return "{" + 
-				"  \"amount\": " + productOfList.getAmount() + "," + 
+				"  \"plannedAmount\": " + productOfList.getPlannedAmount() + "," +
 				"  \"assignedUserId\": " + productOfList.getAssignedUserId() + "," + 
 				"  \"amountComment\": null," + 
 				"  \"id\": " + productOfList.getId() + "," + 
