@@ -149,4 +149,13 @@ public class ProductOfListFacade {
 		return this.productOfListService.assignedItemToUser(userId, productOfListId);
 	}
 
+	public Integer updateMarkedAmount(Integer markedAmount, Long productOfListId) {
+		ProductOfList productOfList = this.productOfListService.findById(productOfListId);
+
+		if(markedAmount > productOfList.getPlannedAmount())
+			throw new PreconditionFailedException("Erro ao atualizar produto da lista");
+
+		return this.productOfListService.updateMarkedAmount(markedAmount, productOfListId);
+	}
+
 }

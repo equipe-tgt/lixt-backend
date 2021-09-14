@@ -31,6 +31,8 @@ public class ProductOfListDto {
 	private Boolean isMarked;
 
 	private Integer plannedAmount;
+
+	private Integer markedAmount;
 	
 	private BigDecimal price;
 	

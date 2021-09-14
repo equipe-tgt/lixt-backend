@@ -237,6 +237,41 @@ class ProductOfListControllerTest {
 		}
 	}
 
+	@DisplayName("Marcar quantidades de um produto")
+	@Test
+	@Order(5)
+	void markProductsOfList() throws Exception {
+		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+		assertThat(
+				RequestWithResponse.createGetRequestJson(
+						mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class)
+		).isNotNull();
+
+		this.productsOfList.get(0).setMarkedAmount(1);
+
+		ValidatorStatusResponsePut.isOk(mockMvc,
+										oauthUsers.get(0),
+									"/productOfList/" + this.productsOfList.get(0).getId() + "/mark-amount/" + this.productsOfList.get(0).getMarkedAmount(),
+										ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
+
+		ProductOfListDto productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
+				mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class);
+
+		assertThat(productTemp.getMarkedAmount()).isEqualTo(1);
+
+		this.productsOfList.get(0).setMarkedAmount(3);
+
+		ValidatorStatusResponsePut.isPreconditionFailed(mockMvc,
+				oauthUsers.get(0),
+				"/productOfList/" + this.productsOfList.get(0).getId() + "/mark-amount/" + this.productsOfList.get(0).getMarkedAmount(),
+				ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
+
+		productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
+				mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class);
+
+		assertThat(productTemp.getMarkedAmount()).isEqualTo(1);
+	}
+
 	@AfterAll
 	void deleteData() throws Exception {
 		

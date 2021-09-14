@@ -70,6 +70,9 @@ public class ProductOfList {
 
 	@Column(name = "nr_amount")
 	private Integer plannedAmount;
+
+	@Column(name = "nr_marked_amount")
+	private Integer markedAmount;
 	
 	@Column(name = "nr_price")
 	private BigDecimal price;
