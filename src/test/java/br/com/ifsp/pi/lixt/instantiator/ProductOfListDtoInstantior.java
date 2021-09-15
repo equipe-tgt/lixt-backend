@@ -7,11 +7,12 @@ public abstract class ProductOfListDtoInstantior extends Operators {
 
 	private ProductOfListDtoInstantior() {}
 	
-	public static String createProductOfListJson(int amount, Long listId, String measureType, String measureValue, Long productId, String name) {
+	public static String createProductOfListJson(int plannedAmount, int markedAmount, Long listId, String measureType, String measureValue, Long productId, String name) {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		stringBuilder = stringBuilder.append(KEY_OPEN)
-				.append(createJsonLine("amount", amount)).append(COMMA)
+				.append(createJsonLine("plannedAmount", plannedAmount)).append(COMMA)
+        .append(createJsonLine("markedAmount")).append(COMMA)
 				.append(createJsonLine("assignedUserId")).append(COMMA)				
 				.append(createJsonLine("amountComment")).append(COMMA)
 				.append(createJsonLine("id")).append(COMMA)
@@ -33,7 +34,8 @@ public abstract class ProductOfListDtoInstantior extends Operators {
 		StringBuilder stringBuilder = new StringBuilder();
 
 		stringBuilder = stringBuilder.append(KEY_OPEN)
-				.append(createJsonLine("amount", productOfList.getAmount())).append(COMMA)
+				.append(createJsonLine("plannedAmount", productOfList.getPlannedAmount())).append(COMMA)
+        .append(createJsonLine("markedAmount")).append(COMMA)
 				.append(createJsonLine("assignedUserId", productOfList.getAssignedUserId())).append(COMMA)				
 				.append(createJsonLine("amountComment")).append(COMMA)
 				.append(createJsonLine("id", productOfList.getId())).append(COMMA)

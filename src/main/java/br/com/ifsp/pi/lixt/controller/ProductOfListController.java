@@ -84,4 +84,10 @@ public class ProductOfListController {
 		return this.productOfListFacade.assignedItemToUser(userId, productOfListId);
 	}
 
+	@ApiOperation(value = "Atualizar o valor do total de produtos marcados")
+	@PutMapping("/{id}/mark-amount/{amount}")
+	public Integer updateMarkedAmount(@PathVariable Integer amount, @PathVariable Long id) {
+		return this.productOfListFacade.updateMarkedAmount(amount, id);
+	}
+
 }
