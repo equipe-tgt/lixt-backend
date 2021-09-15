@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import br.com.ifsp.pi.lixt.utils.conversion.date.LocalDateTimeDeserializer;
+import br.com.ifsp.pi.lixt.utils.conversion.date.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +30,8 @@ public class PurchaseDto {
 	
 	private BigDecimal purchasePrice;
 	
+	@JsonSerialize(using = LocalDateTimeSerializer.class)
+	@JsonDeserialize(using = LocalDateTimeDeserializer.class)
 	private LocalDateTime purchaseDate;
 	
 	private PurchaseLocalDto purchaseLocal;

@@ -18,8 +18,7 @@ public abstract class RequestWithResponse {
 	
 	private RequestWithResponse() {}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Object createPostRequestJson(MockMvc mockMvc, String uri, String content, String token, Class clazz) throws Exception {
+	public static <T> T createPostRequestJson(MockMvc mockMvc, String uri, String content, String token, Class<T> clazz) throws Exception {
 				
 		ResultActions listResult = 
 				mockMvc.perform(ResquestBuilder.createPostRequestJson(uri, content, token))
@@ -30,8 +29,7 @@ public abstract class RequestWithResponse {
 		return objectMapper.readValue(listString, clazz);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Object createGetRequestJson(MockMvc mockMvc, String uri, String token, Class clazz) throws Exception {
+	public static <T> T createGetRequestJson(MockMvc mockMvc, String uri, String token, Class<T> clazz) throws Exception {
 				
 		ResultActions listResult = 
 				mockMvc.perform(ResquestBuilder.createGetRequestJson(uri, token))
@@ -42,8 +40,7 @@ public abstract class RequestWithResponse {
 		return objectMapper.readValue(listString, clazz);
 	}
 	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static Object createPostRequestJson(MockMvc mockMvc, String uri, String content, UserDto user, Class clazz) throws Exception {
+	public static <T> T createPostRequestJson(MockMvc mockMvc, String uri, String content, UserDto user, Class<T> clazz) throws Exception {
 		objectMapper.registerModule(new JavaTimeModule());
 		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		
