@@ -3,6 +3,9 @@ package br.com.ifsp.pi.lixt.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
+import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
+import br.com.ifsp.pi.lixt.facade.GlobalCommentFacade;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -54,10 +57,10 @@ public class ProductOfListController {
 		this.productOfListFacade.deleteById(id);
 	}
 	
-	@ApiOperation(value = "Buscar comentários pertencentes ao produto da lista por id")
+	@ApiOperation(value = "Buscar todos os comentários (globais ou não) pertencentes ao produto da lista por id")
 	@GetMapping("/{id}/comments")
-	public List<CommentDto> findCommentsByProductOfListId(@PathVariable Long id) {
-		return this.productOfListFacade.findCommentsByProductOfListId(id).stream().map(CommentMapper::entityToDto).collect(Collectors.toList());
+	public AllCommentsDto findCommentsByProductOfListId(@PathVariable Long id) {
+		return this.productOfListFacade.findCommentsByProductOfListId(id);
 	}
 	
 	@ApiOperation(value = "Marcar produto da lista")
