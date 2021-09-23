@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -190,10 +191,10 @@ class ProductOfListControllerTest {
 		
 		for(int i=0; i<=1; i++) {
 			token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(i));
-			
+
 			assertThat(
-					RequestWithResponseList.createGetRequestJson(
-							mockMvc, "/productOfList/" + this.productsOfList.get(0).getId() + "/comments", token, CommentDto.class).size()
+					RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(0).getId() + "/comments", token, AllCommentsDto.class)
+							.getCommentsDto().size()
 			).isPositive();
 		}
 		
