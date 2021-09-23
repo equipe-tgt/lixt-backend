@@ -4,14 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import br.com.ifsp.pi.lixt.dto.*;
+import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.com.ifsp.pi.lixt.dto.ListMembersDto;
-import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
 import br.com.ifsp.pi.lixt.mapper.CommentMapper;
 import br.com.ifsp.pi.lixt.mapper.ItemOfPurchaseMapper;
@@ -80,6 +80,10 @@ class MappersTest {
 		assertNotNull(ListOfItemsMapper.dtoToEntity(
 				ListOfItemsDto.builder().listMembers(new ArrayList<>()).build()
 		).getListMembers());
+
+		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalCommentDto>(), new ArrayList<CommentDto>()).getCommentsDto());
+
+		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalCommentDto>(), new ArrayList<CommentDto>()).getGlobalCommentsDto());
 	}
 
 }
