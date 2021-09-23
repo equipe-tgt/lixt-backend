@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import br.com.ifsp.pi.lixt.dto.*;
 import br.com.ifsp.pi.lixt.mapper.*;
