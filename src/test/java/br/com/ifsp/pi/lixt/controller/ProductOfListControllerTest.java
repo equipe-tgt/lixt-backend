@@ -260,15 +260,15 @@ class ProductOfListControllerTest {
 
 		this.productsOfList.get(0).setMarkedAmount(3);
 
-		ValidatorStatusResponsePut.isPreconditionFailed(mockMvc,
+		ValidatorStatusResponsePut.isOk(mockMvc,
 				oauthUsers.get(0),
 				"/productOfList/" + this.productsOfList.get(0).getId() + "/mark-amount/" + this.productsOfList.get(0).getMarkedAmount(),
 				ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
 
-		productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
+		productTemp = RequestWithResponse.createGetRequestJson(
 				mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class);
 
-		assertThat(productTemp.getMarkedAmount()).isEqualTo(1);
+		assertThat(productTemp.getMarkedAmount()).isEqualTo(3);
 	}
 
 	@AfterAll
