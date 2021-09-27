@@ -2,7 +2,16 @@ package br.com.ifsp.pi.lixt.facade;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
+import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalCommentService;
+import br.com.ifsp.pi.lixt.data.business.user.User;
+import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
+import br.com.ifsp.pi.lixt.mapper.CommentMapper;
+import br.com.ifsp.pi.lixt.mapper.GlobalCommentMapper;
+import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
@@ -21,6 +30,7 @@ public class ProductOfListFacade {
 	
 	private final ProductOfListService productOfListService;
 	private final ListOfItemsService listOfItemsService;
+	private final GlobalCommentFacade globalCommentFacade;
 	
 	public ProductOfList findById(Long id) {
 		
@@ -73,7 +83,7 @@ public class ProductOfListFacade {
 		this.productOfListService.deleteById(id);
 	}
 	
-	public List<Comment> findCommentsByProductOfListId(Long id) {
+	public AllCommentsDto findCommentsByProductOfListId(Long id) {
 		
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
@@ -81,8 +91,14 @@ public class ProductOfListFacade {
 		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
+
+		List<GlobalComment> globalComments = this.globalCommentFacade.findAllByUserId(ownerId);
+
+		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
 		
-		return this.productOfListService.findCommentsByProductOfListId(id);
+		return AllCommentsMapper.entityToDto(
+				globalComments.stream().map(e -> GlobalCommentMapper.entityToDto(e)).collect(Collectors.toList()),
+				comments.stream().map(e -> CommentMapper.entityToDto(e)).collect(Collectors.toList()));
 	}
 	
 	public Integer markProduct(Long productId) {

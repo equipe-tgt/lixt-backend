@@ -5,24 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 
+import br.com.ifsp.pi.lixt.dto.*;
+import br.com.ifsp.pi.lixt.mapper.*;
+import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import br.com.ifsp.pi.lixt.dto.ListMembersDto;
-import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.dto.UserDto;
-import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
-import br.com.ifsp.pi.lixt.mapper.CommentMapper;
-import br.com.ifsp.pi.lixt.mapper.ItemOfPurchaseMapper;
-import br.com.ifsp.pi.lixt.mapper.ListMembersMapper;
-import br.com.ifsp.pi.lixt.mapper.ListOfItemsMapper;
-import br.com.ifsp.pi.lixt.mapper.ProductMapper;
-import br.com.ifsp.pi.lixt.mapper.ProductOfListMapper;
-import br.com.ifsp.pi.lixt.mapper.PurchaseListMapper;
-import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
-import br.com.ifsp.pi.lixt.mapper.PurchaseMapper;
-import br.com.ifsp.pi.lixt.mapper.UserMapper;
 import br.com.ifsp.pi.lixt.mapper.specific.InviteMapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
@@ -43,6 +32,7 @@ class MappersTest {
 		assertNull(PurchaseListMapper.dtoToEntity(null));
 		assertNull(PurchaseLocalMapper.dtoToEntity(null));
 		assertNull(UserMapper.dtoToEntity(null));
+		assertNull(GlobalCommentMapper.dtoToEntity(null));
 	}
 	
 	@Test
@@ -58,6 +48,7 @@ class MappersTest {
 		assertNull(PurchaseListMapper.entityToDto(null));
 		assertNull(PurchaseLocalMapper.entityToDto(null));
 		assertNull(UserMapper.entityToDto(null));
+		assertNull(GlobalCommentMapper.entityToDto(null));
 	}
 	
 	@Test
@@ -80,6 +71,10 @@ class MappersTest {
 		assertNotNull(ListOfItemsMapper.dtoToEntity(
 				ListOfItemsDto.builder().listMembers(new ArrayList<>()).build()
 		).getListMembers());
+
+		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalCommentDto>(), new ArrayList<CommentDto>()).getCommentsDto());
+
+		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalCommentDto>(), new ArrayList<CommentDto>()).getGlobalCommentsDto());
 	}
 
 }
