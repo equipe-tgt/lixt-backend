@@ -145,7 +145,7 @@ public class GlobalCommentControllerTest {
 
         ValidatorStatusResponsePut.isOk(mockMvc,
                 oauthUsers.get(0),
-                "/globalComment/" + globalCommentDto1.getId(),
+                "/globalComment",
                 GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
 
         assertThat(
@@ -256,7 +256,7 @@ public class GlobalCommentControllerTest {
 
         ValidatorStatusResponsePut.isOk(mockMvc,
                 oauthUsers.get(0),
-                "/globalComment/" + globalCommentDto1.getId(),
+                "/globalComment",
                 GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
 
         assertThat(
@@ -276,7 +276,7 @@ public class GlobalCommentControllerTest {
 
         ValidatorStatusResponsePut.isForbidden(mockMvc,
                 oauthUsers.get(1),
-                "/globalComment/" + globalCommentDto1.getId(),
+                "/globalComment",
                 GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
 
         assertThat(

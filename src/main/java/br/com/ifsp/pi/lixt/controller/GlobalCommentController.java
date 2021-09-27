@@ -40,8 +40,8 @@ public class GlobalCommentController {
     }
 
     @ApiOperation(value = "Atualizar comentário global")
-    @PutMapping("/{id}")
-    public GlobalCommentDto update(@RequestBody(required = false) GlobalCommentDto globalCommentDto, @PathVariable Long id) {
+    @PutMapping
+    public GlobalCommentDto update(@RequestBody(required = false) GlobalCommentDto globalCommentDto) {
         return GlobalCommentMapper.entityToDto(this.globalCommentFacade.update(GlobalCommentMapper.dtoToEntity(globalCommentDto)));
     }
 
