@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ifsp.pi.lixt.dto.*;
+import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,13 +28,6 @@ import br.com.ifsp.pi.lixt.data.dto.json.CommentDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.json.ListOfItemsDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.json.ProductOfListDtoDataJson;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
-import br.com.ifsp.pi.lixt.dto.CategoryDto;
-import br.com.ifsp.pi.lixt.dto.CommentDto;
-import br.com.ifsp.pi.lixt.dto.ListMembersDto;
-import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.dto.ProductDto;
-import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
-import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.CommentDtoInstantior;
 import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
 import br.com.ifsp.pi.lixt.instantiator.ProductOfListDtoInstantior;
@@ -78,6 +73,7 @@ class ProductOfListControllerTest {
 	private String token;
 	private List<ListMembersDto> listMembers = new ArrayList<>();
 	private List<CommentDto> comments = new ArrayList<>();
+	private List<GlobalCommentDto> globalComments = new ArrayList<>();
 	
 	@BeforeAll
 	void createProducts() {
@@ -190,10 +186,10 @@ class ProductOfListControllerTest {
 		
 		for(int i=0; i<=1; i++) {
 			token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(i));
-			
+
 			assertThat(
-					RequestWithResponseList.createGetRequestJson(
-							mockMvc, "/productOfList/" + this.productsOfList.get(0).getId() + "/comments", token, CommentDto.class).size()
+					RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(0).getId() + "/comments", token, AllCommentsDto.class)
+							.getCommentsDto().size()
 			).isPositive();
 		}
 		
@@ -204,7 +200,7 @@ class ProductOfListControllerTest {
 	
 	@DisplayName("Manipulações de produto da lista")
 	@Test
-	@Order(4)
+	@Order(5)
 	void manipulateProductsOfList() throws Exception {
 		
 		for(int i=0; i<=1; i++) {
@@ -238,7 +234,7 @@ class ProductOfListControllerTest {
 
 	@DisplayName("Marcar quantidades de um produto")
 	@Test
-	@Order(5)
+	@Order(6)
 	void markProductsOfList() throws Exception {
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
 		assertThat(
