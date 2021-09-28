@@ -12,7 +12,7 @@ public abstract class PurchaseListMapper {
 	
 	public static PurchaseList dtoToEntity(PurchaseListDto dto) {
 		
-		if(Objects.isNull(dto)) 
+		if(Objects.isNull(dto) || dto.getItemsOfPurchase().isEmpty()) 
 			return null;
 		
 		return PurchaseList.builder()

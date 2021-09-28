@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt;
 
 import br.com.ifsp.pi.lixt.utils.mail.SmtpAuthenticator;
+
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;

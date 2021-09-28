@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import org.junit.jupiter.api.AfterAll;
@@ -18,13 +19,19 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
+import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
+import br.com.ifsp.pi.lixt.utils.tests.requests.ResquestBuilder;
+import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponseList;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
+import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewHtml;
+import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewTranslators;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -46,8 +53,8 @@ class AuthControllerTest {
 	
 	@BeforeAll
 	void registerUser() throws Exception {
-		user = (UserDto) authController.register(UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123")).getBody();
-		this.authController.activeUser(this.userService.findFirstAccesTokenById(user.getId()));
+		user = (UserDto) authController.register(UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123"), null).getBody();
+		this.authController.activeUser(this.userService.findFirstAccesTokenById(user.getId()), null);
 		
 		assertAll(
 				() -> assertThat(user).isNotNull(),
@@ -74,7 +81,7 @@ class AuthControllerTest {
 	@DisplayName("Criar um usuário já com email existente, gerando exceção")
 	void creatingExistingUserUsingEmail() throws Exception {
 		UserDto existingUser = UserDtoInstantior.createUser("user", "user", "user@hotmail.com", "123");
-		ResponseEntity<Object> response = authController.register(existingUser);
+		ResponseEntity<Object> response = authController.register(existingUser, null);
 		
 		assertAll(
 				() -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT),
@@ -86,7 +93,7 @@ class AuthControllerTest {
 	@DisplayName("Criar um usuário com username já existente, gerando exceção")
 	void creatingExistingUserUsingUsername() throws Exception {
 		UserDto existingUser = UserDtoInstantior.createUser("user", "user", "tes@hotmail.com", "123");
-		ResponseEntity<Object> response = authController.register(existingUser);
+		ResponseEntity<Object> response = authController.register(existingUser, null);
 		
 		assertAll(
 				() -> assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT),
@@ -97,13 +104,41 @@ class AuthControllerTest {
 	@Test
 	@DisplayName("Gerar nova senha para usuário existente")
 	void newPasswordExistingUser() throws Exception {
-		assertThat(authController.forgetPassword("user@hotmail.com").getStatusCode()).isEqualTo(HttpStatus.OK);
+		assertThat(authController.forgetPassword("user@hotmail.com", null).getStatusCode()).isEqualTo(HttpStatus.OK);
 	}
 	
 	@Test
 	@DisplayName("Gerar nova senha para usuário inexistente")
 	void newPasswordUnexistingUser() throws Exception {
-		assertThat(authController.forgetPassword("bob@email.com").getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(authController.forgetPassword("bob@email.com", null).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+	
+	@Test
+	@DisplayName("Ativar usuário sem sucesso")
+	void activeUserUncessfully() {
+		String view = InvalidTokenViewHtml.getView();
+		
+		for(String key : InvalidTokenViewTranslators.translateToEnglish().keySet())
+			view = view.replace(key, InvalidTokenViewTranslators.translateToEnglish().get(key));		
+		
+		assertEquals(this.authController.activeUser("", null), view);
+		assertEquals(this.authController.activeUser("abc", null), view);
+		assertEquals(this.authController.activeUser(null, null), view);
+	}
+	
+	@Test
+	@DisplayName("Revogar token")
+	void revokeToken() throws Exception {
+		UserDto userTR = (UserDto) authController.register(UserDtoInstantior.createUser("userTR", "userTR", "userTR@hotmail.com", "123"), null).getBody();
+		userTR.setPassword("123");
+		this.authController.activeUser(this.userService.findFirstAccesTokenById(userTR.getId()), null);
+		
+		String token = RequestOauth2.authenticate(mockMvc, userTR);
+		assertNotNull(RequestWithResponseList.createGetRequestJson(mockMvc, "/category", token, CategoryDto.class));
+		ValidatorStatusResponseGet.isOk(mockMvc, userTR, "/auth/revoke-token");
+		mockMvc.perform(ResquestBuilder.createDeleteRequestJson("/category", token)).andExpect(MockMvcResultMatchers.status().isUnauthorized());
+		
+		this.userService.deleteById(userTR.getId());
 	}
 	
 	@AfterAll

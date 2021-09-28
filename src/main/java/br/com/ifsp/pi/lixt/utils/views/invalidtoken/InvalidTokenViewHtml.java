@@ -1,8 +1,8 @@
-package br.com.ifsp.pi.lixt.utils.views;
+package br.com.ifsp.pi.lixt.utils.views.invalidtoken;
 
-public abstract class InvalidTokenView {
+public abstract class InvalidTokenViewHtml {
 	
-	private InvalidTokenView() {}
+	private InvalidTokenViewHtml() {}
 	
 	public static String getView() {
 		return "<!DOCTYPE html>\r\n" + 
@@ -14,6 +14,7 @@ public abstract class InvalidTokenView {
 				"        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
 				"        <meta name=\"format-detection\" content=\"date=no\"> \r\n" + 
 				"        <meta name=\"format-detection\" content=\"telephone=no\">\r\n" + 
+				"        <title>Lixt</title>\r\n" + 
 				"\r\n" + 
 				"        <link href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Poppins&display=swap\" rel=\"stylesheet\">\r\n" + 
 				"\r\n" + 
@@ -72,12 +73,12 @@ public abstract class InvalidTokenView {
 				"        <div id=\"active-account\">\r\n" + 
 				"\r\n" + 
 				"            <div class=\"header\">\r\n" + 
-				"                <h1><center>Página Não Encontrada!</center></h1>\r\n" + 
+				"                <h1><center>$TITLE</center></h1>\r\n" + 
 				"            </div>\r\n" + 
 				"\r\n" + 
 				"            <div class=\"body\">\r\n" + 
-				"                <p>Não foi possível acessar ao conteúdo solicitado! 😞</p>\r\n" + 
-				"                <p>Recomendamos que acesse o aplicativo realizando login ou cadastra-se a partir do mesmo.</p>\r\n" + 
+				"                <p>$RESPONSE</p>\r\n" + 
+				"                <p>$WARNING</p>\r\n" + 
 				"            </div>\r\n" + 
 				"            \r\n" + 
 				"        </div>\r\n" + 

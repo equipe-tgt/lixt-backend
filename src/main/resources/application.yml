@@ -31,7 +31,14 @@ spring:
     schemas: lixt
 
 lixt:
+  version: @project.version@
+  
+  basic:
+    auth:
+      clientId: client
+      secretId: 123456
+  
   mail:
     username: noreply.lixt@gmail.com
-    password: lixtapp2021!
+    password: lixtapp2021!!
 

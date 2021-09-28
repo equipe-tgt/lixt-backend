@@ -50,8 +50,8 @@ class LoginTest {
 	
 	@BeforeAll
 	void registerUser() throws Exception {
-		user = (UserDto) authController.register(UserDtoInstantior.createUser("user2", "user2", "user2@hotmail.com", "123")).getBody();
-		this.authController.activeUser(this.userService.findFirstAccesTokenById(user.getId()));
+		user = (UserDto) authController.register(UserDtoInstantior.createUser("user2", "user2", "user2@hotmail.com", "123"), null).getBody();
+		this.authController.activeUser(this.userService.findFirstAccesTokenById(user.getId()), null);
 		
 		assertAll(
 				() -> assertThat(user).isNotNull(),

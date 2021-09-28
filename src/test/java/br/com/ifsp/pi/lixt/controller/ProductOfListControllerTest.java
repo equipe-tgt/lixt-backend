@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.com.ifsp.pi.lixt.dto.*;
+import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -26,13 +28,6 @@ import br.com.ifsp.pi.lixt.data.dto.json.CommentDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.json.ListOfItemsDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.json.ProductOfListDtoDataJson;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
-import br.com.ifsp.pi.lixt.dto.CategoryDto;
-import br.com.ifsp.pi.lixt.dto.CommentDto;
-import br.com.ifsp.pi.lixt.dto.ListMembersDto;
-import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
-import br.com.ifsp.pi.lixt.dto.ProductDto;
-import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
-import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.instantiator.CommentDtoInstantior;
 import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
 import br.com.ifsp.pi.lixt.instantiator.ProductOfListDtoInstantior;
@@ -78,6 +73,7 @@ class ProductOfListControllerTest {
 	private String token;
 	private List<ListMembersDto> listMembers = new ArrayList<>();
 	private List<CommentDto> comments = new ArrayList<>();
+	private List<GlobalCommentDto> globalComments = new ArrayList<>();
 	
 	@BeforeAll
 	void createProducts() {
@@ -85,9 +81,9 @@ class ProductOfListControllerTest {
 		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
 
 		UserDtoData.dataForProductOfListControllerTest().forEach(user -> {
-			oauthUsers.add((UserDto) this.authController.register(user).getBody());
+			oauthUsers.add((UserDto) this.authController.register(user, null).getBody());
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
-			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()));
+			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()), null);
 		});
 	}
 	
@@ -114,32 +110,32 @@ class ProductOfListControllerTest {
 	void testList() throws Exception {
 
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		this.listOfItems = (ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
+		this.listOfItems = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
 		
 		assertThat(listOfItems).isNotNull();
 		
 		for(int i=1; i<4; i++) {
 			listMembers.add(
-					(ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(i).getUsername(), token, ListMembersDto.class)
+					RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(i).getUsername(), token, ListMembersDto.class)
 			);
 		}
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
 		listMembers.set(
 				0, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(0).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.get(0).getId(), token, ListMembersDto.class)
 		);
 		
 		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(2));
 		listMembers.set(
 				1, 
-				(ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(1).getId(), token, ListMembersDto.class)
+				RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/reject-invite/" + this.listMembers.get(1).getId(), token, ListMembersDto.class)
 		);
 		
 		for(int i=0; i<2; i++) {
 			for(String productOfList : ProductOfListDtoDataJson.initializeValues(this.listOfItems, ProductMapper.dtoToEntity(this.product))) {
 				String tokenUser = RequestOauth2.authenticate(mockMvc, oauthUsers.get(i));
-				ProductOfListDto product = (ProductOfListDto) RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
+				ProductOfListDto product = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
 				this.productsOfList.add(product);
 			}
 		}
@@ -152,7 +148,7 @@ class ProductOfListControllerTest {
 				
 		for(String comment : CommentDtoDataJson.initializeValues(oauthUsers.get(1), this.productsOfList.get(0))) {
 				
-			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
+			CommentDto commentDto = RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
 			
 			for(UserDto userToTryUpdate : oauthUsers) {
 				
@@ -161,7 +157,7 @@ class ProductOfListControllerTest {
 					ValidatorStatusResponsePut.isOk(mockMvc, userToTryUpdate, "/comment/" + commentDto.getId(), CommentDtoInstantior.createCommentJson(commentDto));
 					
 					token = RequestOauth2.authenticate(mockMvc, userToTryUpdate);
-					CommentDto commentTemp = (CommentDto) RequestWithResponse.createGetRequestJson(mockMvc, "/comment/" + commentDto.getId(), token, CommentDto.class);
+					CommentDto commentTemp = RequestWithResponse.createGetRequestJson(mockMvc, "/comment/" + commentDto.getId(), token, CommentDto.class);
 					assertThat(commentTemp.getContent()).isEqualTo(commentDto.getContent());
 					
 					ValidatorStatusResponsePut.isPreconditionFailed(mockMvc, userToTryUpdate, "/comment/0", CommentDtoInstantior.createCommentJson(commentTemp));
@@ -190,10 +186,10 @@ class ProductOfListControllerTest {
 		
 		for(int i=0; i<=1; i++) {
 			token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(i));
-			
+
 			assertThat(
-					RequestWithResponseList.createGetRequestJson(
-							mockMvc, "/productOfList/" + this.productsOfList.get(0).getId() + "/comments", token, CommentDto.class).size()
+					RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(0).getId() + "/comments", token, AllCommentsDto.class)
+							.getCommentsDto().size()
 			).isPositive();
 		}
 		
@@ -204,7 +200,7 @@ class ProductOfListControllerTest {
 	
 	@DisplayName("Manipulações de produto da lista")
 	@Test
-	@Order(4)
+	@Order(5)
 	void manipulateProductsOfList() throws Exception {
 		
 		for(int i=0; i<=1; i++) {
@@ -219,8 +215,7 @@ class ProductOfListControllerTest {
 				this.productsOfList.get(j).setIsMarked(true);
 				ValidatorStatusResponsePut.isOk(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(j).getId(), ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(j)));
 				
-				ProductOfListDto productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
-						mockMvc, "/productOfList/" + this.productsOfList.get(j).getId(), token, ProductOfListDto.class);
+				ProductOfListDto productTemp = RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(j).getId(), token, ProductOfListDto.class);
 				
 				assertTrue(productTemp.getIsMarked());
 				
@@ -235,6 +230,41 @@ class ProductOfListControllerTest {
 			ValidatorStatusResponsePut.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId(), ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
 			ValidatorStatusResponseDelete.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId());
 		}
+	}
+
+	@DisplayName("Marcar quantidades de um produto")
+	@Test
+	@Order(6)
+	void markProductsOfList() throws Exception {
+		token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+		assertThat(
+				RequestWithResponse.createGetRequestJson(
+						mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class)
+		).isNotNull();
+
+		this.productsOfList.get(0).setMarkedAmount(1);
+
+		ValidatorStatusResponsePut.isOk(mockMvc,
+										oauthUsers.get(0),
+									"/productOfList/" + this.productsOfList.get(0).getId() + "/mark-amount/" + this.productsOfList.get(0).getMarkedAmount(),
+										ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
+
+		ProductOfListDto productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
+				mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class);
+
+		assertThat(productTemp.getMarkedAmount()).isEqualTo(1);
+
+		this.productsOfList.get(0).setMarkedAmount(3);
+
+		ValidatorStatusResponsePut.isOk(mockMvc,
+				oauthUsers.get(0),
+				"/productOfList/" + this.productsOfList.get(0).getId() + "/mark-amount/" + this.productsOfList.get(0).getMarkedAmount(),
+				ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
+
+		productTemp = RequestWithResponse.createGetRequestJson(
+				mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class);
+
+		assertThat(productTemp.getMarkedAmount()).isEqualTo(3);
 	}
 
 	@AfterAll

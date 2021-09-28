@@ -18,12 +18,12 @@ public interface ProductOfListRepository extends CrudRepository<ProductOfList, L
 	
 	@Modifying(clearAutomatically = true)
 	@Transactional
-	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.assignedUserId = null WHERE p.id = ?1")
+	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.markedAmount = null, p.assignedUserId = null WHERE p.id = ?1")
 	Integer cleanProductOfList(Long productOfListId);
 	
 	@Modifying(clearAutomatically = true)
 	@Transactional
-	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.assignedUserId = null WHERE p.listId = ?1")
+	@Query("UPDATE ProductOfList p SET p.userWhoMarkedId = null, p.isMarked = false, p.markedAmount = null, p.assignedUserId = null WHERE p.listId = ?1")
 	Integer cleanUserIdAtProductsOfList(Long listId);
 	
 	@Modifying(clearAutomatically = true)
@@ -45,5 +45,9 @@ public interface ProductOfListRepository extends CrudRepository<ProductOfList, L
 	@Transactional
 	@Query("UPDATE ProductOfList p SET p.assignedUserId = ?1, p.userWhoMarkedId = ?1, p.isMarked = ?2 WHERE p.id = ?3")
 	Integer assignedItemToUser(Long userId, boolean isMarked, Long productOfListId);
-	
+
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query("UPDATE ProductOfList p SET p.markedAmount = ?1 WHERE p.id = ?2")
+	Integer updateMarkedAmount(Integer markedAmount, Long productOfListId);
 }

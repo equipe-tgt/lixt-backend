@@ -16,8 +16,7 @@ public abstract class RequestWithResponseList {
 	
 	private RequestWithResponseList() {}
 	
-	@SuppressWarnings({ "rawtypes" })
-	public static List<Object> createGetRequestJson(MockMvc mockMvc, String uri, String token, Class clazz) throws Exception {
+	public static <T> List<T> createGetRequestJson(MockMvc mockMvc, String uri, String token, Class<T> clazz) throws Exception {
 				
 		ResultActions listResult = 
 				mockMvc.perform(ResquestBuilder.createGetRequestJson(uri, token))

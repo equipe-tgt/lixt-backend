@@ -53,4 +53,8 @@ public class ProductOfListService {
 		return this.productOfListRepository.assignedItemToUser(userId, isMarked, productOfListId);
 	}
 
+	public Integer updateMarkedAmount(Integer markedAmount, Long productOfListId) {
+		return this.productOfListRepository.updateMarkedAmount(markedAmount, productOfListId);
+	}
+
 }

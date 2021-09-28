@@ -1,5 +1,6 @@
 package br.com.ifsp.pi.lixt.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class UserDto {
-	
+
+	@ApiModelProperty(hidden = true)
 	private Long id;
 
 	private String name;

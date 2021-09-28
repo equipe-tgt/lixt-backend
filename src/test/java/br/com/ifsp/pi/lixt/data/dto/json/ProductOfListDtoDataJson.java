@@ -14,14 +14,14 @@ public abstract class ProductOfListDtoDataJson {
 	public static List<String> initializeValues(ListOfItemsDto listOfItems, Product product) {
 		List<String> productsOfList = new ArrayList<>();
 
-		productsOfList.add(ProductOfListDtoInstantior.createProductOfListJson(2, listOfItems.getId(), "KG", "5", product.getId(), "Arroz branco"));
-		productsOfList.add(ProductOfListDtoInstantior.createProductOfListJson(2, listOfItems.getId(), "KG", "5", product.getId(), "Arroz integral"));
+		productsOfList.add(ProductOfListDtoInstantior.createProductOfListJson(2, 0, listOfItems.getId(), "KG", "5", product.getId(), "Arroz branco"));
+		productsOfList.add(ProductOfListDtoInstantior.createProductOfListJson(2, 0, listOfItems.getId(), "KG", "5", product.getId(), "Arroz integral"));
 		
 		return productsOfList;
 	}
 	
 	public static String createValue(ListOfItemsDto listOfItems, Product product) {
-		return ProductOfListDtoInstantior.createProductOfListJson(2, listOfItems.getId(), "KG", "5", product.getId(), "Arroz integral");
+		return ProductOfListDtoInstantior.createProductOfListJson(2, 0, listOfItems.getId(), "KG", "5", product.getId(), "Arroz integral");
 	}
 
 }
