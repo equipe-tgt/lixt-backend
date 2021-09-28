@@ -16,7 +16,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 public class ListOfItemsDto {
 
-	@ApiModelProperty(hidden = true)
 	private Long id;
 	
 	private String nameList;
