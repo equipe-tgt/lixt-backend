@@ -5,9 +5,6 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
-import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalCommentService;
-import br.com.ifsp.pi.lixt.data.business.user.User;
-import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
 import br.com.ifsp.pi.lixt.mapper.CommentMapper;
 import br.com.ifsp.pi.lixt.mapper.GlobalCommentMapper;
@@ -166,8 +163,6 @@ public class ProductOfListFacade {
 	}
 
 	public Integer updateMarkedAmount(Integer markedAmount, Long productOfListId) {
-		ProductOfList productOfList = this.productOfListService.findById(productOfListId);
-
 		return this.productOfListService.updateMarkedAmount(markedAmount, productOfListId);
 	}
 

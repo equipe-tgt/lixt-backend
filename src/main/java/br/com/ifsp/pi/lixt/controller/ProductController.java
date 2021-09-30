@@ -62,5 +62,10 @@ public class ProductController {
 	public List<ProductDto> findByName(@PathVariable String name) {
 		return this.productService.findByName(name, Users.getUserId()).stream().map(ProductMapper::entityToDto).collect(Collectors.toList());
 	}
+	
+	@GetMapping("/by-barcode/{barcode}")
+	public ProductDto findByBarcode(@PathVariable String barcode) {
+		return ProductMapper.entityToDto(this.productService.findByBarcode(barcode));
+	}
 
 }

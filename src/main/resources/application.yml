@@ -41,4 +41,9 @@ lixt:
   mail:
     username: noreply.lixt@gmail.com
     password: lixtapp2021!!
+    
+  barcode:
+    url: https://api.cosmos.bluesoft.com.br/gtins/
+    token: KlrbMerss0GnOBwvj2g9-g
+    api: https://cosmos.bluesoft.com.br/api
 

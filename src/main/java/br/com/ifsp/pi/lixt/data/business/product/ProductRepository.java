@@ -11,4 +11,8 @@ public interface ProductRepository extends CrudRepository<Product, Long>, JpaSpe
 
 	@Query("select p from Product p where p.name like ?1 and (p.userId = ?2 or p.userId is null)")
 	List<Product> findByName(String name, Long userId, Pageable pageable);
+	
+	@Query("select p from Product p where p.barcode = ?1")
+	Product findByBarcode(String barcode);
+	
 }

@@ -1,8 +1,10 @@
 package br.com.ifsp.pi.lixt.mapper;
 
+import java.util.Map;
 import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.product.Product;
+import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
 
 public abstract class ProductMapper {
@@ -42,4 +44,17 @@ public abstract class ProductMapper {
 				.category(CategoryMapper.dtoToEntity(dto.getCategory()))
 				.build();
 	}
+	
+	public static Product modelIntoApiParams(Map<String, Object> values) {
+		return Product.builder()
+				.id(null)
+				.name(values.get("description").toString())
+				.userId(null)
+				.categoryId(null)
+				.barcode(values.get("gtin").toString())
+				.measureType(MeasureType.UNITY)
+				.measureValue(null)
+				.build();
+		}
+	
 }

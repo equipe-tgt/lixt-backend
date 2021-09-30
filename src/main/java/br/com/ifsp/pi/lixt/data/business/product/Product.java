@@ -48,7 +48,7 @@ public class Product {
 	@Column(name = "id_user", updatable = false)
 	private Long userId;
 	
-	@Column(name = "id_category", nullable = false)
+	@Column(name = "id_category")
 	private Long categoryId;
 	
 	@Column(name = "st_barcode")
