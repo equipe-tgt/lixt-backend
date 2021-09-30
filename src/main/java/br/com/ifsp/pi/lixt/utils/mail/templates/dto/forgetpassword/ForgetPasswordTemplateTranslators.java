@@ -12,21 +12,21 @@ public abstract class ForgetPasswordTemplateTranslators {
 	public static String translateTitleMail(Languages language) {
 		switch(language) {
 			case PORTUGUESE:
-				return "Lixt - Alteração de Senha";
+				return "Lixt - Solicitação de Redefinição de Senha";
 			
 			case ENGLISH:
 			default:
-				return "Lixt - Change password";
+				return "Lixt - Password Reset Request";
 		}
 	}
 	
 	public static Map<String, String> translateToPortuguese() {
 		Map<String, String> params = new HashMap<>();
 		
-		params.put("$TITLE", "Senha Resetada com Sucesso!");
+		params.put("$TITLE", "Definir uma nova senha de acesso");
 		params.put("$HELLO", "Olá, $USERNAME!");
-		params.put("$FIRST_INFO", "Sua nova senha de acesso do Lixt é: ");
-		params.put("$WARNING", "É altamente recomendado que a altere após acessar a plataforma para melhor proteger sua conta.");
+		params.put("$FIRST_INFO", "Você está recebendo esse email porque solicitou a redefinição da sua senha, para prosseguir clique no link abaixo:");
+		params.put("$LINK", "Clique aqui para criar uma nova senha");
 		params.put("$BYE", "Bons planejamentos e boas compras!");
 		
 		return params;
@@ -35,10 +35,10 @@ public abstract class ForgetPasswordTemplateTranslators {
 	public static Map<String, String> translateToEnglish() {
 		Map<String, String> params = new HashMap<>();
 		
-		params.put("$TITLE", "Password Reset Successfully!");
+		params.put("$TITLE", "Set a new access password");
 		params.put("$HELLO", "Hello $USERNAME!");
-		params.put("$FIRST_INFO", "Your new Lixt access password is: ");
-		params.put("$WARNING", "It is highly recommended that you change it after accessing the platform to better protect your account.");
+		params.put("$FIRST_INFO", "You are receiving this email because you requested to reset your password, to proceed click on the link below:");
+		params.put("$LINK", "Click here to create a new password");
 		params.put("$BYE", "Good planning and good shopping!");
 		
 		return params;

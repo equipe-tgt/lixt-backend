@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -79,26 +80,21 @@ public class AuthFacade {
 		if(Objects.isNull(user)) {
 			throw new NotFoundException("Usuário não encontrado");
 		}
-		
-		String password = SecurityGenerator.generateRandomPassword();
-		
-		Integer responseUpdate = this.userService.updatePassword(email, passwordEncoder.encode(password));
-		
-		if(ValidatorResponse.wasUpdated(responseUpdate)) {
-			
-			MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD, language);
-			Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), password);
-			mail = FormatterMail.formatMail(mail, params);
-			mail.setRecipientTo(email);
-			
-			boolean responseSendMail = senderMail.sendEmail(mail);
-			
-			if(!responseSendMail) {
-				throw new SendMailException();
-			}
+
+		String token = SecurityGenerator.generateToken(user.getEmail());
+
+		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD, language);
+		Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), baseUrl, token, language);
+		mail = FormatterMail.formatMail(mail, params);
+		mail.setRecipientTo(email);
+
+		boolean responseSendMail = senderMail.sendEmail(mail);
+
+		if(!responseSendMail) {
+			throw new SendMailException();
 		}
 		
-		return responseUpdate;
+		return HttpStatus.OK.value();
 	}
 	
 	public String activeUser(String token, Languages language) {
