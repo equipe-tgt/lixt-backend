@@ -47,3 +47,7 @@ lixt:
     token: KlrbMerss0GnOBwvj2g9-g
     api: https://cosmos.bluesoft.com.br/api
 
+  jwt:
+    secretKey: 6ca6f0f8-d17d-4e04-bb31-3f401a5d8acf
+    tokenPrefix: "Bearer "
+    tokenExpirationAfterMinutes: 60
