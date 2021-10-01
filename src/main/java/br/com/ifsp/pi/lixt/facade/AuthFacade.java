@@ -1,10 +1,14 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
 
+import br.com.ifsp.pi.lixt.utils.security.jwt.JwtConfig;
+import br.com.ifsp.pi.lixt.utils.security.jwt.JwtSecretKey;
+import com.auth0.jwt.JWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,6 +40,9 @@ public class AuthFacade {
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final SenderMail senderMail;
+
+	private final JwtConfig jwtConfig;
+	private final JwtSecretKey jwtSecretKey;
 	
 	@Value("${lixt.base.url}") String baseUrl;
 	
@@ -81,7 +88,10 @@ public class AuthFacade {
 			throw new NotFoundException("Usuário não encontrado");
 		}
 
-		String token = SecurityGenerator.generateToken(user.getEmail());
+		String token = JWT.create()
+				.withSubject(email)
+				.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMinutes()))
+				.sign(jwtSecretKey.secretKey());
 
 		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD, language);
 		Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), baseUrl, token, language);
