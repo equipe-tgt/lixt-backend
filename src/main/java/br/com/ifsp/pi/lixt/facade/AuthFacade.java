@@ -9,6 +9,8 @@ import javax.transaction.Transactional;
 import br.com.ifsp.pi.lixt.utils.security.jwt.JwtConfig;
 import br.com.ifsp.pi.lixt.utils.security.jwt.JwtSecretKey;
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -90,7 +92,7 @@ public class AuthFacade {
 
 		String token = JWT.create()
 				.withSubject(email)
-				.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMinutes()))
+				.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMillis()))
 				.sign(jwtSecretKey.secretKey());
 
 		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD, language);
@@ -104,6 +106,24 @@ public class AuthFacade {
 			throw new SendMailException();
 		}
 		
+		return HttpStatus.OK.value();
+	}
+
+	public Integer validateToken(String token) {
+
+		try {
+			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
+			DecodedJWT decodedJWT = verifier.verify(token);
+
+			String email = decodedJWT.getSubject();
+			var user = this.userService.findByEmail(email);
+			if(Objects.isNull(user)) {
+				throw new NotFoundException("Email não encontrado.");
+			}
+
+		} catch (Exception e) {
+			return HttpStatus.FORBIDDEN.value();
+		}
 		return HttpStatus.OK.value();
 	}
 	

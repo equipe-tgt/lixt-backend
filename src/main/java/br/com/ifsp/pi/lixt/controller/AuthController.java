@@ -57,6 +57,12 @@ public class AuthController {
 			return new ResponseEntity<>(0, HttpStatus.SERVICE_UNAVAILABLE);
 		}
 	}
+
+	@GetMapping("/redefine-password")
+	@ApiOperation(value = "Validar o token de redefinição da senha")
+	public ResponseEntity<Integer> validateToken(@RequestParam(value = "token") String token){
+		return ResponseEntity.ok(this.authFacade.validateToken(token));
+	}
 	
 	@PostMapping(path = "/update-password", consumes = MediaType.TEXT_PLAIN_VALUE)
 	@ApiOperation(value = "Atualizar a senha de um usuário na plataforma")

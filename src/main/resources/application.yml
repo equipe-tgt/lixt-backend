@@ -50,4 +50,4 @@ lixt:
   jwt:
     secretKey: 6ca6f0f8-d17d-4e04-bb31-3f401a5d8acf
     tokenPrefix: "Bearer "
-    tokenExpirationAfterMinutes: 60
+    tokenExpirationAfterMillis: 86400000

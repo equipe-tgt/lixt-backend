@@ -24,6 +24,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		web.ignoring()
 				.antMatchers("/auth/register")
 				.antMatchers("/auth/forget-password/**")
+				.antMatchers("/auth/redefine-password")
 				.antMatchers("/auth/active-user")
 				.antMatchers(HttpMethod.OPTIONS,"/**")
 				.antMatchers(AUTH_WHITELIST)

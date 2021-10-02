@@ -52,7 +52,7 @@ public class SwaggerConfig {
 	private SecurityContext securityContext() {		
 		return SecurityContext.builder()
 				.securityReferences(Collections.singletonList(new SecurityReference("oauth2schema", new AuthorizationScope[0])))
-				.forPaths(Predicates.not(PathSelectors.regex("^(/auth/register|/auth/active-user|/auth/forget-password)$")))
+				.forPaths(Predicates.not(PathSelectors.regex("^(/auth/register|/auth/active-user|/auth/forget-password|/auth/redefine-password)$")))
 				.build();
 	}
 	
