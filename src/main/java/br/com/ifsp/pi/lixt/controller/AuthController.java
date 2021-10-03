@@ -60,8 +60,8 @@ public class AuthController {
 
 	@GetMapping("/redefine-password")
 	@ApiOperation(value = "Validar o token de redefinição da senha")
-	public ResponseEntity<Integer> validateToken(@RequestParam(value = "token") String token){
-		return ResponseEntity.ok(this.authFacade.validateToken(token));
+	public ResponseEntity<Integer> validateToken(@RequestParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language){
+		return ResponseEntity.ok(this.authFacade.validateToken(token, Languages.convertStringToEnum(language)));
 	}
 	
 	@PostMapping(path = "/update-password", consumes = MediaType.TEXT_PLAIN_VALUE)

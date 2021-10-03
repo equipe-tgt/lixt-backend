@@ -109,7 +109,7 @@ public class AuthFacade {
 		return HttpStatus.OK.value();
 	}
 
-	public Integer validateToken(String token) {
+	public Integer validateToken(String token, Languages language) {
 
 		try {
 			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
