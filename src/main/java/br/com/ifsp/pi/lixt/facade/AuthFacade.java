@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import br.com.ifsp.pi.lixt.utils.security.jwt.JwtConfig;
 import br.com.ifsp.pi.lixt.utils.security.jwt.JwtSecretKey;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -109,7 +110,7 @@ public class AuthFacade {
 		return HttpStatus.OK.value();
 	}
 
-	public Integer validateToken(String token, Languages language) {
+	public String validateToken(String token, Languages language) {
 
 		try {
 			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
@@ -122,9 +123,9 @@ public class AuthFacade {
 			}
 
 		} catch (Exception e) {
-			return HttpStatus.FORBIDDEN.value();
+			return ErrorForgotPasswordView.getView(language);
 		}
-		return HttpStatus.OK.value();
+		return "deu certo";
 	}
 	
 	public String activeUser(String token, Languages language) {
