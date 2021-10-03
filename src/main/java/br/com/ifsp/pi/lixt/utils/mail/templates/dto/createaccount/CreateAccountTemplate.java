@@ -2,8 +2,9 @@ package br.com.ifsp.pi.lixt.utils.mail.templates.dto.createaccount;
 
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.mail.templates.dto.AbstractMail;
 
-public abstract class CreateAccountTemplate {
+public abstract class CreateAccountTemplate extends AbstractMail {
 
 	private CreateAccountTemplate() {}
 	
@@ -22,12 +23,12 @@ public abstract class CreateAccountTemplate {
 		switch(language) {
 
 			case PORTUGUESE:
-				CreateAccountTemplateTranslators.toPortuguese().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				translate(mailDto, CreateAccountTemplateTranslators.toPortuguese());
 				break;
 			
 			case ENGLISH:
 			default:
-				CreateAccountTemplateTranslators.toEnglish().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				translate(mailDto, CreateAccountTemplateTranslators.toEnglish());
 				break;
 		}
 		

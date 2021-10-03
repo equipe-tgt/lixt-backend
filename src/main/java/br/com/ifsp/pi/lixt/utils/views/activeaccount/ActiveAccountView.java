@@ -1,8 +1,9 @@
 package br.com.ifsp.pi.lixt.utils.views.activeaccount;
 
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.AbstractView;
 
-public abstract class ActiveAccountView {
+public abstract class ActiveAccountView extends AbstractView {
 	
 	private ActiveAccountView() {}
 	
@@ -16,18 +17,11 @@ public abstract class ActiveAccountView {
 		switch(language) {
 
 			case PORTUGUESE:
-				
-				for(String key : ActiveAccountViewTranslators.toPortuguese().keySet())
-					view = view.replace(key, ActiveAccountViewTranslators.toPortuguese().get(key));
-				
-				return view;
+				return translate(view, ActiveAccountViewTranslators.toPortuguese());
 			
 			case ENGLISH:
 			default:
-				for(String key : ActiveAccountViewTranslators.toEnglish().keySet())
-					view = view.replace(key, ActiveAccountViewTranslators.toEnglish().get(key));
-				
-				return view;
+				return translate(view, ActiveAccountViewTranslators.toEnglish());
 		}
 	}
 	

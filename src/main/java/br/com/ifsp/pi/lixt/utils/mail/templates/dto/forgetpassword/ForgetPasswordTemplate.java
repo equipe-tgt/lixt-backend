@@ -2,8 +2,9 @@ package br.com.ifsp.pi.lixt.utils.mail.templates.dto.forgetpassword;
 
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.mail.templates.dto.AbstractMail;
 
-public abstract class ForgetPasswordTemplate {
+public abstract class ForgetPasswordTemplate extends AbstractMail {
 	
 	private ForgetPasswordTemplate() {}
 	
@@ -22,12 +23,12 @@ public abstract class ForgetPasswordTemplate {
 		switch(language) {
 
 			case PORTUGUESE:
-				ForgetPasswordTemplateTranslators.toPortuguese().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				translate(mailDto, ForgetPasswordTemplateTranslators.toPortuguese());
 				break;
 			
 			case ENGLISH:
 			default:
-				ForgetPasswordTemplateTranslators.toEnglish().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				translate(mailDto, ForgetPasswordTemplateTranslators.toPortuguese());
 				break;
 		}
 		

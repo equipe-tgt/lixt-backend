@@ -1,8 +1,9 @@
 package br.com.ifsp.pi.lixt.utils.views.invalidtoken;
 
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.AbstractView;
 
-public abstract class InvalidTokenView {
+public abstract class InvalidTokenView extends AbstractView {
 	
 	private InvalidTokenView() {}
 	
@@ -16,19 +17,11 @@ public abstract class InvalidTokenView {
 		switch(language) {
 
 			case PORTUGUESE:
-
-				for(String key : InvalidTokenViewTranslators.toPortuguese().keySet())
-					view = view.replace(key, InvalidTokenViewTranslators.toPortuguese().get(key));
-				
-				return view;
+				return translate(view, InvalidTokenViewTranslators.toPortuguese());
 			
 			case ENGLISH:
 			default:
-
-				for(String key : InvalidTokenViewTranslators.toEnglish().keySet())
-					view = view.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));
-				
-				return view;
+				return translate(view, InvalidTokenViewTranslators.toEnglish());
 		}
 	}
 	
