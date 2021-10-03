@@ -12,7 +12,7 @@ public abstract class ProductOfListDtoInstantior extends Operators {
 
 		stringBuilder = stringBuilder.append(KEY_OPEN)
 				.append(createJsonLine("plannedAmount", plannedAmount)).append(COMMA)
-        .append(createJsonLine("markedAmount")).append(COMMA)
+				.append(createJsonLine("markedAmount")).append(COMMA)
 				.append(createJsonLine("assignedUserId")).append(COMMA)				
 				.append(createJsonLine("amountComment")).append(COMMA)
 				.append(createJsonLine("id")).append(COMMA)
@@ -35,7 +35,7 @@ public abstract class ProductOfListDtoInstantior extends Operators {
 
 		stringBuilder = stringBuilder.append(KEY_OPEN)
 				.append(createJsonLine("plannedAmount", productOfList.getPlannedAmount())).append(COMMA)
-        .append(createJsonLine("markedAmount")).append(COMMA)
+				.append(createJsonLine("markedAmount")).append(COMMA)
 				.append(createJsonLine("assignedUserId", productOfList.getAssignedUserId())).append(COMMA)				
 				.append(createJsonLine("amountComment")).append(COMMA)
 				.append(createJsonLine("id", productOfList.getId())).append(COMMA)

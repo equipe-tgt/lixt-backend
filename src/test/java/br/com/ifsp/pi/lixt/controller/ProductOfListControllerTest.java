@@ -73,7 +73,6 @@ class ProductOfListControllerTest {
 	private String token;
 	private List<ListMembersDto> listMembers = new ArrayList<>();
 	private List<CommentDto> comments = new ArrayList<>();
-	private List<GlobalCommentDto> globalComments = new ArrayList<>();
 	
 	@BeforeAll
 	void createProducts() {

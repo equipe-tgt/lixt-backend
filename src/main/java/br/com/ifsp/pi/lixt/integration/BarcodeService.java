@@ -2,13 +2,10 @@ package br.com.ifsp.pi.lixt.integration;
 
 import java.util.Map;
 
-import javax.annotation.PostConstruct;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,18 +23,7 @@ public class BarcodeService {
 	private static final Long MAX_AMOUNT_REQUEST = Long.parseLong("25");
 	
 	private final RestTemplate template = new RestTemplate();
-	private final JdbcTemplate jdbcTemplate;
 	private final CounterService counterService;
-	
-	@PostConstruct
-	public void prepareCounter() {
-		Long count = jdbcTemplate.queryForObject(BarcodeCounterSql.count(), Long.class);
-		
-		if(count == 0)
-			jdbcTemplate.update(BarcodeCounterSql.insertBarcodeCounter());
-		else 
-			jdbcTemplate.update(BarcodeCounterSql.updateBarcode());
-	}
 	
 	public Map<String, Object> getProductByBarcode(String barcode) {
 		Long requestsDone = this.counterService.findCountByDescription(BarcodeCounterSql.getBarcodeCounterDescription());

@@ -90,7 +90,6 @@ public class ProductOfListFacade {
 		}
 
 		List<GlobalComment> globalComments = this.globalCommentFacade.findAllByUserId(ownerId);
-
 		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
 		
 		return AllCommentsMapper.entityToDto(

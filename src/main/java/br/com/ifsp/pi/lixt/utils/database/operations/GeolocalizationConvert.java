@@ -6,11 +6,11 @@ import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
+import lombok.experimental.UtilityClass;
 
-public abstract class GeolocalizationConvert {
+@UtilityClass
+public class GeolocalizationConvert {
 	
-	private GeolocalizationConvert() {}
-
 	public static Point convertCoordsToPoint(Double latitude, Double longitude) throws ParseException, PreconditionFailedException {
 		
 		if(!GeolocalizationConvert.validateXAxis(longitude) || !GeolocalizationConvert.validateYAxis(latitude)) {

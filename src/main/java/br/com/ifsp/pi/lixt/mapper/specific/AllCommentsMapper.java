@@ -3,10 +3,7 @@ package br.com.ifsp.pi.lixt.mapper.specific;
 import br.com.ifsp.pi.lixt.dto.CommentDto;
 import br.com.ifsp.pi.lixt.dto.GlobalCommentDto;
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
-import br.com.ifsp.pi.lixt.mapper.CommentMapper;
-import br.com.ifsp.pi.lixt.mapper.GlobalCommentMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

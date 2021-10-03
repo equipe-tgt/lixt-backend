@@ -10,25 +10,25 @@ import java.util.List;
 
 public abstract class GlobalCommentDtoJson {
 
-    private GlobalCommentDtoJson() {}
+	private GlobalCommentDtoJson() {}
 
-    public static List<String> initializeValues(UserDto userDto, ProductDto productDto) {
-        List<String> globalComments = new ArrayList<>();
+	public static List<String> initializeValues(UserDto userDto, ProductDto productDto) {
+		List<String> globalComments = new ArrayList<>();
 
-        globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productDto.getId()));
-        globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productDto.getId()));
-        globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productDto.getId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productDto.getId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productDto.getId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productDto.getId()));
 
-        return globalComments;
-    }
+		return globalComments;
+	}
 
-    public static List<String> initializeValues(UserDto userDto, ProductOfListDto productOfListDto) {
-        List<String> globalComments = new ArrayList<>();
+	public static List<String> initializeValues(UserDto userDto, ProductOfListDto productOfListDto) {
+		List<String> globalComments = new ArrayList<>();
 
-        globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productOfListDto.getProductId()));
-        globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productOfListDto.getProductId()));
-        globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productOfListDto.getProductId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productOfListDto.getProductId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productOfListDto.getProductId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productOfListDto.getProductId()));
 
-        return globalComments;
-    }
+		return globalComments;
+	}
 }
