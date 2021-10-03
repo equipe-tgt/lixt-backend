@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.data.business.globalComment;
+package br.com.ifsp.pi.lixt.data.business.globalcomment;
 
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;

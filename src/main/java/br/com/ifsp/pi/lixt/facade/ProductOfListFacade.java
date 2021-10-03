@@ -2,12 +2,13 @@ package br.com.ifsp.pi.lixt.facade;
 
 import java.util.List;
 import java.util.Objects;
-import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
+
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
 import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
+import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;

@@ -1,6 +1,6 @@
 package br.com.ifsp.pi.lixt.mapper;
 
-import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
+import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.dto.GlobalCommentDto;
 import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 

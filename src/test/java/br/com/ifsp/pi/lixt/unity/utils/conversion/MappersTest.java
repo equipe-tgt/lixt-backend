@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.util.ArrayList;
 
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
-import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
+import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.dto.*;
 import br.com.ifsp.pi.lixt.mapper.*;
 import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
