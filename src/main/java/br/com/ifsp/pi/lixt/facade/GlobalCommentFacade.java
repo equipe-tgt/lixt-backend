@@ -44,7 +44,6 @@ public class GlobalCommentFacade {
     }
 
     public List<GlobalComment> findAllByUserId(Long userId) {
-
         return this.globalCommentService.findByUserId(userId);
     }
 }

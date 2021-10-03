@@ -2,12 +2,8 @@ package br.com.ifsp.pi.lixt.facade;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
 import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
-import br.com.ifsp.pi.lixt.mapper.CommentMapper;
-import br.com.ifsp.pi.lixt.mapper.GlobalCommentMapper;
 import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import org.springframework.stereotype.Service;
 
@@ -92,9 +88,7 @@ public class ProductOfListFacade {
 		List<GlobalComment> globalComments = this.globalCommentFacade.findAllByUserId(ownerId);
 		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
 		
-		return AllCommentsMapper.entityToDto(
-				globalComments.stream().map(e -> GlobalCommentMapper.entityToDto(e)).collect(Collectors.toList()),
-				comments.stream().map(e -> CommentMapper.entityToDto(e)).collect(Collectors.toList()));
+		return AllCommentsMapper.entityToDto(globalComments, comments);
 	}
 	
 	public Integer markProduct(Long productId) {

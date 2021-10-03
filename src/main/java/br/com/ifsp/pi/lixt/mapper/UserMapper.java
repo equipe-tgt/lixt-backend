@@ -4,9 +4,10 @@ import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.dto.UserDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
-public abstract class UserMapper {
+public abstract class UserMapper extends Mapper {
 	
 	private UserMapper() {}
 	

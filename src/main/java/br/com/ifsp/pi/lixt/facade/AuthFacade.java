@@ -17,7 +17,6 @@ import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
-import br.com.ifsp.pi.lixt.utils.mail.templates.ChooserTemplateMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
 import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
 import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
@@ -53,9 +52,9 @@ public class AuthFacade {
 		
 		User userCreated = this.userService.save(user);
 		
-		MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.CREATE_ACCOUNT, language);
-		Map<String, String> params = CreatorParametersMail.createParamsCreateAccount(user.getUsername(), baseUrl, user.getFirstAccessToken(), language);
-		mail = FormatterMail.formatMail(mail, params);
+		MailDto mail = TypeMail.CREATE_ACCOUNT.apply(language);
+		Map<String, String> params = CreatorParametersMail.createAccount(user.getUsername(), baseUrl, user.getFirstAccessToken(), language);
+		mail = FormatterMail.build(mail, params);
 		mail.setRecipientTo(user.getEmail());
 
 		boolean responseSendMail = senderMail.sendEmail(mail);
@@ -86,9 +85,9 @@ public class AuthFacade {
 		
 		if(ValidatorResponse.wasUpdated(responseUpdate)) {
 			
-			MailDto mail = ChooserTemplateMail.chooseTemplate(TypeMail.RESET_PASSWORD, language);
-			Map<String, String> params = CreatorParametersMail.createParamsResetPassword(user.getUsername(), password);
-			mail = FormatterMail.formatMail(mail, params);
+			MailDto mail = TypeMail.RESET_PASSWORD.apply(language);
+			Map<String, String> params = CreatorParametersMail.resetPassword(user.getUsername(), password);
+			mail = FormatterMail.build(mail, params);
 			mail.setRecipientTo(email);
 			
 			boolean responseSendMail = senderMail.sendEmail(mail);

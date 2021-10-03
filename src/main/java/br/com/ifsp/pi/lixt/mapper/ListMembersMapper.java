@@ -4,8 +4,9 @@ import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.listmembers.ListMembers;
 import br.com.ifsp.pi.lixt.dto.ListMembersDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class ListMembersMapper {
+public abstract class ListMembersMapper extends Mapper {
 	
 	private ListMembersMapper() {}
 	
@@ -19,7 +20,7 @@ public abstract class ListMembersMapper {
 				.userId(entity.getUserId())
 				.listId(entity.getListId())
 				.statusListMember(entity.getStatusListMember())
-				.user(UserMapper.entityToDto(entity.getUser()))
+				.user(map(entity.getUser(), UserMapper::entityToDto))
 				.build();
 	}
 	
@@ -33,7 +34,7 @@ public abstract class ListMembersMapper {
 				.userId(dto.getUserId())
 				.listId(dto.getListId())
 				.statusListMember(dto.getStatusListMember())
-				.user(UserMapper.dtoToEntity(dto.getUser()))
+				.user(map(dto.getUser(), UserMapper::dtoToEntity))
 				.build();
 	}
 

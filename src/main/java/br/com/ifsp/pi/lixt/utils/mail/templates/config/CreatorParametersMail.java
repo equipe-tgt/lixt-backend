@@ -9,7 +9,7 @@ public abstract class CreatorParametersMail {
 	
 	private CreatorParametersMail() {}
 	
-	public static Map<String, String> createParamsResetPassword(String username, String password) {
+	public static Map<String, String> resetPassword(String username, String password) {
 		Map<String, String> map = new HashMap<>();
 		
 		map.put("$USERNAME", username);
@@ -18,7 +18,7 @@ public abstract class CreatorParametersMail {
 		return map;
 	}
 	
-	public static Map<String, String> createParamsCreateAccount(String username, String baseUrl, String token, Languages language) {
+	public static Map<String, String> createAccount(String username, String baseUrl, String token, Languages language) {
 		Map<String, String> map = new HashMap<>();
 		
 		map.put("$USERNAME", username);

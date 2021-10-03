@@ -1,13 +1,13 @@
 package br.com.ifsp.pi.lixt.mapper;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.purchase.Purchase;
 import br.com.ifsp.pi.lixt.dto.PurchaseDto;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class PurchaseMapper {
+public abstract class PurchaseMapper extends Mapper {
 	
 	private PurchaseMapper() {}
 	
@@ -22,7 +22,7 @@ public abstract class PurchaseMapper {
 				.purchaseLocalId(dto.getPurchaseLocalId())
 				.purchaseDate(dto.getPurchaseDate())
 				.purchaseLocal(PurchaseLocalMapper.dtoToEntity(dto.getPurchaseLocal()))
-				.purchaseLists(Objects.isNull(dto.getPurchaseLists()) ? null : dto.getPurchaseLists().stream().map(PurchaseListMapper::dtoToEntity).collect(Collectors.toList()))
+				.purchaseLists(map(dto.getPurchaseLists(), PurchaseListMapper::dtoToEntity))
 				.build();
 	}
 	
@@ -36,8 +36,8 @@ public abstract class PurchaseMapper {
 				.userId(entity.getUserId())
 				.purchaseLocalId(entity.getPurchaseLocalId())
 				.purchaseDate(entity.getPurchaseDate())
-				.purchaseLocal(PurchaseLocalMapper.entityToDto(entity.getPurchaseLocal()))
-				.purchaseLists(Objects.isNull(entity.getPurchaseLists()) ? null : entity.getPurchaseLists().stream().map(PurchaseListMapper::entityToDto).collect(Collectors.toList()))
+				.purchaseLocal(map(entity.getPurchaseLocal(), PurchaseLocalMapper::entityToDto))
+				.purchaseLists(map(entity.getPurchaseLists(), PurchaseListMapper::entityToDto))
 				.build();
 	}
 

@@ -8,8 +8,9 @@ import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class PurchaseLocalMapper {
+public abstract class PurchaseLocalMapper extends Mapper {
 	
 	private PurchaseLocalMapper() {}
 	

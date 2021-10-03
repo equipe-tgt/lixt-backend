@@ -22,14 +22,12 @@ public abstract class CreateAccountTemplate {
 		switch(language) {
 
 			case PORTUGUESE:
-				CreateAccountTemplateTranslators.translateToPortuguese()
-						.forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				CreateAccountTemplateTranslators.toPortuguese().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
 				break;
 			
 			case ENGLISH:
 			default:
-				CreateAccountTemplateTranslators.translateToEnglish()
-						.forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				CreateAccountTemplateTranslators.toEnglish().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
 				break;
 		}
 		

@@ -20,7 +20,7 @@ public abstract class CreateAccountTemplateTranslators {
 		}
 	}
 	
-	public static Map<String, String> translateToPortuguese() {
+	public static Map<String, String> toPortuguese() {
 		Map<String, String> params = new HashMap<>();
 		
 		params.put("$TITLE", "Bem-Vindo à Plataforma Lixt");
@@ -31,7 +31,7 @@ public abstract class CreateAccountTemplateTranslators {
 		return params;
 	}
 	
-	public static Map<String, String> translateToEnglish() {
+	public static Map<String, String> toEnglish() {
 		Map<String, String> params = new HashMap<>();
 		
 		params.put("$TITLE", "Welcome to Lixt Platform");

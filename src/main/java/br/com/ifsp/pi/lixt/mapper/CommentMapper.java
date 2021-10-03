@@ -4,8 +4,9 @@ import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.dto.CommentDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class CommentMapper {
+public abstract class CommentMapper extends Mapper {
 	
 	private CommentMapper() {}
 	
@@ -20,7 +21,7 @@ public abstract class CommentMapper {
 				.productOfListId(entity.getProductOfListId())
 				.content(entity.getContent())
 				.date(entity.getDate())
-				.user(UserMapper.entityToDto(entity.getUser()))
+				.user(map(entity.getUser(), UserMapper::entityToDto))
 				.build();
 	}
 	
@@ -35,7 +36,7 @@ public abstract class CommentMapper {
 				.productOfListId(dto.getProductOfListId())
 				.content(dto.getContent())
 				.date(dto.getDate())
-				.user(UserMapper.dtoToEntity(dto.getUser()))
+				.user(map(dto.getUser(), UserMapper::dtoToEntity)) 
 				.build();
 	}
 

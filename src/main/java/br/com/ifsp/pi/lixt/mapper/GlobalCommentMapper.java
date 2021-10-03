@@ -2,10 +2,11 @@ package br.com.ifsp.pi.lixt.mapper;
 
 import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
 import br.com.ifsp.pi.lixt.dto.GlobalCommentDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
 import java.util.Objects;
 
-public abstract class GlobalCommentMapper {
+public abstract class GlobalCommentMapper extends Mapper {
 
     private GlobalCommentMapper() {}
 

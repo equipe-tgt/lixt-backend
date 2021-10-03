@@ -118,8 +118,8 @@ class AuthControllerTest {
 	void activeUserUncessfully() {
 		String view = InvalidTokenViewHtml.getView();
 		
-		for(String key : InvalidTokenViewTranslators.translateToEnglish().keySet())
-			view = view.replace(key, InvalidTokenViewTranslators.translateToEnglish().get(key));		
+		for(String key : InvalidTokenViewTranslators.toEnglish().keySet())
+			view = view.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));		
 		
 		assertEquals(this.authController.activeUser("", null), view);
 		assertEquals(this.authController.activeUser("abc", null), view);

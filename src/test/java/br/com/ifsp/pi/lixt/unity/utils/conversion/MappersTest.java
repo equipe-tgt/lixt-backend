@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.ArrayList;
 
+import br.com.ifsp.pi.lixt.data.business.comment.Comment;
+import br.com.ifsp.pi.lixt.data.business.globalComment.GlobalComment;
 import br.com.ifsp.pi.lixt.dto.*;
 import br.com.ifsp.pi.lixt.mapper.*;
 import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
@@ -72,9 +74,8 @@ class MappersTest {
 				ListOfItemsDto.builder().listMembers(new ArrayList<>()).build()
 		).getListMembers());
 
-		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalCommentDto>(), new ArrayList<CommentDto>()).getCommentsDto());
-
-		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalCommentDto>(), new ArrayList<CommentDto>()).getGlobalCommentsDto());
+		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalComment>(), new ArrayList<Comment>()).getCommentsDto());
+		assertNotNull(AllCommentsMapper.entityToDto(new ArrayList<GlobalComment>(), new ArrayList<Comment>()).getGlobalCommentsDto());
 	}
 
 }

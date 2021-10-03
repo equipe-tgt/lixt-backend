@@ -20,7 +20,7 @@ public abstract class ForgetPasswordTemplateTranslators {
 		}
 	}
 	
-	public static Map<String, String> translateToPortuguese() {
+	public static Map<String, String> toPortuguese() {
 		Map<String, String> params = new HashMap<>();
 		
 		params.put("$TITLE", "Senha Resetada com Sucesso!");
@@ -32,7 +32,7 @@ public abstract class ForgetPasswordTemplateTranslators {
 		return params;
 	}
 	
-	public static Map<String, String> translateToEnglish() {
+	public static Map<String, String> toEnglish() {
 		Map<String, String> params = new HashMap<>();
 		
 		params.put("$TITLE", "Password Reset Successfully!");

@@ -30,14 +30,14 @@ public class BarcodeService {
 
 		if(requestsDone < MAX_AMOUNT_REQUEST) {
 			this.counterService.updateCountAtBarcodeCounter(requestsDone+1);
-			return this.getProductAtBarcodeApi(barcode);
+			return this.doRequest(barcode);
 		}
 		
 		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private Map<String, Object> getProductAtBarcodeApi(String barcode) {
+	private Map<String, Object> doRequest(String barcode) {
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("X-Cosmos-Token", token);
 		HttpEntity<?> entity = new HttpEntity<Object>(headers);

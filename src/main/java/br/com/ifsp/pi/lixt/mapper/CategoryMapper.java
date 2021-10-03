@@ -4,8 +4,9 @@ import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.category.Category;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class CategoryMapper {
+public abstract class CategoryMapper extends Mapper {
 	
 	private CategoryMapper() {}
 	

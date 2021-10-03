@@ -24,10 +24,18 @@ public class BarcodeScheduleService {
 	public void prepareCounter() {
 		Long count = jdbcTemplate.queryForObject(BarcodeCounterSql.count(), Long.class);
 		
-		if(count == 0)
+		if(count == 0) {
+			log.info("Criando contador barcodeCounter.");
 			jdbcTemplate.update(BarcodeCounterSql.insertBarcodeCounter());
-		else 
-			jdbcTemplate.update(BarcodeCounterSql.updateBarcode());
+		}
+		else {
+			int result = jdbcTemplate.update(BarcodeCounterSql.updateBarcode());
+			
+			if(ValidatorResponse.wasUpdated(result))
+				log.warn("BarcodeCounter resetado devido à indisponibilidade do servidor");
+			else
+				log.debug("BarcodeCounter não precisou ser resetado");
+		}
 	}
 	
 	@Scheduled(cron = "0 0 0 * * *")

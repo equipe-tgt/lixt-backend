@@ -20,19 +20,19 @@ public class ViewsTest {
 	void createAccountTemplate() {
 		
 		String view = ActiveAccountView.getView(Languages.convertStringToEnum("pt-br"));
-		for(String value : ActiveAccountViewTranslators.translateToPortuguese().values())
+		for(String value : ActiveAccountViewTranslators.toPortuguese().values())
 			assertThat(view).contains(value);
 		
 		view = ActiveAccountView.getView(Languages.convertStringToEnum("en-us"));
-		for(String value : ActiveAccountViewTranslators.translateToEnglish().values())
+		for(String value : ActiveAccountViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 		
 		view = ActiveAccountView.getView(Languages.convertStringToEnum(null));
-		for(String value : ActiveAccountViewTranslators.translateToEnglish().values())
+		for(String value : ActiveAccountViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 		
 		view = ActiveAccountView.getView(Languages.convertStringToEnum("jp"));
-		for(String value : ActiveAccountViewTranslators.translateToEnglish().values())
+		for(String value : ActiveAccountViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 	}
 	
@@ -41,19 +41,19 @@ public class ViewsTest {
 	void resetPasswordTemplate() {
 		
 		String view = InvalidTokenView.getView(Languages.convertStringToEnum("pt-br"));
-		for(String value : InvalidTokenViewTranslators.translateToPortuguese().values())
+		for(String value : InvalidTokenViewTranslators.toPortuguese().values())
 			assertThat(view).contains(value);
 		
 		view = InvalidTokenView.getView(Languages.convertStringToEnum("en-us"));
-		for(String value : InvalidTokenViewTranslators.translateToEnglish().values())
+		for(String value : InvalidTokenViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 		
 		view = InvalidTokenView.getView(Languages.convertStringToEnum(null));
-		for(String value : InvalidTokenViewTranslators.translateToEnglish().values())
+		for(String value : InvalidTokenViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 		
 		view = InvalidTokenView.getView(Languages.convertStringToEnum("jp"));
-		for(String value : InvalidTokenViewTranslators.translateToEnglish().values())
+		for(String value : InvalidTokenViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 	}
 

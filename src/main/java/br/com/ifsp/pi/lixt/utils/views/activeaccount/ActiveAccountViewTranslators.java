@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class ActiveAccountViewTranslators {
 	
-	public static Map<String, String> translateToPortuguese() {
+	public static Map<String, String> toPortuguese() {
 		Map<String, String> params = new HashMap<>();
 		
 		params.put("$TITLE", "Conta Ativada com Sucesso!");
@@ -19,7 +19,7 @@ public abstract class ActiveAccountViewTranslators {
 		return params;
 	}
 	
-	public static Map<String, String> translateToEnglish() {
+	public static Map<String, String> toEnglish() {
 		Map<String, String> params = new HashMap<>();
 		
 		params.put("$TITLE", "Account Activated Successfully!");

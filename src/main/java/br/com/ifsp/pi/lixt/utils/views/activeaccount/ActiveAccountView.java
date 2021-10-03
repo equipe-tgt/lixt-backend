@@ -17,15 +17,15 @@ public abstract class ActiveAccountView {
 
 			case PORTUGUESE:
 				
-				for(String key : ActiveAccountViewTranslators.translateToPortuguese().keySet())
-					view = view.replace(key, ActiveAccountViewTranslators.translateToPortuguese().get(key));
+				for(String key : ActiveAccountViewTranslators.toPortuguese().keySet())
+					view = view.replace(key, ActiveAccountViewTranslators.toPortuguese().get(key));
 				
 				return view;
 			
 			case ENGLISH:
 			default:
-				for(String key : ActiveAccountViewTranslators.translateToEnglish().keySet())
-					view = view.replace(key, ActiveAccountViewTranslators.translateToEnglish().get(key));
+				for(String key : ActiveAccountViewTranslators.toEnglish().keySet())
+					view = view.replace(key, ActiveAccountViewTranslators.toEnglish().get(key));
 				
 				return view;
 		}

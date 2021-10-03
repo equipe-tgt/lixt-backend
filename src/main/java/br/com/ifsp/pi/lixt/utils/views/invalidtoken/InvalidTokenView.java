@@ -17,16 +17,16 @@ public abstract class InvalidTokenView {
 
 			case PORTUGUESE:
 
-				for(String key : InvalidTokenViewTranslators.translateToPortuguese().keySet())
-					view = view.replace(key, InvalidTokenViewTranslators.translateToPortuguese().get(key));
+				for(String key : InvalidTokenViewTranslators.toPortuguese().keySet())
+					view = view.replace(key, InvalidTokenViewTranslators.toPortuguese().get(key));
 				
 				return view;
 			
 			case ENGLISH:
 			default:
 
-				for(String key : InvalidTokenViewTranslators.translateToEnglish().keySet())
-					view = view.replace(key, InvalidTokenViewTranslators.translateToEnglish().get(key));
+				for(String key : InvalidTokenViewTranslators.toEnglish().keySet())
+					view = view.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));
 				
 				return view;
 		}

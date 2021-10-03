@@ -22,14 +22,12 @@ public abstract class ForgetPasswordTemplate {
 		switch(language) {
 
 			case PORTUGUESE:
-				ForgetPasswordTemplateTranslators.translateToPortuguese()
-						.forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				ForgetPasswordTemplateTranslators.toPortuguese().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
 				break;
 			
 			case ENGLISH:
 			default:
-				ForgetPasswordTemplateTranslators.translateToEnglish()
-						.forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+				ForgetPasswordTemplateTranslators.toEnglish().forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
 				break;
 		}
 		
