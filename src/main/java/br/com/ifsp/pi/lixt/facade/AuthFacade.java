@@ -134,6 +134,29 @@ public class AuthFacade {
 			return ErrorForgotPasswordView.getView(language);
 		}
 	}
+
+	public String saveNewPassword(String token, Languages language, String newPassword) {
+
+		try {
+			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
+			DecodedJWT decodedJWT = verifier.verify(token);
+
+			String email = decodedJWT.getSubject();
+			var user = this.userService.findByEmail(email);
+			if(Objects.isNull(user)) {
+				throw new NotFoundException("Email não encontrado.");
+			}
+
+			Integer result = this.userService.updatePassword(user.getEmail(), passwordEncoder.encode(newPassword));
+
+			if(ValidatorResponse.wasUpdated(result))
+				return ActiveAccountView.getView(language);
+			else
+				return ErrorForgotPasswordView.getView(language);
+		} catch (Exception e) {
+			return ErrorForgotPasswordView.getView(language);
+		}
+	}
 	
 	public String activeUser(String token, Languages language) {
 		Integer result = this.userService.activeAccount(token);

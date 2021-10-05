@@ -66,10 +66,10 @@ public class AuthController {
 
 	@PostMapping(path = "/form/update-password")
 	@ApiOperation(value = "Recebe o novo valor da senha")
-	public void receiveNewPassword(@RequestParam(value = "token") String token,
+	public String receiveNewPassword(@RequestParam(value = "token") String token,
 								   @RequestParam(defaultValue = "en-us", required = false) String language,
 								   @RequestParam(value = "newPassword") String password) {
-
+		return this.authFacade.saveNewPassword(token, Languages.convertStringToEnum(language), password);
 	}
 	
 	@PostMapping(path = "/update-password", consumes = MediaType.TEXT_PLAIN_VALUE)

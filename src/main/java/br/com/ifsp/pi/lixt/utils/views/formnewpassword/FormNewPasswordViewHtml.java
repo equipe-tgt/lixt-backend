@@ -104,7 +104,6 @@ public abstract class FormNewPasswordViewHtml {
                 "                    alert(\"$ERROR-MESSAGE-INVALID-LENGTH\");\r\n" +
                 "                    return false;\r\n" +
                 "                } else {\r\n" +
-                "                    alert(\"$SUCESS-MASSAGE-SEND\");\r\n" +
                 "                    sendForm(pw1);\r\n" +
                 "                    return false;" +
                 "                }\r\n" +
@@ -120,7 +119,6 @@ public abstract class FormNewPasswordViewHtml {
                 "                 hiddenField.name = 'newPassword';\r\n" +
                 "                 hiddenField.value = passwordValue;\r\n" +
                 "                 form.appendChild(hiddenField);\r\n" +
-                "                 alert(\"Teste\");\r\n" +
                 "\r\n" +
                 "                 document.body.appendChild(form);\r\n" +
                 "                 form.submit();\r\n" +
