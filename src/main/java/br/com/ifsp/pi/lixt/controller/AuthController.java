@@ -63,6 +63,14 @@ public class AuthController {
 	public String validateToken(@RequestParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language){
 		return authFacade.validateToken(token, Languages.convertStringToEnum(language));
 	}
+
+	@PostMapping(path = "/form/update-password")
+	@ApiOperation(value = "Recebe o novo valor da senha")
+	public void receiveNewPassword(@RequestParam(value = "token") String token,
+								   @RequestParam(defaultValue = "en-us", required = false) String language,
+								   @RequestParam(value = "newPassword") String password) {
+
+	}
 	
 	@PostMapping(path = "/update-password", consumes = MediaType.TEXT_PLAIN_VALUE)
 	@ApiOperation(value = "Atualizar a senha de um usuário na plataforma")
