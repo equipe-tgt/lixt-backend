@@ -9,6 +9,7 @@ import javax.transaction.Transactional;
 import br.com.ifsp.pi.lixt.utils.security.jwt.JwtConfig;
 import br.com.ifsp.pi.lixt.utils.security.jwt.JwtSecretKey;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
@@ -125,7 +126,7 @@ public class AuthFacade {
 		} catch (Exception e) {
 			return ErrorForgotPasswordView.getView(language);
 		}
-		return "deu certo";
+		return FormNewPasswordView.getView(language);
 	}
 	
 	public String activeUser(String token, Languages language) {
