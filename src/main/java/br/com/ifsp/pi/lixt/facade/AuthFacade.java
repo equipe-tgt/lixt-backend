@@ -123,10 +123,16 @@ public class AuthFacade {
 				throw new NotFoundException("Email não encontrado.");
 			}
 
+			String newToken = JWT.create()
+					.withSubject(email)
+					.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMillis()))
+					.sign(jwtSecretKey.secretKey());
+
+			return FormNewPasswordView.getView(language, newToken, baseUrl);
+
 		} catch (Exception e) {
 			return ErrorForgotPasswordView.getView(language);
 		}
-		return FormNewPasswordView.getView(language);
 	}
 	
 	public String activeUser(String token, Languages language) {

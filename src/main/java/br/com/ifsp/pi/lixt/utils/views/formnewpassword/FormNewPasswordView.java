@@ -7,12 +7,16 @@ public abstract class FormNewPasswordView {
 
     private FormNewPasswordView() {}
 
-    public static String getView(Languages language) {
-        return formatBodyMessageHtml(language);
+    public static String getView(Languages language, String token, String baseUrl) {
+        return formatBodyMessageHtml(language, token, baseUrl);
     }
 
-    private static String formatBodyMessageHtml(Languages language) {
+    private static String formatBodyMessageHtml(Languages language, String token, String baseUrl) {
         String view = FormNewPasswordViewHtml.getView();
+
+        view = view.replace("$TOKEN", token);
+        view = view.replace("$BASE_URL", baseUrl);
+        view = view.replace("$LANGUAGE", language.getDescription());
 
         switch(language) {
 

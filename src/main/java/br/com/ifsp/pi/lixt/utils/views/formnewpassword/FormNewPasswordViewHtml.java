@@ -77,16 +77,17 @@ public abstract class FormNewPasswordViewHtml {
                 "            </div>\r\n" +
                 "\r\n" +
                 "            <div class=\"body\">\r\n" +
-                "                <form action=\"/form/update-password\" method=\"POST\">\r\n" +
-                "                    <label for=\"password\">$PASSWORD-FIELD</label>\r\n" +
-                "                    <input id=\"pswd1\" type=\"password\" name=\"password\" >\r\n" +
                 "\r\n" +
-                "                    <br/><br/>\r\n" +
-                "                    <label for=\"password-confirm\">$CONFIRM-PASSWORD-FIELD</label>\r\n" +
-                "                    <input id=\"pswd2\" type=\"password\" name=\"password-confirm\" >\r\n" +
-                "                    <br/><br/>\r\n" +
-                "                    <button onClick=\"validateForm()\">$SUBMIT</button>\r\n" +
-                "                </form>\r\n" +
+                "            <label for=\"password\">$PASSWORD-FIELD</label>\r\n" +
+                "            <input id=\"pswd1\" type=\"password\" name=\"password\" >\r\n" +
+                "            <br/><br/>\r\n" +
+                "\r\n" +
+                "            <label for=\"password-confirm\">$CONFIRM-PASSWORD-FIELD</label>\r\n" +
+                "            <input id=\"pswd2\" type=\"password\" name=\"password-confirm\" >\r\n" +
+                "            <br/><br/>" +
+                "\r\n" +
+                "            <button onClick=\"validateForm()\">$SUBMIT</button>" +
+                "\r\n" +
                 "            </div>\r\n" +
                 "            \r\n" +
                 "        </div>\r\n" +
@@ -104,8 +105,25 @@ public abstract class FormNewPasswordViewHtml {
                 "                    return false;\r\n" +
                 "                } else {\r\n" +
                 "                    alert(\"$SUCESS-MASSAGE-SEND\");\r\n" +
+                "                    sendForm(pw1);\r\n" +
                 "                    return false;" +
                 "                }\r\n" +
+                "             }\r\n" +
+                "\r\n" +
+                "             function sendForm(passwordValue) {\r\n" +
+                "                 var form;\r\n" +
+                "                 form = document.createElement(\"form\");\r\n" +
+                "                 form.method = \"POST\";\r\n" +
+                "                 form.action = \"$BASE_URL/auth/form/update-password?token=$TOKEN&language=$LANGUAGE\"\r\n" +
+                "                 const hiddenField = document.createElement('input');\r\n" +
+                "                 hiddenField.type = 'hidden';\r\n" +
+                "                 hiddenField.name = 'newPassword';\r\n" +
+                "                 hiddenField.value = passwordValue;\r\n" +
+                "                 form.appendChild(hiddenField);\r\n" +
+                "                 alert(\"Teste\");\r\n" +
+                "\r\n" +
+                "                 document.body.appendChild(form);\r\n" +
+                "                 form.submit();\r\n" +
                 "             }\r\n" +
                 "        </script>\r\n" +
                 "    </body>\r\n" +
