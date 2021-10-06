@@ -3,9 +3,7 @@ package br.com.ifsp.pi.lixt.facade;
 import java.util.List;
 import java.util.Objects;
 
-import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
-import br.com.ifsp.pi.lixt.mapper.ProductOfListMapper;
 import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +27,7 @@ public class ProductOfListFacade {
 	private final ListOfItemsService listOfItemsService;
 	private final GlobalCommentService globalCommentService;
 	
-	public ProductOfListDto findById(Long id) {
+	public ProductOfList findById(Long id) {
 		
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
@@ -38,8 +36,7 @@ public class ProductOfListFacade {
 			throw new ForbiddenException();
 		}
 		
-		var countGlobalComments = this.globalCommentService.countGlobalCommentsAtProductByUser(id, Users.getUserId());
-		return ProductOfListMapper.entityToDtoCountingGlobalComments(this.productOfListService.findById(id), countGlobalComments);
+		return this.productOfListService.findById(id);
 	}
 	
 	public ProductOfList save(ProductOfList productOfList) {

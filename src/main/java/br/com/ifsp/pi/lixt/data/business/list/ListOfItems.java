@@ -50,6 +50,7 @@ public class ListOfItems {
 	@Column(name = "st_description", nullable = false)
 	private String description;
 	
+	@EqualsAndHashCode.Exclude
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_list", insertable = false, updatable = false)
 	private List<ProductOfList> productsOfList;

@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
+import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
 import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import lombok.AllArgsConstructor;
@@ -91,5 +92,10 @@ public class ProductOfList {
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_product_of_list", insertable = false, updatable = false)
 	private List<Comment> comments;
+	
+	@EqualsAndHashCode.Exclude
+	@ManyToOne(cascade = {CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_list", insertable = false, updatable = false)
+	private ListOfItems listOfItems;
 
 }
