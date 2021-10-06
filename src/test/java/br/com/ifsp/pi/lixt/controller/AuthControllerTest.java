@@ -1,10 +1,9 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
+import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordViewTranslators;
@@ -35,6 +34,8 @@ import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
 import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewHtml;
 import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewTranslators;
+
+import java.util.Date;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -127,6 +128,21 @@ class AuthControllerTest {
 			view = view.replace(key, InvalidTokenViewTranslators.translateToEnglish().get(key));
 
 		assertEquals(this.authController.validateToken(expiredToken, Languages.ENGLISH.getDescription()), view);
+	}
+
+	@Test
+	@DisplayName("Cadastro de nova senha com token válido e email inexistente")
+	void redefinePasswordWithValidTokenAndNonexistentEmail() {
+
+		// Expira em 06/10/2022
+		String tokenWithNonexistentEmail = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NDM4NCwiYXVkIjoiIiwic3ViIjoiYmxhYmxhQGhvdG1haWwuY29tIn0.7W1tDV62L6ZVZZ9kCf1Mj_EPBHqkGFOkWnxBbL3UB5I";
+
+		String view = ErrorForgotPasswordView.getView(Languages.ENGLISH);
+
+		for(String key : ErrorForgotPasswordViewTranslators.translateToEnglish().keySet())
+			view = view.replace(key, InvalidTokenViewTranslators.translateToEnglish().get(key));
+
+		assertEquals(this.authController.validateToken(tokenWithNonexistentEmail, Languages.ENGLISH.getDescription()), view);
 	}
 	
 	@Test
