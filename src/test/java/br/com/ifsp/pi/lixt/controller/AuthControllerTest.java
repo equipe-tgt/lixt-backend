@@ -159,6 +159,15 @@ class AuthControllerTest {
 
 		assertEquals(this.authController.validateToken(jwtValidToken, Languages.ENGLISH.getDescription()).substring(0, 3681), view.substring(0, 3681));
 	}
+
+	@Test
+	@DisplayName("Envio de nova senha com token expirado")
+	void sendNewPasswordWithExpiredToken() {
+		String jwtExpiredToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1NjM3NjUsImV4cCI6MTYzMzU2Mzk2NywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.bkZit634RaAFwRIL0m302O_OST9DZ-A_45OUNw85HEg";
+
+		assertEquals(this.authController.receiveNewPassword(jwtExpiredToken, Languages.ENGLISH.getDescription(), "123456789"),
+				ErrorForgotPasswordView.getView(Languages.ENGLISH));
+	}
 	
 	@Test
 	@DisplayName("Ativar usuário sem sucesso")
