@@ -67,7 +67,6 @@ public abstract class ProductOfListMapper extends Mapper {
 	private static Integer extractAmountGlobalCommentsInList(ProductOfList productOfList) {
 		if(Objects.isNull(productOfList.getProduct()) || Objects.isNull(productOfList.getProduct().getGlobalComments()))
 			return 0;
-//		return 0;
 		return productOfList.getProduct().getGlobalComments()
 				.stream().filter(e -> e.getUserId() == productOfList.getListOfItems().getOwnerId()).collect(Collectors.toList()).size();
 	}
