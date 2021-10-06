@@ -7,6 +7,8 @@ import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordViewTranslators;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordViewTranslators;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -143,6 +145,19 @@ class AuthControllerTest {
 			view = view.replace(key, InvalidTokenViewTranslators.translateToEnglish().get(key));
 
 		assertEquals(this.authController.validateToken(tokenWithNonexistentEmail, Languages.ENGLISH.getDescription()), view);
+	}
+
+	@Test
+	@DisplayName("Solicitar formulário para cadastro de nova senha com sucesso")
+	void formNewPasswordRequest() {
+		String jwtValidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NTQ4MywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.8tTjMrfXU5Iiaky3NL-rXVQYIkg-aKjOjVHnlnrwavU";
+
+		String view = FormNewPasswordView.getView(Languages.ENGLISH, jwtValidToken, "http://localhost:8080");
+
+		for(String key : FormNewPasswordViewTranslators.translateToEnglish().keySet())
+			view = view.replace(key, FormNewPasswordViewTranslators.translateToEnglish().get(key));
+
+		assertEquals(this.authController.validateToken(jwtValidToken, Languages.ENGLISH.getDescription()).substring(0, 3681), view.substring(0, 3681));
 	}
 	
 	@Test
