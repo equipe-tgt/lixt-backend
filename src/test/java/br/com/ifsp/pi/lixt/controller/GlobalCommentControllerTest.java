@@ -31,281 +31,281 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Testar endpoints na classe GlobalCommentController")
-public class GlobalCommentControllerTest {
+class GlobalCommentControllerTest {
 
-    @Autowired
-    GlobalCommentController globalCommentController;
+	@Autowired
+	GlobalCommentController globalCommentController;
 
-    @Autowired
-    private CategoryController categoryController;
+	@Autowired
+	private CategoryController categoryController;
 
-    @Autowired
-    private AuthController authController;
+	@Autowired
+	private AuthController authController;
 
-    @Autowired
-    private UserService userService;
+	@Autowired
+	private UserService userService;
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Autowired
-    private ProductController productController;
+	@Autowired
+	private ProductController productController;
 
-    @Autowired
-    private ProductService productService;
+	@Autowired
+	private ProductService productService;
 
-    private CategoryDto category;
+	private CategoryDto category;
 
-    private ProductDto product;
+	private ProductDto product;
 
-    private List<UserDto> oauthUsers = new ArrayList<>();
+	private List<UserDto> oauthUsers = new ArrayList<>();
 
-    private ListOfItemsDto listOfItems;
+	private ListOfItemsDto listOfItems;
 
-    private ProductOfListDto productOfListDto;
+	private ProductOfListDto productOfListDto;
 
-    private String tokenOauthUser0;
+	private String tokenOauthUser0;
 
-    private String tokenOauthUser1;
+	private String tokenOauthUser1;
 
-    @BeforeAll
-    void createTestPreconditions() throws Exception {
-        category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
-        product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
+	@BeforeAll
+	void createTestPreconditions() throws Exception {
+		category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
+		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
 
-        UserDtoData.dataForProductOfListControllerTest().subList(0, 2).forEach(user -> {
-            oauthUsers.add((UserDto) this.authController.register(user, null).getBody());
-            oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
-            this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()), null);
-        });
+		UserDtoData.dataForProductOfListControllerTest().subList(0, 2).forEach(user -> {
+			oauthUsers.add((UserDto) this.authController.register(user, null).getBody());
+			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
+			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()), null);
+		});
 
-        tokenOauthUser0 = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
+		tokenOauthUser0 = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
 
-        tokenOauthUser1 = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
+		tokenOauthUser1 = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
 
-        this.listOfItems = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), tokenOauthUser0, ListOfItemsDto.class);
+		this.listOfItems = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), tokenOauthUser0, ListOfItemsDto.class);
 
-        assertThat(listOfItems).isNotNull();
+		assertThat(listOfItems).isNotNull();
 
-        String productOfListJson = ProductOfListDtoDataJson.initializeValues(this.listOfItems, ProductMapper.dtoToEntity(this.product)).get(0);
+		String productOfListJson = ProductOfListDtoDataJson.initializeValues(this.listOfItems, ProductMapper.dtoToEntity(this.product)).get(0);
 
-        productOfListDto = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfListJson, tokenOauthUser0, ProductOfListDto.class);
-    }
+		productOfListDto = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfListJson, tokenOauthUser0, ProductOfListDto.class);
+	}
 
-    @Test
-    @DisplayName("Adicionar e deletar comentários globais")
-    void addAndDeleteGlobalComments() throws Exception {
+	@Test
+	@DisplayName("Adicionar e deletar comentários globais")
+	void addAndDeleteGlobalComments() throws Exception {
 
-        String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
+		String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
 
-        GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
+		GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(1);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(1);
 
-        String globalComment2 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(1);
+		String globalComment2 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(1);
 
-        GlobalCommentDto globalCommentDto2 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment2, oauthUsers.get(0), GlobalCommentDto.class);
+		GlobalCommentDto globalCommentDto2 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment2, oauthUsers.get(0), GlobalCommentDto.class);
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(2);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(2);
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(1);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(1);
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto2.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto2.getId());
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(0);
-    }
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isZero();
+	}
 
-    @Test
-    @DisplayName("Atualizar comentário global")
-    void updateGlobalComments() throws Exception {
-        String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
+	@Test
+	@DisplayName("Atualizar comentário global")
+	void updateGlobalComments() throws Exception {
+		String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
 
-        GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
+		GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(1);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(1);
 
-        globalCommentDto1.setContent("Comentário global [atualizado]");
+		globalCommentDto1.setContent("Comentário global [atualizado]");
 
-        ValidatorStatusResponsePut.isOk(mockMvc,
-                oauthUsers.get(0),
-                "/globalComment",
-                GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
+		ValidatorStatusResponsePut.isOk(mockMvc,
+				oauthUsers.get(0),
+				"/globalComment",
+				GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc,
-                                "/productOfList/" + this.productOfListDto.getId() + "/comments",
-                                tokenOauthUser0,
-                                AllCommentsDto.class)
-                        .getGlobalCommentsDto().get(0).getContent()
-        ).isEqualTo("Comentário global [atualizado]");
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc,
+								"/productOfList/" + this.productOfListDto.getId() + "/comments",
+								tokenOauthUser0,
+								AllCommentsDto.class)
+						.getGlobalCommentsDto().get(0).getContent()
+		).isEqualTo("Comentário global [atualizado]");
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(0);
-    }
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isZero();
+	}
 
-    @Test
-    @DisplayName("Mesmo comentário global em listas diferentes")
-    void sameGlobalCommentInTwoLists() throws Exception {
-        String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
+	@Test
+	@DisplayName("Mesmo comentário global em listas diferentes")
+	void sameGlobalCommentInTwoLists() throws Exception {
+		String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
 
-        GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
+		GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(1);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(1);
 
 
-        ListOfItemsDto otherList = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), tokenOauthUser0, ListOfItemsDto.class);
+		ListOfItemsDto otherList = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), tokenOauthUser0, ListOfItemsDto.class);
 
-        assertThat(otherList).isNotNull();
+		assertThat(otherList).isNotNull();
 
-        String productOfListJson = ProductOfListDtoDataJson.initializeValues(otherList, ProductMapper.dtoToEntity(this.product)).get(0);
+		String productOfListJson = ProductOfListDtoDataJson.initializeValues(otherList, ProductMapper.dtoToEntity(this.product)).get(0);
 
-        ProductOfListDto productOfListDto2 = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfListJson, tokenOauthUser0, ProductOfListDto.class);
+		ProductOfListDto productOfListDto2 = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfListJson, tokenOauthUser0, ProductOfListDto.class);
 
 
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc,
-                                "/productOfList/" + productOfListDto2.getId() + "/comments",
-                                tokenOauthUser0,
-                                AllCommentsDto.class)
-                        .getGlobalCommentsDto().get(0).getContent()
-        ).isEqualTo(globalCommentDto1.getContent());
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc,
+								"/productOfList/" + productOfListDto2.getId() + "/comments",
+								tokenOauthUser0,
+								AllCommentsDto.class)
+						.getGlobalCommentsDto().get(0).getContent()
+		).isEqualTo(globalCommentDto1.getContent());
 
 
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(0);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isZero();
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/productOfList/" + productOfListDto2.getId());
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/list/" + otherList.getId());
-    }
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/productOfList/" + productOfListDto2.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/list/" + otherList.getId());
+	}
 
-    @Test
-    @DisplayName("Ver comentário global na lista compartilhada mesmo não sendo o autor")
-    void listMemberReadGlobalComment() throws Exception {
+	@Test
+	@DisplayName("Ver comentário global na lista compartilhada mesmo não sendo o autor")
+	void listMemberReadGlobalComment() throws Exception {
 
-        String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
+		String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
 
-        GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
+		GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(1);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(1);
 
 
-        ListMembersDto listMember = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), tokenOauthUser0, ListMembersDto.class);
+		ListMembersDto listMember = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), tokenOauthUser0, ListMembersDto.class);
 
-        RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + listMember.getId(), tokenOauthUser1, ListMembersDto.class);
+		RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + listMember.getId(), tokenOauthUser1, ListMembersDto.class);
 
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc,
-                                "/productOfList/" + this.productOfListDto.getId() + "/comments",
-                                tokenOauthUser1,
-                                AllCommentsDto.class)
-                        .getGlobalCommentsDto().get(0).getContent()
-        ).isEqualTo(globalCommentDto1.getContent());
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc,
+								"/productOfList/" + this.productOfListDto.getId() + "/comments",
+								tokenOauthUser1,
+								AllCommentsDto.class)
+						.getGlobalCommentsDto().get(0).getContent()
+		).isEqualTo(globalCommentDto1.getContent());
 
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/membersList/" + listMember.getId());
-    }
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/membersList/" + listMember.getId());
+	}
 
-    @Test
-    @DisplayName("Apenas o autor pode editar comentários globais")
-    void nonAuthorEditGlobalComment() throws Exception {
-        String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
+	@Test
+	@DisplayName("Apenas o autor pode editar comentários globais")
+	void nonAuthorEditGlobalComment() throws Exception {
+		String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
 
-        GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
+		GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(1);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(1);
 
-        globalCommentDto1.setContent("Comentário global [atualizado]");
+		globalCommentDto1.setContent("Comentário global [atualizado]");
 
-        ValidatorStatusResponsePut.isOk(mockMvc,
-                oauthUsers.get(0),
-                "/globalComment",
-                GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
+		ValidatorStatusResponsePut.isOk(mockMvc,
+				oauthUsers.get(0),
+				"/globalComment",
+				GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc,
-                                "/productOfList/" + this.productOfListDto.getId() + "/comments",
-                                tokenOauthUser0,
-                                AllCommentsDto.class)
-                        .getGlobalCommentsDto().get(0).getContent()
-        ).isEqualTo("Comentário global [atualizado]");
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc,
+								"/productOfList/" + this.productOfListDto.getId() + "/comments",
+								tokenOauthUser0,
+								AllCommentsDto.class)
+						.getGlobalCommentsDto().get(0).getContent()
+		).isEqualTo("Comentário global [atualizado]");
 
 
-        ListMembersDto listMember = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), tokenOauthUser0, ListMembersDto.class);
+		ListMembersDto listMember = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), tokenOauthUser0, ListMembersDto.class);
 
-        RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + listMember.getId(), tokenOauthUser1, ListMembersDto.class);
+		RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + listMember.getId(), tokenOauthUser1, ListMembersDto.class);
 
-        globalCommentDto1.setContent("Comentário global [atualizado 2]");
+		globalCommentDto1.setContent("Comentário global [atualizado 2]");
 
-        ValidatorStatusResponsePut.isForbidden(mockMvc,
-                oauthUsers.get(1),
-                "/globalComment",
-                GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
+		ValidatorStatusResponsePut.isForbidden(mockMvc,
+				oauthUsers.get(1),
+				"/globalComment",
+				GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc,
-                                "/productOfList/" + this.productOfListDto.getId() + "/comments",
-                                tokenOauthUser1,
-                                AllCommentsDto.class)
-                        .getGlobalCommentsDto().get(0).getContent()
-        ).isEqualTo("Comentário global [atualizado]");
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc,
+								"/productOfList/" + this.productOfListDto.getId() + "/comments",
+								tokenOauthUser1,
+								AllCommentsDto.class)
+						.getGlobalCommentsDto().get(0).getContent()
+		).isEqualTo("Comentário global [atualizado]");
 
 
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
 
-        assertThat(
-                RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
-                        .getGlobalCommentsDto().size()
-        ).isEqualTo(0);
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isZero();
 
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/membersList/" + listMember.getId());
-    }
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/membersList/" + listMember.getId());
+	}
 
-    @AfterAll
-    void deleteProducts() throws Exception {
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/productOfList/" + productOfListDto.getId());
-        ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/list/" + this.listOfItems.getId());
-        this.productService.deleteById(product.getId());
-        this.categoryController.deleteById(this.category.getId());
-        this.oauthUsers.forEach(user -> this.userService.deleteById(user.getId()));
-    }
+	@AfterAll
+	void deleteProducts() throws Exception {
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/productOfList/" + productOfListDto.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/list/" + this.listOfItems.getId());
+		this.productService.deleteById(product.getId());
+		this.categoryController.deleteById(this.category.getId());
+		this.oauthUsers.forEach(user -> this.userService.deleteById(user.getId()));
+	}
 }
 

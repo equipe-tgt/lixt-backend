@@ -13,7 +13,7 @@ import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewTranslators;
 
 @SpringBootTest
 @DisplayName("Testar aplicação de template de email")
-public class ViewsTest {
+class ViewsTest {
 		
 	@Test
 	@DisplayName("Formatar view de ActiveUser internacionalizado")

@@ -29,7 +29,7 @@ public class ProductOfListController {
 	@ApiOperation(value = "Buscar produto da lista por id")
 	@GetMapping("/{id}")
 	public ProductOfListDto findById(@PathVariable Long id) {
-		return ProductOfListMapper.entityToDto(this.productOfListFacade.findById(id));
+		return this.productOfListFacade.findById(id);
 	}
 	
 	@ApiOperation(value = "Salvar um produto da lista")

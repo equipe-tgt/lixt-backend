@@ -20,9 +20,7 @@ public abstract class Mapper {
 	}
 	
 	public static <F, T> List<T> map(Collection<F> from, Function<F, T> function) {
-		if(Objects.isNull(from))
-			return null;
-		return from.stream().map(function).collect(Collectors.toList());
+		return map(from, function, Collectors.toList());
 	}
 
 	public static <F, T, L> L map(Collection<F> from, Function<F, T> function, Collector<T, ?, L> collector) {

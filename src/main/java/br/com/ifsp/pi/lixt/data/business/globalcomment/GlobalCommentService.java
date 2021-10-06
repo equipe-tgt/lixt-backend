@@ -9,29 +9,33 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GlobalCommentService {
 
-    private final GlobalCommentRepository globalCommentRepository;
+	private final GlobalCommentRepository globalCommentRepository;
 
-    public GlobalComment findById(Long id) {
-        return this.globalCommentRepository.findById(id).orElse(null);
-    }
+	public GlobalComment findById(Long id) {
+		return this.globalCommentRepository.findById(id).orElse(null);
+	}
 
-    public GlobalComment save(GlobalComment globalComment) {
-        return this.globalCommentRepository.save(globalComment);
-    }
+	public GlobalComment save(GlobalComment globalComment) {
+		return this.globalCommentRepository.save(globalComment);
+	}
 
-    public void deleteById(Long id) {
-        this.globalCommentRepository.deleteById(id);
-    }
+	public void deleteById(Long id) {
+		this.globalCommentRepository.deleteById(id);
+	}
 
-    public List<GlobalComment> findByUserId(Long userId) {
-        return this.globalCommentRepository.findGlobalCommentsByUserId(userId);
-    }
+	public List<GlobalComment> findByUserId(Long userId) {
+		return this.globalCommentRepository.findGlobalCommentsByUserId(userId);
+	}
 
-    public List<GlobalComment> findByProductId(Long productId) {
-        return this.globalCommentRepository.findGlobalCommentsByProductId(productId);
-    }
+	public List<GlobalComment> findByProductId(Long productId) {
+		return this.globalCommentRepository.findGlobalCommentsByProductId(productId);
+	}
 
-    public List<GlobalComment> findAll() {
-        return (List<GlobalComment>) this.globalCommentRepository.findAll();
-    }
+	public List<GlobalComment> findAll() {
+		return (List<GlobalComment>) this.globalCommentRepository.findAll();
+	}
+	
+	public Integer countGlobalCommentsAtProductByUser(Long productId, Long userId) {
+		return this.globalCommentRepository.countGlobalCommentsAtProductByUser(productId, userId);
+	}
 }

@@ -11,13 +11,13 @@ import java.util.List;
 
 public abstract class AllCommentsMapper extends Mapper {
 
-    private AllCommentsMapper() {}
+	private AllCommentsMapper() {}
 
-    public static AllCommentsDto entityToDto(List<GlobalComment> globalComments, List<Comment> comments) {
+	public static AllCommentsDto entityToDto(List<GlobalComment> globalComments, List<Comment> comments) {
 
-        return AllCommentsDto.builder()
-                .globalCommentsDto(map(globalComments, GlobalCommentMapper::entityToDto))
-                .commentsDto(map(comments, CommentMapper::entityToDto))
-                .build();
-    }
+		return AllCommentsDto.builder()
+				.globalCommentsDto(map(globalComments, GlobalCommentMapper::entityToDto))
+				.commentsDto(map(comments, CommentMapper::entityToDto))
+				.build();
+	}
 }

@@ -15,7 +15,7 @@ import br.com.ifsp.pi.lixt.utils.mail.templates.dto.forgetpassword.ForgetPasswor
 
 @SpringBootTest
 @DisplayName("Testar aplicação de template de email")
-public class MailTemplateTest {
+class MailTemplateTest {
 		
 	@Test
 	@DisplayName("Formatar email de criar conta internacionalizado")

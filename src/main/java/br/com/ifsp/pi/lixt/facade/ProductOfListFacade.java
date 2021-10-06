@@ -3,12 +3,15 @@ package br.com.ifsp.pi.lixt.facade;
 import java.util.List;
 import java.util.Objects;
 
+import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
+import br.com.ifsp.pi.lixt.mapper.ProductOfListMapper;
 import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
+import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalCommentService;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
@@ -24,9 +27,9 @@ public class ProductOfListFacade {
 	
 	private final ProductOfListService productOfListService;
 	private final ListOfItemsService listOfItemsService;
-	private final GlobalCommentFacade globalCommentFacade;
+	private final GlobalCommentService globalCommentService;
 	
-	public ProductOfList findById(Long id) {
+	public ProductOfListDto findById(Long id) {
 		
 		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
 		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
@@ -35,7 +38,8 @@ public class ProductOfListFacade {
 			throw new ForbiddenException();
 		}
 		
-		return this.productOfListService.findById(id);
+		var countGlobalComments = this.globalCommentService.countGlobalCommentsAtProductByUser(id, Users.getUserId());
+		return ProductOfListMapper.entityToDtoCountingGlobalComments(this.productOfListService.findById(id), countGlobalComments);
 	}
 	
 	public ProductOfList save(ProductOfList productOfList) {
@@ -86,7 +90,7 @@ public class ProductOfListFacade {
 			throw new ForbiddenException();
 		}
 
-		List<GlobalComment> globalComments = this.globalCommentFacade.findAllByUserId(ownerId);
+		List<GlobalComment> globalComments = this.globalCommentService.findByUserId(ownerId);
 		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
 		
 		return AllCommentsMapper.entityToDto(globalComments, comments);

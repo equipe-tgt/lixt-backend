@@ -33,6 +33,29 @@ public abstract class ProductOfListMapper extends Mapper {
 				.build();
 	}
 	
+	public static ProductOfListDto entityToDtoCountingGlobalComments(ProductOfList entity, Integer amountGlobalComments) {
+
+		if(Objects.isNull(entity))
+			return null;
+		
+		return ProductOfListDto.builder()
+				.id(entity.getId())
+				.productId(entity.getProductId())
+				.listId(entity.getListId())
+				.assignedUserId(entity.getAssignedUserId())
+				.userWhoMarkedId(entity.getUserWhoMarkedId())
+				.name(entity.getName())
+				.isMarked(entity.getIsMarked())
+				.price(entity.getPrice())
+				.plannedAmount(entity.getPlannedAmount())
+				.markedAmount(entity.getMarkedAmount())
+				.measureType(entity.getMeasureType())
+				.measureValue(entity.getMeasureValue())
+				.product(map(entity.getProduct(), ProductMapper::entityToDto))
+				.amountComment(Objects.isNull(entity.getComments()) ? amountGlobalComments : entity.getComments().size() + amountGlobalComments)
+				.build();
+	}
+	
 	public static ProductOfList dtoToEntity(ProductOfListDto dto) {
 
 		if(Objects.isNull(dto))
