@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordViewTranslators;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -111,6 +114,19 @@ class AuthControllerTest {
 	@DisplayName("Gerar nova senha para usuário inexistente")
 	void newPasswordUnexistingUser() throws Exception {
 		assertThat(authController.forgetPassword("bob@email.com", null).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	@DisplayName("Solicitar cadastro de nova senha com token expirado")
+	void redefinePasswordWithExpiredToken() {
+		String expiredToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTYzMzUyNjU4NywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.DTYch2w9iLYGNnPEF7L1scw1uzFLPWDOSzzFWbIi9jU";
+
+		String view = ErrorForgotPasswordView.getView(Languages.ENGLISH);
+
+		for(String key : ErrorForgotPasswordViewTranslators.translateToEnglish().keySet())
+			view = view.replace(key, InvalidTokenViewTranslators.translateToEnglish().get(key));
+
+		assertEquals(this.authController.validateToken(expiredToken, Languages.ENGLISH.getDescription()), view);
 	}
 	
 	@Test
