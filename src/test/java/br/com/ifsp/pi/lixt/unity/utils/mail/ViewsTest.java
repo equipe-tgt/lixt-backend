@@ -1,6 +1,9 @@
 package br.com.ifsp.pi.lixt.unity.utils.mail;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordViewTranslators;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,25 +38,46 @@ public class ViewsTest {
 		for(String value : ActiveAccountViewTranslators.translateToEnglish().values())
 			assertThat(view).contains(value);
 	}
-	
+
 	@Test
 	@DisplayName("Formatar view de InvalidToken internacionalizado")
 	void resetPasswordTemplate() {
-		
+
 		String view = InvalidTokenView.getView(Languages.convertStringToEnum("pt-br"));
 		for(String value : InvalidTokenViewTranslators.translateToPortuguese().values())
 			assertThat(view).contains(value);
-		
+
 		view = InvalidTokenView.getView(Languages.convertStringToEnum("en-us"));
 		for(String value : InvalidTokenViewTranslators.translateToEnglish().values())
 			assertThat(view).contains(value);
-		
+
 		view = InvalidTokenView.getView(Languages.convertStringToEnum(null));
 		for(String value : InvalidTokenViewTranslators.translateToEnglish().values())
 			assertThat(view).contains(value);
-		
+
 		view = InvalidTokenView.getView(Languages.convertStringToEnum("jp"));
 		for(String value : InvalidTokenViewTranslators.translateToEnglish().values())
+			assertThat(view).contains(value);
+	}
+
+	@Test
+	@DisplayName("Formatar view de Erro ao resetar senha internacionalizado")
+	void errorForgotPasswordTemplate() {
+
+		String view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum("pt-br"));
+		for(String value : ErrorForgotPasswordViewTranslators.translateToPortuguese().values())
+			assertThat(view).contains(value);
+
+		view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum("en-us"));
+		for(String value : ErrorForgotPasswordViewTranslators.translateToEnglish().values())
+			assertThat(view).contains(value);
+
+		view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum(null));
+		for(String value : ErrorForgotPasswordViewTranslators.translateToEnglish().values())
+			assertThat(view).contains(value);
+
+		view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum("jp"));
+		for(String value : ErrorForgotPasswordViewTranslators.translateToEnglish().values())
 			assertThat(view).contains(value);
 	}
 
