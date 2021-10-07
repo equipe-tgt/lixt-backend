@@ -18,7 +18,6 @@ public abstract class FormNewPasswordViewTranslators {
         params.put("$SUBMIT", "Enviar");
         params.put("$ERROR-MESSAGE-FIELDS-DID-NOT-MATCH", "**As senhas não são iguais");
         params.put("$ERROR-MESSAGE-INVALID-LENGTH", "**A senha deve ter no mínimo 8 caracteres e no máximo 20");
-        params.put("$SUCESS-MASSAGE-SEND", "Senha criada com sucesso!");
 
         return params;
     }
@@ -32,7 +31,6 @@ public abstract class FormNewPasswordViewTranslators {
         params.put("$SUBMIT", "Submit");
         params.put("$ERROR-MESSAGE-FIELDS-DID-NOT-MATCH", "**Passwords are not same");
         params.put("$ERROR-MESSAGE-INVALID-LENGTH", "**Password length must be at least 8 characters and not exceed 20 characters");
-        params.put("$SUCESS-MASSAGE-SEND", "Password created successfully!");
 
         return params;
     }
