@@ -1,11 +1,20 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
 
+import br.com.ifsp.pi.lixt.utils.security.jwt.JwtConfig;
+import br.com.ifsp.pi.lixt.utils.security.jwt.JwtSecretKey;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +43,10 @@ public class AuthFacade {
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final SenderMail senderMail;
-	
+
+	private final JwtConfig jwtConfig;
+	private final JwtSecretKey jwtSecretKey;
+
 	@Value("${lixt.base.url}") String baseUrl;
 	
 	@Transactional
@@ -78,26 +90,71 @@ public class AuthFacade {
 		if(Objects.isNull(user)) {
 			throw new NotFoundException("Usuário não encontrado");
 		}
-		
-		String password = SecurityGenerator.generateRandomPassword();
-		
-		Integer responseUpdate = this.userService.updatePassword(email, passwordEncoder.encode(password));
-		
-		if(ValidatorResponse.wasUpdated(responseUpdate)) {
-			
-			MailDto mail = TypeMail.RESET_PASSWORD.apply(language);
-			Map<String, String> params = CreatorParametersMail.resetPassword(user.getUsername(), password);
-			mail = FormatterMail.build(mail, params);
-			mail.setRecipientTo(email);
-			
-			boolean responseSendMail = senderMail.sendEmail(mail);
-			
-			if(!responseSendMail) {
-				throw new SendMailException();
-			}
+
+		String token = JWT.create()
+				.withSubject(email)
+				.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMillis()))
+				.sign(jwtSecretKey.secretKey());
+
+		MailDto mail = TypeMail.RESET_PASSWORD.apply(language);
+		Map<String, String> params = CreatorParametersMail.resetPassword(user.getUsername(), baseUrl, token, language);
+		mail = FormatterMail.build(mail, params);
+		mail.setRecipientTo(email);
+
+		boolean responseSendMail = senderMail.sendEmail(mail);
+
+		if(!responseSendMail) {
+			throw new SendMailException();
 		}
-		
-		return responseUpdate;
+
+		return HttpStatus.OK.value();
+	}
+
+	public String validateToken(String token, Languages language) {
+
+		try {
+			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
+			DecodedJWT decodedJWT = verifier.verify(token);
+
+			String email = decodedJWT.getSubject();
+			var user = this.userService.findByEmail(email);
+			if(Objects.isNull(user)) {
+				throw new NotFoundException("Email não encontrado.");
+			}
+
+			String newToken = JWT.create()
+					.withSubject(email)
+					.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMillis()))
+					.sign(jwtSecretKey.secretKey());
+
+			return FormNewPasswordView.getView(language, newToken, baseUrl);
+
+		} catch (Exception e) {
+			return ErrorForgotPasswordView.getView(language);
+		}
+	}
+
+	public String saveNewPassword(String token, Languages language, String newPassword) {
+
+		try {
+			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
+			DecodedJWT decodedJWT = verifier.verify(token);
+
+			String email = decodedJWT.getSubject();
+			var user = this.userService.findByEmail(email);
+			if(Objects.isNull(user) || newPassword.length() < 8) {
+				throw new NotFoundException("Email não encontrado.");
+			}
+
+			Integer result = this.userService.updatePassword(user.getEmail(), passwordEncoder.encode(newPassword));
+
+			if(ValidatorResponse.wasUpdated(result))
+				return ActiveAccountView.getView(language);
+			else
+				return ErrorForgotPasswordView.getView(language);
+		} catch (Exception e) {
+			return ErrorForgotPasswordView.getView(language);
+		}
 	}
 	
 	public String activeUser(String token, Languages language) {

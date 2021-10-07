@@ -95,8 +95,10 @@ public abstract class ForgetPasswordTemplateHtml {
 				"\r\n" + 
 				"            <div class=\"body\">\r\n" + 
 				"                <p class=\"greeting\">$HELLO</p>\r\n" + 
-				"                <p>$FIRST_INFO <b>$PASSWORD</b>.</p>\r\n" + 
-				"                <p>$WARNING</p>\r\n" + 
+				"                <p>$FIRST_INFO</p>\r\n" +
+				"                <a href=\"$BASE_URL/auth/redefine-password?token=$TOKEN&language=$LANGUAGE\">\r\n" +
+				"                    <p>$LINK</p>\r\n" +
+				"                </a>\r\n" +
 				"                <p>$BYE</p>\r\n" + 
 				"            </div>\r\n" + 
 				"\r\n" + 

@@ -1,10 +1,15 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
+import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.activeaccount.ActiveAccountView;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordViewTranslators;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordViewTranslators;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
@@ -32,6 +38,8 @@ import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
 import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewHtml;
 import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewTranslators;
+
+import java.util.Date;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -111,6 +119,77 @@ class AuthControllerTest {
 	@DisplayName("Gerar nova senha para usuário inexistente")
 	void newPasswordUnexistingUser() throws Exception {
 		assertThat(authController.forgetPassword("bob@email.com", null).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+	}
+
+	@Test
+	@DisplayName("Solicitar cadastro de nova senha com token expirado")
+	void redefinePasswordWithExpiredToken() {
+		String expiredToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTYzMzUyNjU4NywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.DTYch2w9iLYGNnPEF7L1scw1uzFLPWDOSzzFWbIi9jU";
+
+		String view = ErrorForgotPasswordView.getView(Languages.ENGLISH);
+
+		for(String key : ErrorForgotPasswordViewTranslators.translateToEnglish().keySet())
+			view = view.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));
+
+		assertEquals(this.authController.validateToken(expiredToken, Languages.ENGLISH.getDescription()), view);
+	}
+
+	@Test
+	@DisplayName("Cadastro de nova senha com token válido e email inexistente")
+	void redefinePasswordWithValidTokenAndNonexistentEmail() {
+
+		// Expira em 06/10/2022
+		String tokenWithNonexistentEmail = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NDM4NCwiYXVkIjoiIiwic3ViIjoiYmxhYmxhQGhvdG1haWwuY29tIn0.7W1tDV62L6ZVZZ9kCf1Mj_EPBHqkGFOkWnxBbL3UB5I";
+
+		String view = ErrorForgotPasswordView.getView(Languages.ENGLISH);
+
+		for(String key : ErrorForgotPasswordViewTranslators.translateToEnglish().keySet())
+			view = view.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));
+
+		assertEquals(this.authController.validateToken(tokenWithNonexistentEmail, Languages.ENGLISH.getDescription()), view);
+	}
+
+	@Test
+	@DisplayName("Solicitar formulário para cadastro de nova senha com sucesso")
+	void formNewPasswordRequest() {
+		// Expira em 06/10/2022
+		String jwtValidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NTQ4MywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.8tTjMrfXU5Iiaky3NL-rXVQYIkg-aKjOjVHnlnrwavU";
+
+		String view = FormNewPasswordView.getView(Languages.ENGLISH, jwtValidToken, "http://localhost:8080");
+
+		for(String key : FormNewPasswordViewTranslators.translateToEnglish().keySet())
+			view = view.replace(key, FormNewPasswordViewTranslators.translateToEnglish().get(key));
+
+		assertEquals(this.authController.validateToken(jwtValidToken, Languages.ENGLISH.getDescription()).substring(0, 3681), view.substring(0, 3681));
+	}
+
+	@Test
+	@DisplayName("Envio de nova senha com token expirado")
+	void sendNewPasswordWithExpiredToken() {
+		String jwtExpiredToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1NjM3NjUsImV4cCI6MTYzMzU2Mzk2NywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.bkZit634RaAFwRIL0m302O_OST9DZ-A_45OUNw85HEg";
+
+		assertEquals(this.authController.receiveNewPassword(jwtExpiredToken, Languages.ENGLISH.getDescription(), "123456789"),
+				ErrorForgotPasswordView.getView(Languages.ENGLISH));
+	}
+
+	@Test
+	@DisplayName("Envio de senha vazia")
+	void recoveryPasswordWithEmptyString() {
+		// Expira em 06/10/2022
+		String jwtValidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NTQ4MywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.8tTjMrfXU5Iiaky3NL-rXVQYIkg-aKjOjVHnlnrwavU";
+
+		assertEquals(this.authController.receiveNewPassword(jwtValidToken, Languages.ENGLISH.getDescription(), ""),
+				ErrorForgotPasswordView.getView(Languages.ENGLISH));
+	}
+
+	@Test
+	@DisplayName("Enviar nova senha com sucesso")
+	void sendNewPasswordSuccessfully() throws Exception {
+		// Expira em 06/10/2022
+		String jwtValidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NTQ4MywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.8tTjMrfXU5Iiaky3NL-rXVQYIkg-aKjOjVHnlnrwavU";
+
+		assertEquals(this.authController.receiveNewPassword(jwtValidToken, Languages.ENGLISH.getDescription(), "123456789"),
+				ActiveAccountView.getView(Languages.ENGLISH));
 	}
 	
 	@Test
