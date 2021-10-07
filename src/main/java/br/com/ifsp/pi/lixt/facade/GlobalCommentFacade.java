@@ -1,5 +1,7 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.time.LocalDateTime;
+
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalCommentService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
@@ -25,12 +27,12 @@ public class GlobalCommentFacade {
 	}
 
 	public GlobalComment save(GlobalComment globalComment) {
+		globalComment.setDate(LocalDateTime.now());
 		globalComment.setUserId(Users.getUserId());
 		return this.globalCommentService.save(globalComment);
 	}
 
 	public GlobalComment update(GlobalComment globalComment) {
-
 		if(!ValidatorAccess.canAcces(globalComment.getUserId()))
 			throw new ForbiddenException();
 
