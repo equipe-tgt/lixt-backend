@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.activeaccount.ActiveAccountView;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordViewTranslators;
 import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
@@ -23,6 +24,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
@@ -178,6 +180,16 @@ class AuthControllerTest {
 
 		assertEquals(this.authController.receiveNewPassword(jwtValidToken, Languages.ENGLISH.getDescription(), ""),
 				ErrorForgotPasswordView.getView(Languages.ENGLISH));
+	}
+
+	@Test
+	@DisplayName("Enviar nova senha com sucesso")
+	void sendNewPasswordSuccessfully() throws Exception {
+		// Expira em 06/10/2022
+		String jwtValidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NTQ4MywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.8tTjMrfXU5Iiaky3NL-rXVQYIkg-aKjOjVHnlnrwavU";
+
+		assertEquals(this.authController.receiveNewPassword(jwtValidToken, Languages.ENGLISH.getDescription(), "123456789"),
+				ActiveAccountView.getView(Languages.ENGLISH));
 	}
 	
 	@Test
