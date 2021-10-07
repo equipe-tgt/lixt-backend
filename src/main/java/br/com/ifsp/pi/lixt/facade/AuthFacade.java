@@ -143,7 +143,7 @@ public class AuthFacade {
 
 			String email = decodedJWT.getSubject();
 			var user = this.userService.findByEmail(email);
-			if(Objects.isNull(user)) {
+			if(Objects.isNull(user) || newPassword.length() < 8) {
 				throw new NotFoundException("Email não encontrado.");
 			}
 

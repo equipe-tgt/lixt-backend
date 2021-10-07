@@ -150,6 +150,7 @@ class AuthControllerTest {
 	@Test
 	@DisplayName("Solicitar formulário para cadastro de nova senha com sucesso")
 	void formNewPasswordRequest() {
+		// Expira em 06/10/2022
 		String jwtValidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NTQ4MywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.8tTjMrfXU5Iiaky3NL-rXVQYIkg-aKjOjVHnlnrwavU";
 
 		String view = FormNewPasswordView.getView(Languages.ENGLISH, jwtValidToken, "http://localhost:8080");
@@ -166,6 +167,16 @@ class AuthControllerTest {
 		String jwtExpiredToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1NjM3NjUsImV4cCI6MTYzMzU2Mzk2NywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.bkZit634RaAFwRIL0m302O_OST9DZ-A_45OUNw85HEg";
 
 		assertEquals(this.authController.receiveNewPassword(jwtExpiredToken, Languages.ENGLISH.getDescription(), "123456789"),
+				ErrorForgotPasswordView.getView(Languages.ENGLISH));
+	}
+
+	@Test
+	@DisplayName("Envio de senha vazia")
+	void recoveryPasswordWithEmptyString() {
+		// Expira em 06/10/2022
+		String jwtValidToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiIiLCJpYXQiOjE2MzM1MjU0MzUsImV4cCI6MTY2NTA2NTQ4MywiYXVkIjoiIiwic3ViIjoidXNlckBob3RtYWlsLmNvbSJ9.8tTjMrfXU5Iiaky3NL-rXVQYIkg-aKjOjVHnlnrwavU";
+
+		assertEquals(this.authController.receiveNewPassword(jwtValidToken, Languages.ENGLISH.getDescription(), ""),
 				ErrorForgotPasswordView.getView(Languages.ENGLISH));
 	}
 	
