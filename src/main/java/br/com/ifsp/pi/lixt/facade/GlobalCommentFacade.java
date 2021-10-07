@@ -3,6 +3,7 @@ package br.com.ifsp.pi.lixt.facade;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalCommentService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
+import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,7 @@ public class GlobalCommentFacade {
 	}
 
 	public GlobalComment save(GlobalComment globalComment) {
-
-		if(!ValidatorAccess.canAcces(globalComment.getUserId()))
-			throw new ForbiddenException();
-
+		globalComment.setUserId(Users.getUserId());
 		return this.globalCommentService.save(globalComment);
 	}
 

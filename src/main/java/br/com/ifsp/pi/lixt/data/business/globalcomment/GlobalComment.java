@@ -29,6 +29,6 @@ public class GlobalComment {
 	@Column(name = "id_user", updatable = false)
 	private Long userId;
 
-	@Column(name = "id_product", updatable = false)
+	@Column(name = "id_product", nullable = false, updatable = false)
 	private Long productId;
 }
