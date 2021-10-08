@@ -87,7 +87,7 @@ public class ProductOfListFacade {
 			throw new ForbiddenException();
 		}
 
-		List<GlobalComment> globalComments = this.globalCommentService.findByUserId(ownerId);
+		List<GlobalComment> globalComments = this.globalCommentService.findGlobalCommentsByUserIdAndProductId(ownerId, id);
 		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
 		
 		return AllCommentsMapper.entityToDto(globalComments, comments);
