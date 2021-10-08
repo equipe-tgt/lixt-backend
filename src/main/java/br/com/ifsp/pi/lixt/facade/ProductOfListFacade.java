@@ -14,6 +14,7 @@ import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalCommentService;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
+import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
@@ -83,7 +84,11 @@ public class ProductOfListFacade {
 		var productOfList = this.productOfListService.findById(id);
 		
 		Long ownerId = productOfList.getListOfItems().getOwnerId();
-		List<Long> membersIds = productOfList.getListOfItems().getListMembers().stream().map(member -> member.getUserId()).collect(Collectors.toList());
+		
+		List<Long> membersIds = productOfList.getListOfItems().getListMembers().stream()
+				.filter(member -> member.getStatusListMember().equals(StatusListMember.ACCEPT))
+				.map(member -> member.getUserId())
+				.collect(Collectors.toList());
 		
 		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
