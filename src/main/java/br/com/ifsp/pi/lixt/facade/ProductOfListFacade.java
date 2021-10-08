@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.facade;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
 import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
@@ -79,15 +80,16 @@ public class ProductOfListFacade {
 	}
 	
 	public AllCommentsDto findCommentsByProductOfListId(Long id) {
+		var productOfList = this.productOfListService.findById(id);
 		
-		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
-		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
+		Long ownerId = productOfList.getListOfItems().getOwnerId();
+		List<Long> membersIds = productOfList.getListOfItems().getListMembers().stream().map(member -> member.getUserId()).collect(Collectors.toList());
 		
 		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 
-		List<GlobalComment> globalComments = this.globalCommentService.findGlobalCommentsByUserIdAndProductId(ownerId, id);
+		List<GlobalComment> globalComments = this.globalCommentService.findGlobalCommentsByUserIdAndProductId(ownerId, productOfList.getProductId());
 		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
 		
 		return AllCommentsMapper.entityToDto(globalComments, comments);
