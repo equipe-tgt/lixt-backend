@@ -13,7 +13,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 @Setter
 public class JwtConfig {
 
-    private String secretKey;
-    private String tokenPrefix;
-    private Integer tokenExpirationAfterMillis;
+	private String secretKey;
+	private String tokenPrefix;
+	private Integer tokenExpirationAfterMillis;
 }

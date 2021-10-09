@@ -1,7 +1,6 @@
 package br.com.ifsp.pi.lixt.utils.views.formnewpassword;
 
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
-import br.com.ifsp.pi.lixt.utils.views.activeaccount.ActiveAccountViewTranslators;
 
 public abstract class FormNewPasswordView {
 

@@ -12,10 +12,6 @@ public abstract class ValidatorStatusResponsePost {
 	
 	private ValidatorStatusResponsePost() {}
 	
-	public static void isOk(MockMvc mockMvc, UserDto user, String uri, String content) throws Exception {
-		validatePostStatusResponse(mockMvc, user, uri, content, MockMvcResultMatchers.status().isOk());
-	}
-	
 	public static void isForbidden(MockMvc mockMvc, UserDto user, String uri, String content) throws Exception {
 		validatePostStatusResponse(mockMvc, user, uri, content, MockMvcResultMatchers.status().isForbidden());
 	}

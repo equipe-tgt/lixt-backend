@@ -3,7 +3,6 @@ package br.com.ifsp.pi.lixt.controller;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
 import br.com.ifsp.pi.lixt.utils.views.activeaccount.ActiveAccountView;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
@@ -24,7 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
@@ -38,8 +36,6 @@ import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.plainvalue.ValidatorStatusResponsePostPlainValue;
 import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewHtml;
 import br.com.ifsp.pi.lixt.utils.views.invalidtoken.InvalidTokenViewTranslators;
-
-import java.util.Date;
 
 @SpringBootTest
 @AutoConfigureMockMvc

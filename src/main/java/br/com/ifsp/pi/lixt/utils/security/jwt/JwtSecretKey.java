@@ -11,10 +11,10 @@ import org.springframework.context.annotation.Configuration;
 @AllArgsConstructor
 public class JwtSecretKey {
 
-    private final JwtConfig jwtConfig;
+	private final JwtConfig jwtConfig;
 
-    @Bean
-    public Algorithm secretKey() {
-        return Algorithm.HMAC256(jwtConfig.getSecretKey().getBytes());
-    }
+	@Bean
+	public Algorithm secretKey() {
+		return Algorithm.HMAC256(jwtConfig.getSecretKey().getBytes());
+	}
 }

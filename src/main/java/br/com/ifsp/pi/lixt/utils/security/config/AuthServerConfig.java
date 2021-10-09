@@ -34,11 +34,11 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 		clients.inMemory()
-        	.withClient(clientId)
-        	.authorizedGrantTypes("password", "authorization_code", "refresh_token", "client_credentials").scopes("all")
-        	.refreshTokenValiditySeconds(300000)
-        	.secret(passwordEncoder.encode(secretId))
-        	.accessTokenValiditySeconds(50000);
+			.withClient(clientId)
+			.authorizedGrantTypes("password", "authorization_code", "refresh_token", "client_credentials").scopes("all")
+			.refreshTokenValiditySeconds(300000)
+			.secret(passwordEncoder.encode(secretId))
+			.accessTokenValiditySeconds(50000);
 	}
 
 }

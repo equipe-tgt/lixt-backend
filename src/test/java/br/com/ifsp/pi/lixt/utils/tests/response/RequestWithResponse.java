@@ -54,5 +54,21 @@ public abstract class RequestWithResponse {
 		String listString = listResult.andReturn().getResponse().getContentAsString();
 		return objectMapper.readValue(listString, clazz);
 	}
+	
+	public static <T> T createGetRequestJson(MockMvc mockMvc, String uri, UserDto user, Class<T> clazz) throws Exception {
+		
+		objectMapper.registerModule(new JavaTimeModule());
+		objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+		
+		String token = RequestOauth2.authenticate(mockMvc, user);
+		
+		ResultActions listResult = 
+				mockMvc.perform(ResquestBuilder.createGetRequestJson(uri, token))
+					.andExpect(MockMvcResultMatchers.status().isOk())
+					.andExpect(MockMvcResultMatchers.content().contentType("application/json;charset=UTF-8"));
+		
+		String listString = listResult.andReturn().getResponse().getContentAsString();
+		return objectMapper.readValue(listString, clazz);
+	}
 
 }
