@@ -1,18 +1,13 @@
 package br.com.ifsp.pi.lixt.facade;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
 import javax.transaction.Transactional;
 
-import br.com.ifsp.pi.lixt.utils.security.jwt.JwtConfig;
-import br.com.ifsp.pi.lixt.utils.security.jwt.JwtSecretKey;
+import br.com.ifsp.pi.lixt.utils.security.jwt.JwtService;
 import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
 import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.JWTVerifier;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -43,9 +38,7 @@ public class AuthFacade {
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final SenderMail senderMail;
-
-	private final JwtConfig jwtConfig;
-	private final JwtSecretKey jwtSecretKey;
+	private final JwtService jwtService;
 
 	@Value("${lixt.base.url}") String baseUrl;
 	
@@ -85,16 +78,13 @@ public class AuthFacade {
 	@Transactional
 	public Integer forgetPassword(String email, Languages language) {
 		
-		var user = this.userService.findByEmail(email);
+		var user = this.userService.findByUsernameOrEmail(email);
 		
 		if(Objects.isNull(user)) {
 			throw new NotFoundException("Usuário não encontrado");
 		}
 
-		String token = JWT.create()
-				.withSubject(email)
-				.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMillis()))
-				.sign(jwtSecretKey.secretKey());
+		String token = this.jwtService.createJwtToken(email);
 
 		MailDto mail = TypeMail.RESET_PASSWORD.apply(language);
 		Map<String, String> params = CreatorParametersMail.resetPassword(user.getUsername(), baseUrl, token, language);
@@ -113,20 +103,14 @@ public class AuthFacade {
 	public String validateToken(String token, Languages language) {
 
 		try {
-			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
-			DecodedJWT decodedJWT = verifier.verify(token);
-
-			String email = decodedJWT.getSubject();
-			var user = this.userService.findByEmail(email);
+			String email = this.jwtService.getSubjectByJwtToken(token);
+			var user = this.userService.findByUsernameOrEmail(email);
+			
 			if(Objects.isNull(user)) {
 				throw new NotFoundException("Email não encontrado.");
 			}
 
-			String newToken = JWT.create()
-					.withSubject(email)
-					.withExpiresAt(new Date(System.currentTimeMillis() + jwtConfig.getTokenExpirationAfterMillis()))
-					.sign(jwtSecretKey.secretKey());
-
+			String newToken = this.jwtService.createJwtToken(email);
 			return FormNewPasswordView.getView(language, newToken, baseUrl);
 
 		} catch (Exception e) {
@@ -137,11 +121,9 @@ public class AuthFacade {
 	public String saveNewPassword(String token, Languages language, String newPassword) {
 
 		try {
-			JWTVerifier verifier = JWT.require(jwtSecretKey.secretKey()).build();
-			DecodedJWT decodedJWT = verifier.verify(token);
-
-			String email = decodedJWT.getSubject();
-			var user = this.userService.findByEmail(email);
+			String email = this.jwtService.getSubjectByJwtToken(token);
+			var user = this.userService.findByUsernameOrEmail(email);
+			
 			if(Objects.isNull(user) || newPassword.length() < 8) {
 				throw new NotFoundException("Email não encontrado.");
 			}
