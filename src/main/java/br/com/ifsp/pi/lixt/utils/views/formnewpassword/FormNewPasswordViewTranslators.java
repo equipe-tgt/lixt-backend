@@ -9,7 +9,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class FormNewPasswordViewTranslators {
 
-    public static Map<String, String> translateToPortuguese() {
+    public static Map<String, String> toPortuguese() {
         Map<String, String> params = new HashMap<>();
 
         params.put("$TITLE", "Definir nova senha");
@@ -22,7 +22,7 @@ public abstract class FormNewPasswordViewTranslators {
         return params;
     }
 
-    public static Map<String, String> translateToEnglish() {
+    public static Map<String, String> toEnglish() {
         Map<String, String> params = new HashMap<>();
 
         params.put("$TITLE", "Set New Password");

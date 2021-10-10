@@ -67,19 +67,19 @@ class ViewsTest {
 	void errorForgotPasswordTemplate() {
 
 		String view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum("pt-br"));
-		for(String value : ErrorForgotPasswordViewTranslators.translateToPortuguese().values())
+		for(String value : ErrorForgotPasswordViewTranslators.toPortuguese().values())
 			assertThat(view).contains(value);
 
 		view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum("en-us"));
-		for(String value : ErrorForgotPasswordViewTranslators.translateToEnglish().values())
+		for(String value : ErrorForgotPasswordViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 
 		view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum(null));
-		for(String value : ErrorForgotPasswordViewTranslators.translateToEnglish().values())
+		for(String value : ErrorForgotPasswordViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 
 		view = ErrorForgotPasswordView.getView(Languages.convertStringToEnum("jp"));
-		for(String value : ErrorForgotPasswordViewTranslators.translateToEnglish().values())
+		for(String value : ErrorForgotPasswordViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 	}
 
@@ -88,19 +88,19 @@ class ViewsTest {
 	void formNewPasswordTemplate() {
 
 		String view = FormNewPasswordView.getView(Languages.convertStringToEnum("pt-br"), "", "");
-		for(String value : FormNewPasswordViewTranslators.translateToPortuguese().values())
+		for(String value : FormNewPasswordViewTranslators.toPortuguese().values())
 			assertThat(view).contains(value);
 
 		view = FormNewPasswordView.getView(Languages.convertStringToEnum("en-us"), "", "");
-		for(String value : FormNewPasswordViewTranslators.translateToEnglish().values())
+		for(String value : FormNewPasswordViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 
 		view = FormNewPasswordView.getView(Languages.convertStringToEnum(null), "", "");
-		for(String value : FormNewPasswordViewTranslators.translateToEnglish().values())
+		for(String value : FormNewPasswordViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 
 		view = FormNewPasswordView.getView(Languages.convertStringToEnum("jp"), "", "");
-		for(String value : FormNewPasswordViewTranslators.translateToEnglish().values())
+		for(String value : FormNewPasswordViewTranslators.toEnglish().values())
 			assertThat(view).contains(value);
 	}
 }

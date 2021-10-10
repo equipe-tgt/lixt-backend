@@ -10,17 +10,11 @@ import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class GlobalCommentFacade {
 
 	private final GlobalCommentService globalCommentService;
-
-	public List<GlobalComment> findAll() {
-		return this.globalCommentService.findAll();
-	}
 
 	public GlobalComment findById(Long globalCommentId) {
 		return this.globalCommentService.findById(globalCommentId);

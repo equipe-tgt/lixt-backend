@@ -1,9 +1,9 @@
 package br.com.ifsp.pi.lixt.utils.views.errorforgotpassword;
 
-
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.AbstractView;
 
-public abstract class ErrorForgotPasswordView {
+public abstract class ErrorForgotPasswordView extends AbstractView {
 
     private ErrorForgotPasswordView() {}
 
@@ -17,18 +17,11 @@ public abstract class ErrorForgotPasswordView {
         switch(language) {
 
             case PORTUGUESE:
-
-                for(String key : ErrorForgotPasswordViewTranslators.translateToPortuguese().keySet())
-                    view = view.replace(key, ErrorForgotPasswordViewTranslators.translateToPortuguese().get(key));
-
-                return view;
+            	return translate(view, ErrorForgotPasswordViewTranslators.toPortuguese());
 
             case ENGLISH:
             default:
-                for(String key : ErrorForgotPasswordViewTranslators.translateToEnglish().keySet())
-                    view = view.replace(key, ErrorForgotPasswordViewTranslators.translateToEnglish().get(key));
-
-                return view;
+            	return translate(view, ErrorForgotPasswordViewTranslators.toEnglish());
         }
     }
 

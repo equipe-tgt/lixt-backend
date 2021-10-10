@@ -9,7 +9,7 @@ import java.util.Map;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public abstract class ErrorForgotPasswordViewTranslators {
 
-    public static Map<String, String> translateToPortuguese() {
+    public static Map<String, String> toPortuguese() {
         Map<String, String> params = new HashMap<>();
 
         params.put("$TITLE", "Erro ao redefinir senha!");
@@ -18,7 +18,7 @@ public abstract class ErrorForgotPasswordViewTranslators {
         return params;
     }
 
-    public static Map<String, String> translateToEnglish() {
+    public static Map<String, String> toEnglish() {
         Map<String, String> params = new HashMap<>();
 
         params.put("$TITLE", "Error resetting password!");

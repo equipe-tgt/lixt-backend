@@ -8,9 +8,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Api(value = "Controller de comentários globais")
 @RestController
 @RequestMapping("/globalComment")
@@ -18,15 +15,7 @@ import java.util.stream.Collectors;
 public class GlobalCommentController {
 
 	private final GlobalCommentFacade globalCommentFacade;
-
-	@ApiOperation(value = "Buscar todos os comentários globais")
-	@GetMapping("/all")
-	public List<GlobalCommentDto> findAll() {
-		return this.globalCommentFacade.findAll().stream()
-				.map(GlobalCommentMapper::entityToDto)
-				.collect(Collectors.toList());
-	}
-
+	
 	@ApiOperation(value = "Buscar comentário global por id")
 	@GetMapping("/{id}")
 	public GlobalCommentDto findById(@PathVariable Long id) {

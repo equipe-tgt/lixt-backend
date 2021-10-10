@@ -27,15 +27,4 @@ public class GlobalCommentService {
 		return this.globalCommentRepository.findGlobalCommentsByUserIdAndProductId(userId, productId);
 	}
 
-	public List<GlobalComment> findByProductId(Long productId) {
-		return this.globalCommentRepository.findGlobalCommentsByProductId(productId);
-	}
-
-	public List<GlobalComment> findAll() {
-		return (List<GlobalComment>) this.globalCommentRepository.findAll();
-	}
-	
-	public Integer countGlobalCommentsAtProductByUser(Long productId, Long userId) {
-		return this.globalCommentRepository.countGlobalCommentsAtProductByUser(productId, userId);
-	}
 }

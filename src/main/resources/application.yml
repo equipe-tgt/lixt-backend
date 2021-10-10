@@ -51,3 +51,4 @@ lixt:
     secretKey: 6ca6f0f8-d17d-4e04-bb31-3f401a5d8acf
     tokenPrefix: "Bearer "
     tokenExpirationAfterMillis: 86400000
+

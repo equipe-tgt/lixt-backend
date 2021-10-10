@@ -124,7 +124,7 @@ class AuthControllerTest {
 
 		String view = ErrorForgotPasswordView.getView(Languages.ENGLISH);
 
-		for(String key : ErrorForgotPasswordViewTranslators.translateToEnglish().keySet())
+		for(String key : ErrorForgotPasswordViewTranslators.toEnglish().keySet())
 			view = view.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));
 
 		assertEquals(this.authController.validateToken(expiredToken, Languages.ENGLISH.getDescription()), view);
@@ -139,7 +139,7 @@ class AuthControllerTest {
 
 		String view = ErrorForgotPasswordView.getView(Languages.ENGLISH);
 
-		for(String key : ErrorForgotPasswordViewTranslators.translateToEnglish().keySet())
+		for(String key : ErrorForgotPasswordViewTranslators.toEnglish().keySet())
 			view = view.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));
 
 		assertEquals(this.authController.validateToken(tokenWithNonexistentEmail, Languages.ENGLISH.getDescription()), view);
@@ -153,8 +153,8 @@ class AuthControllerTest {
 
 		String view = FormNewPasswordView.getView(Languages.ENGLISH, jwtValidToken, "http://localhost:8080");
 
-		for(String key : FormNewPasswordViewTranslators.translateToEnglish().keySet())
-			view = view.replace(key, FormNewPasswordViewTranslators.translateToEnglish().get(key));
+		for(String key : FormNewPasswordViewTranslators.toEnglish().keySet())
+			view = view.replace(key, FormNewPasswordViewTranslators.toEnglish().get(key));
 
 		assertEquals(this.authController.validateToken(jwtValidToken, Languages.ENGLISH.getDescription()).substring(0, 3681), view.substring(0, 3681));
 	}

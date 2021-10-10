@@ -23,16 +23,12 @@ public abstract class ForgetPasswordTemplate extends AbstractMail {
 		switch(language) {
 
 			case PORTUGUESE:
-				translate(mailDto, ForgetPasswordTemplateTranslators.toPortuguese());
-				break;
+				return translate(mailDto, ForgetPasswordTemplateTranslators.toPortuguese());
 			
 			case ENGLISH:
 			default:
-				translate(mailDto, ForgetPasswordTemplateTranslators.toEnglish());
-				break;
+				return translate(mailDto, ForgetPasswordTemplateTranslators.toEnglish());
 		}
-		
-		return mailDto;
 	}
 	
 }

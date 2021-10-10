@@ -1,8 +1,9 @@
 package br.com.ifsp.pi.lixt.utils.views.formnewpassword;
 
 import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.AbstractView;
 
-public abstract class FormNewPasswordView {
+public abstract class FormNewPasswordView extends AbstractView {
 
     private FormNewPasswordView() {}
 
@@ -20,18 +21,11 @@ public abstract class FormNewPasswordView {
         switch(language) {
 
             case PORTUGUESE:
-
-                for(String key : FormNewPasswordViewTranslators.translateToPortuguese().keySet())
-                    view = view.replace(key, FormNewPasswordViewTranslators.translateToPortuguese().get(key));
-
-                return view;
+            	return translate(view, FormNewPasswordViewTranslators.toPortuguese());
 
             case ENGLISH:
             default:
-                for(String key : FormNewPasswordViewTranslators.translateToEnglish().keySet())
-                    view = view.replace(key, FormNewPasswordViewTranslators.translateToEnglish().get(key));
-
-                return view;
+            	return translate(view, FormNewPasswordViewTranslators.toEnglish());
         }
     }
 }
