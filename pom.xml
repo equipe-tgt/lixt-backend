@@ -21,6 +21,7 @@
 		<java.version>11</java.version>
 
 		<oauth.version>2.1.5.RELEASE</oauth.version>
+		<security.version>5.5.1</security.version>
 		<swagger.version>2.9.2</swagger.version>
 		<mail.version>1.4.7</mail.version>
 	</properties>

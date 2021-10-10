@@ -1,13 +1,20 @@
 server:
   port: 8080
+  ssl:
+    enabled: true
+    protocol: TLS
+    key-store-password: senhalixt
+    key-store-type: JKS
+    key-store: classpath:keystore/keystore.jks
+    key-alias: lixt-key
 
 spring:
   application:
     name: 'lixt'
-    
+
   profiles:
     active: @activatedProperties@
-    
+
   datasource:
     hikari:
       schema: lixt
@@ -15,11 +22,11 @@ spring:
   jpa:
     hibernate.ddl-auto: update
     show-sql: false
-    
+
     hibernate:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-    
+
     properties:
       hibernate:
         dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
@@ -32,16 +39,16 @@ spring:
 
 lixt:
   version: @project.version@
-  
+
   basic:
     auth:
       clientId: client
       secretId: 123456
-  
+
   mail:
     username: noreply.lixt@gmail.com
     password: lixtapp2021!!
-    
+
   barcode:
     url: https://api.cosmos.bluesoft.com.br/gtins/
     token: KlrbMerss0GnOBwvj2g9-g
