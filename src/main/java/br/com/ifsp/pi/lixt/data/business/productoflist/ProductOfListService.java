@@ -41,10 +41,6 @@ public class ProductOfListService {
 		return this.productOfListRepository.markProduct(userId, productId);
 	}
 	
-	public Integer markProducts(Long userId, List<Long> productsId) {
-		return this.productOfListRepository.markProducts(userId, productsId);
-	}
-	
 	public Integer assignedItemToUser(Long userId, Long productOfListId) {
 		return this.productOfListRepository.assignedItemToUser(userId, productOfListId);
 	}

@@ -218,6 +218,7 @@ class AuthControllerTest {
 	
 	@AfterAll
 	void deleteUser() {
+		this.userService.desactiveAccount(user.getId());
 		this.userService.deleteById(user.getId());
 	}
 

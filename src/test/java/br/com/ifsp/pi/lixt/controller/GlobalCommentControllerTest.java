@@ -15,6 +15,7 @@ import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
+import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePut;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,7 +100,8 @@ class GlobalCommentControllerTest {
 		String globalComment1 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(0);
 
 		GlobalCommentDto globalCommentDto1 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment1, oauthUsers.get(0), GlobalCommentDto.class);
-
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
+		
 		assertThat(
 				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
 						.getGlobalCommentsDto().size()
