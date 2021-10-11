@@ -44,6 +44,9 @@ public class User {
 	
 	@Column(name = "st_first_access_token")
 	private String firstAccessToken;
+	
+	@Column(name = "st_reset_password_token")
+	private String resetPasswordToken;
 
 	@Builder.Default
 	@Column(name = "bl_activated")

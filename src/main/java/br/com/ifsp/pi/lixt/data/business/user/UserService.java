@@ -22,6 +22,10 @@ public class UserService {
 		return this.userRepository.findByUsernameOrEmail(username);
 	}
 	
+	public User findByEmailAndToken(String email, String token) {
+		return this.userRepository.findByEmailAndToken(email, token);
+	}
+	
 	public User save(User user) {
 		return this.userRepository.save(user);
 	}
@@ -42,8 +46,16 @@ public class UserService {
 		return this.userRepository.updatePassword(password, email);
 	}
 	
+	public Integer updatePasswordByToken(String email, String password, String token) {
+		return this.userRepository.updatePasswordByToken(password, email, token);
+	}	
+	
 	public String findFirstAccesTokenById(Long id) {
 		return this.userRepository.findFirstAccesTokenById(id);
+	}
+	
+	public String findResetPasswordTokenById(Long id) {
+		return this.userRepository.findResetPasswordTokenById(id);
 	}
 	
 }

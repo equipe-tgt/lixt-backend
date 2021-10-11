@@ -18,6 +18,7 @@ import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.utils.database.validators.ValidatorResponse;
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
@@ -59,8 +60,7 @@ public class AuthFacade {
 		
 		MailDto mail = TypeMail.CREATE_ACCOUNT.apply(language);
 		Map<String, String> params = CreatorParametersMail.createAccount(user.getUsername(), baseUrl, user.getFirstAccessToken(), language);
-		mail = FormatterMail.build(mail, params);
-		mail.setRecipientTo(user.getEmail());
+		mail = FormatterMail.build(mail, params, user.getEmail());
 
 		boolean responseSendMail = senderMail.sendEmail(mail);
 		
@@ -85,11 +85,12 @@ public class AuthFacade {
 		}
 
 		String token = this.jwtService.createJwtToken(email);
+		user.setResetPasswordToken(token);
+		this.userService.save(user);
 
 		MailDto mail = TypeMail.RESET_PASSWORD.apply(language);
 		Map<String, String> params = CreatorParametersMail.resetPassword(user.getUsername(), baseUrl, token, language);
-		mail = FormatterMail.build(mail, params);
-		mail.setRecipientTo(email);
+		mail = FormatterMail.build(mail, params, email);
 
 		boolean responseSendMail = senderMail.sendEmail(mail);
 
@@ -104,14 +105,13 @@ public class AuthFacade {
 
 		try {
 			String email = this.jwtService.getSubjectByJwtToken(token);
-			var user = this.userService.findByUsernameOrEmail(email);
+			var user = this.userService.findByEmailAndToken(email, token);
 			
 			if(Objects.isNull(user)) {
-				throw new NotFoundException("Email não encontrado.");
+				throw new NotFoundException("Solicitação não encontrado.");
 			}
-
-			String newToken = this.jwtService.createJwtToken(email);
-			return FormNewPasswordView.getView(language, newToken, baseUrl);
+			
+			return FormNewPasswordView.getView(language, token, baseUrl);
 
 		} catch (Exception e) {
 			return ErrorForgotPasswordView.getView(language);
@@ -124,11 +124,10 @@ public class AuthFacade {
 			String email = this.jwtService.getSubjectByJwtToken(token);
 			var user = this.userService.findByUsernameOrEmail(email);
 			
-			if(Objects.isNull(user) || newPassword.length() < 8) {
-				throw new NotFoundException("Email não encontrado.");
-			}
+			if(newPassword.length() < 8)
+				throw new PreconditionFailedException("Senha não suportada");
 
-			Integer result = this.userService.updatePassword(user.getEmail(), passwordEncoder.encode(newPassword));
+			Integer result = this.userService.updatePasswordByToken(user.getEmail(), passwordEncoder.encode(newPassword), token);
 
 			if(ValidatorResponse.wasUpdated(result))
 				return ActiveAccountView.getView(language);
