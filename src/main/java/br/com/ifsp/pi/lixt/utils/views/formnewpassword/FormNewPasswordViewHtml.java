@@ -5,128 +5,165 @@ public abstract class FormNewPasswordViewHtml {
     private FormNewPasswordViewHtml() {}
 
     public static String getView() {
-        return "<!DOCTYPE html>\r\n" +
-                "<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\r\n" +
-                "\r\n" +
-                "    <head>\r\n" +
-                "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n" +
-                "        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n" +
-                "        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" +
-                "        <meta name=\"format-detection\" content=\"date=no\"> \r\n" +
-                "        <meta name=\"format-detection\" content=\"telephone=no\">\r\n" +
-                "        <title>Lixt</title>\r\n" +
-                "\r\n" +
-                "        <link href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Poppins&display=swap\" rel=\"stylesheet\">\r\n" +
-                "\r\n" +
-                "        <style type=\"text/css\">\r\n" +
-                "\r\n" +
-                "            * {\r\n" +
-                "                margin: 0 !important;\r\n" +
-                "                padding: 0 !important;\r\n" +
-                "                box-sizing: border-box !important;\r\n" +
-                "            }\r\n" +
-                "\r\n" +
-                "            body {\r\n" +
-                "                margin: 0;\r\n" +
-                "                background-color: #F0F0F7 !important;\r\n" +
-                "            }\r\n" +
-                "\r\n" +
-                "            h1 {\r\n" +
-                "                font-family: Helvetica, Arial, sans-serif !important;\r\n" +
-                "                font-weight: 800 !important;\r\n" +
-                "                font-size: 2rem !important;\r\n" +
-                "                line-height: 2.25rem !important;\r\n" +
-                "                color: #32264D !important;\r\n" +
-                "\r\n" +
-                "                order: inherit;\r\n" +
-                "            }\r\n" +
-                "\r\n" +
-                "            p {\r\n" +
-                "                font-family: Helvetica, Arial, sans-serif !important;\r\n" +
-                "                font-style: normal !important;\r\n" +
-                "                font-weight: normal !important;\r\n" +
-                "                font-size: 16px !important;\r\n" +
-                "                line-height: 1.5rem !important;\r\n" +
-                "                color: #32264D !important;\r\n" +
-                "            }\r\n" +
-                "\r\n" +
-                "            #new-password {\r\n" +
-                "                margin: 1rem !important;\r\n" +
-                "                padding-top: 1rem !important;\r\n" +
-                "            }\r\n" +
-                "\r\n" +
-                "            #new-password .header {\r\n" +
-                "                background-color: #D3D3D3;\r\n" +
-                "                padding: 1rem 0 !important;\r\n" +
-                "                \r\n" +
-                "            }\r\n" +
-                "\r\n" +
-                "            #new-password .body {\r\n" +
-                "                padding: 1rem !important;\r\n" +
-                "                background: white !important;\r\n" +
-                "            }\r\n" +
-                "\r\n" +
-                "        </style>\r\n" +
-                "    </head>\r\n" +
-                "\r\n" +
-                "    <body>\r\n" +
-                "        <div id=\"new-password\">\r\n" +
-                "\r\n" +
-                "            <div class=\"header\">\r\n" +
-                "                <h1><center>$TITLE</center></h1>\r\n" +
-                "            </div>\r\n" +
-                "\r\n" +
-                "            <div class=\"body\">\r\n" +
-                "\r\n" +
-                "            <label for=\"password\">$PASSWORD-FIELD</label>\r\n" +
-                "            <input id=\"pswd1\" type=\"password\" name=\"password\" >\r\n" +
-                "            <br/><br/>\r\n" +
-                "\r\n" +
-                "            <label for=\"password-confirm\">$CONFIRM-PASSWORD-FIELD</label>\r\n" +
-                "            <input id=\"pswd2\" type=\"password\" name=\"password-confirm\" >\r\n" +
-                "            <br/><br/>" +
-                "\r\n" +
-                "            <button onClick=\"validateForm()\">$SUBMIT</button>" +
-                "\r\n" +
-                "            </div>\r\n" +
-                "            \r\n" +
-                "        </div>\r\n" +
-                "        <script>\r\n" +
-                "            function validateForm() {\r\n" +
-                "                var pw1 = document.getElementById(\"pswd1\").value;\r\n" +
-                "                var pw2 = document.getElementById(\"pswd2\").value;\r\n" +
-                "\r\n" +
-                "                if(pw1 != pw2) {\r\n" +
-                "                    alert(\"$ERROR-MESSAGE-FIELDS-DID-NOT-MATCH\");\r\n" +
-                "                    return false;\r\n" +
-                "                }\r\n" +
-                "                if(pw1.length < 8 || pw1.length > 20) {\r\n" +
-                "                    alert(\"$ERROR-MESSAGE-INVALID-LENGTH\");\r\n" +
-                "                    return false;\r\n" +
-                "                } else {\r\n" +
-                "                    sendForm(pw1);\r\n" +
-                "                    return false;" +
-                "                }\r\n" +
-                "             }\r\n" +
-                "\r\n" +
-                "             function sendForm(passwordValue) {\r\n" +
-                "                 var form;\r\n" +
-                "                 form = document.createElement(\"form\");\r\n" +
-                "                 form.method = \"POST\";\r\n" +
-                "                 form.action = \"$BASE_URL/auth/form/update-password?token=$TOKEN&language=$LANGUAGE\"\r\n" +
-                "                 const hiddenField = document.createElement('input');\r\n" +
-                "                 hiddenField.type = 'hidden';\r\n" +
-                "                 hiddenField.name = 'newPassword';\r\n" +
-                "                 hiddenField.value = passwordValue;\r\n" +
-                "                 form.appendChild(hiddenField);\r\n" +
-                "\r\n" +
-                "                 document.body.appendChild(form);\r\n" +
-                "                 form.submit();\r\n" +
-                "             }\r\n" +
-                "        </script>\r\n" +
-                "    </body>\r\n" +
-                "\r\n" +
-                "</html>\r\n" +
-                "";
+    	return "<!DOCTYPE html>\r\n"
+    			+ "\r\n"
+    			+ "<html\r\n"
+    			+ "  xmlns=\"http://www.w3.org/1999/xhtml\"\r\n"
+    			+ "  xmlns:v=\"urn:schemas-microsoft-com:vml\"\r\n"
+    			+ "  xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\n"
+    			+ ">\r\n"
+    			+ "  <head>\r\n"
+    			+ "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n"
+    			+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n"
+    			+ "\r\n"
+    			+ "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n"
+    			+ "    <meta name=\"format-detection\" content=\"date=no\" />\r\n"
+    			+ "\r\n"
+    			+ "    <meta name=\"format-detection\" content=\"telephone=no\" />\r\n"
+    			+ "    <title>Lixt</title>\r\n"
+    			+ "\r\n"
+    			+ "    <link\r\n"
+    			+ "      href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Poppins&display=swap\"\r\n"
+    			+ "      rel=\"stylesheet\"\r\n"
+    			+ "    />\r\n"
+    			+ "    <style>\r\n"
+    			+ "      body {\r\n"
+    			+ "        background-color: #eaeaea;\r\n"
+    			+ "        width: 100%;\r\n"
+    			+ "        margin: 0;\r\n"
+    			+ "        font-family: \"Poppins\", sans-serif;\r\n"
+    			+ "        text-align: center;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      h1 {\r\n"
+    			+ "        font-weight: 600;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      a {\r\n"
+    			+ "        color: #07b4d2;\r\n"
+    			+ "        text-decoration: none;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      button {\r\n"
+    			+ "        background: #07b4d2;\r\n"
+    			+ "        border: none;\r\n"
+    			+ "        color: white;\r\n"
+    			+ "        height: 45px;\r\n"
+    			+ "        padding: 0 35px;\r\n"
+    			+ "        margin-bottom: 25px;\r\n"
+    			+ "        cursor: pointer;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      .input-wrapper {\r\n"
+    			+ "        text-align: left;\r\n"
+    			+ "        margin: 20px auto;\r\n"
+    			+ "        width: 35%;\r\n"
+    			+ "        min-width: 250px;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      .input-wrapper label {\r\n"
+    			+ "        display: block;\r\n"
+    			+ "        margin: 5px;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      .input-wrapper input {\r\n"
+    			+ "        height: 40px;\r\n"
+    			+ "        width: 100%;\r\n"
+    			+ "        border: 1px solid #a8a8a8;\r\n"
+    			+ "        border-radius: 5px;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      body > div:first-child {\r\n"
+    			+ "        background-color: #fff;\r\n"
+    			+ "        width: 90%;\r\n"
+    			+ "        min-width: 300px;\r\n"
+    			+ "        margin: 25px auto;\r\n"
+    			+ "        border-radius: 5px;\r\n"
+    			+ "        box-shadow: 10px 10px 5px -6px rgba(0, 0, 0, 0.26);\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      .header {\r\n"
+    			+ "        border-radius: 5px 5px 0 0;\r\n"
+    			+ "        background-color: #07b4d2;\r\n"
+    			+ "        width: 100%;\r\n"
+    			+ "        padding: 5px 0;\r\n"
+    			+ "        color: white;\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      .body {\r\n"
+    			+ "        padding: 10px;\r\n"
+    			+ "      }\r\n"
+    			+ "    </style>\r\n"
+    			+ "  </head>\r\n"
+    			+ "\r\n"
+    			+ "  <body>\r\n"
+    			+ "    <div id=\"new-password\">\r\n"
+    			+ "      <div class=\"header\">\r\n"
+    			+ "        <h1>$TITLE</h1>\r\n"
+    			+ "      </div>\r\n"
+    			+ "\r\n"
+    			+ "      <div class=\"body\">\r\n"
+    			+ "        <div class=\"input-wrapper\">\r\n"
+    			+ "          <label for=\"password\">$PASSWORD-FIELD</label>\r\n"
+    			+ "          <input id=\"pswd1\" type=\"password\" name=\"password\" />\r\n"
+    			+ "        </div>\r\n"
+    			+ "\r\n"
+    			+ "        <div class=\"input-wrapper\">\r\n"
+    			+ "          <label for=\"password-confirm\">$CONFIRM-PASSWORD-FIELD</label>\r\n"
+    			+ "          <input id=\"pswd2\" type=\"password\" name=\"password-confirm\" />\r\n"
+    			+ "        </div>\r\n"
+    			+ "\r\n"
+    			+ "        <button onClick=\"validateForm()\">$SUBMIT</button>\r\n"
+    			+ "      </div>\r\n"
+    			+ "    </div>\r\n"
+    			+ "\r\n"
+    			+ "    <script>\r\n"
+    			+ "      function validateForm() {\r\n"
+    			+ "        var pw1 = document.getElementById(\"pswd1\").value;\r\n"
+    			+ "\r\n"
+    			+ "        var pw2 = document.getElementById(\"pswd2\").value;\r\n"
+    			+ "\r\n"
+    			+ "        if (pw1 != pw2) {\r\n"
+    			+ "          alert(\"$ERROR-MESSAGE-FIELDS-DID-NOT-MATCH\");\r\n"
+    			+ "\r\n"
+    			+ "          return false;\r\n"
+    			+ "        }\r\n"
+    			+ "\r\n"
+    			+ "        if (pw1.length < 8 || pw1.length > 20) {\r\n"
+    			+ "          alert(\"$ERROR-MESSAGE-INVALID-LENGTH\");\r\n"
+    			+ "\r\n"
+    			+ "          return false;\r\n"
+    			+ "        } else {\r\n"
+    			+ "          sendForm(pw1);\r\n"
+    			+ "\r\n"
+    			+ "          return false;\r\n"
+    			+ "        }\r\n"
+    			+ "      }\r\n"
+    			+ "\r\n"
+    			+ "      function sendForm(passwordValue) {\r\n"
+    			+ "        var form;\r\n"
+    			+ "\r\n"
+    			+ "        form = document.createElement(\"form\");\r\n"
+    			+ "\r\n"
+    			+ "        form.method = \"POST\";\r\n"
+    			+ "\r\n"
+    			+ "        form.action =\r\n"
+    			+ "          \"$BASE_URL/auth/form/update-password?token=$TOKEN&language=$LANGUAGE\";\r\n"
+    			+ "\r\n"
+    			+ "        const hiddenField = document.createElement(\"input\");\r\n"
+    			+ "\r\n"
+    			+ "        hiddenField.type = \"hidden\";\r\n"
+    			+ "\r\n"
+    			+ "        hiddenField.name = \"newPassword\";\r\n"
+    			+ "        hiddenField.value = passwordValue;\r\n"
+    			+ "\r\n"
+    			+ "        form.appendChild(hiddenField);\r\n"
+    			+ "\r\n"
+    			+ "        document.body.appendChild(form);\r\n"
+    			+ "        form.submit();\r\n"
+    			+ "      }\r\n"
+    			+ "    </script>\r\n"
+    			+ "  </body>\r\n"
+    			+ "</html>\r\n";
     }
 }

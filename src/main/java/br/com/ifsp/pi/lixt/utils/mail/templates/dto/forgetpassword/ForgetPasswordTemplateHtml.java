@@ -6,111 +6,338 @@ public abstract class ForgetPasswordTemplateHtml {
 	
 	public static String getMessageHtml() {
 		
-		return "<!DOCTYPE html>\r\n" + 
-				"<html xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:v=\"urn:schemas-microsoft-com:vml\" xmlns:o=\"urn:schemas-microsoft-com:office:office\">\r\n" + 
-				"\r\n" + 
-				"    <head>\r\n" + 
-				"        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\r\n" + 
-				"        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\r\n" + 
-				"        <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\r\n" + 
-				"        <meta name=\"format-detection\" content=\"date=no\"> \r\n" + 
-				"        <meta name=\"format-detection\" content=\"telephone=no\">\r\n" + 
-				"\r\n" + 
-				"        <link href=\"https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Poppins&display=swap\" rel=\"stylesheet\">\r\n" + 
-				"\r\n" + 
-				"        <style type=\"text/css\">\r\n" + 
-				"\r\n" + 
-				"            * {\r\n" + 
-				"                margin: 0 !important;\r\n" + 
-				"                padding: 0 !important;\r\n" + 
-				"                box-sizing: border-box !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            body {\r\n" + 
-				"                margin: 0;\r\n" + 
-				"                background-color: #F0F0F7 !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            h1 {\r\n" + 
-				"                font-family: Helvetica, Arial, sans-serif !important;\r\n" + 
-				"                font-weight: 800 !important;\r\n" + 
-				"                font-size: 2rem !important;\r\n" + 
-				"                line-height: 2.25rem !important;\r\n" + 
-				"                color: #32264D !important;\r\n" + 
-				"\r\n" + 
-				"                order: inherit;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            p {\r\n" + 
-				"                font-family: Helvetica, Arial, sans-serif !important;\r\n" + 
-				"                font-style: normal !important;\r\n" + 
-				"                font-weight: normal !important;\r\n" + 
-				"                font-size: 14px !important;\r\n" + 
-				"                line-height: 1.5rem !important;\r\n" + 
-				"                color: #32264D !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            #reset-password {\r\n" + 
-				"                margin: 1rem !important;\r\n" + 
-				"                padding-top: 1rem !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            #reset-password .header {\r\n" + 
-				"                background-color: #D3D3D3;\r\n" + 
-				"                padding: 1rem 0 !important;\r\n" + 
-				"                \r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            #reset-password .body {\r\n" + 
-				"                padding: 1rem !important;\r\n" + 
-				"                background: white !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            #reset-password .body .greeting {\r\n" + 
-				"                margin-bottom: 4px !important;\r\n" + 
-				"                font-size: 16px !important;\r\n" + 
-				"                font-weight: 600 !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            #reset-password .footer {\r\n" + 
-				"                padding: 1rem !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"            #reset-password .footer p {\r\n" + 
-				"                font-family: Helvetica, Arial, sans-serif !important;\r\n" + 
-				"                font-size: 12px !important;\r\n" + 
-				"                line-height: 16px !important;\r\n" + 
-				"                color: #aaaaaa !important;\r\n" + 
-				"            }\r\n" + 
-				"\r\n" + 
-				"        </style>\r\n" + 
-				"    </head>\r\n" + 
-				"\r\n" + 
-				"    <body>\r\n" + 
-				"        <div id=\"reset-password\">\r\n" + 
-				"\r\n" + 
-				"            <div class=\"header\">\r\n" + 
-				"                <h1><center>$TITLE</center></h1>\r\n" + 
-				"            </div>\r\n" + 
-				"\r\n" + 
-				"            <div class=\"body\">\r\n" + 
-				"                <p class=\"greeting\">$HELLO</p>\r\n" + 
-				"                <p>$FIRST_INFO</p>\r\n" +
-				"                <a href=\"$BASE_URL/auth/redefine-password?token=$TOKEN&language=$LANGUAGE\">\r\n" +
-				"                    <p>$LINK</p>\r\n" +
-				"                </a>\r\n" +
-				"                <p>$BYE</p>\r\n" + 
-				"            </div>\r\n" + 
-				"\r\n" + 
-				"            <div class=\"footer\">\r\n" + 
-				"                <p>Lixt</p>\r\n" + 
-				"                <p>aplication@lixt.com</p>\r\n" + 
-				"            </div>\r\n" + 
-				"        </div>\r\n" + 
-				"    </body>\r\n" + 
-				"\r\n" + 
-				"</html>\r\n" + 
-				"";
+		return "<!DOCTYPE html>\r\n"
+				+ "<html\r\n"
+				+ "  xmlns=\"http://www.w3.org/1999/xhtml\"\r\n"
+				+ "  xmlns:v=\"urn:schemas-microsoft-com:vml\"\r\n"
+				+ "  xmlns:o=\"urn:schemas-microsoft-com:office:office\"\r\n"
+				+ ">\r\n"
+				+ "  <head>\r\n"
+				+ "    <title> </title>\r\n"
+				+ "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" />\r\n"
+				+ "    <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\" />\r\n"
+				+ "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\r\n"
+				+ "    <style type=\"text/css\">\r\n"
+				+ "      #outlook a {\r\n"
+				+ "        padding: 0;\r\n"
+				+ "      }\r\n"
+				+ "\r\n"
+				+ "      body {\r\n"
+				+ "        margin: 0;\r\n"
+				+ "        padding: 0;\r\n"
+				+ "        -webkit-text-size-adjust: 100%;\r\n"
+				+ "        -ms-text-size-adjust: 100%;\r\n"
+				+ "      }\r\n"
+				+ "\r\n"
+				+ "      table,\r\n"
+				+ "      td {\r\n"
+				+ "        border-collapse: collapse;\r\n"
+				+ "        mso-table-lspace: 0pt;\r\n"
+				+ "        mso-table-rspace: 0pt;\r\n"
+				+ "      }\r\n"
+				+ "\r\n"
+				+ "      img {\r\n"
+				+ "        border: 0;\r\n"
+				+ "        height: auto;\r\n"
+				+ "        line-height: 100%;\r\n"
+				+ "        outline: none;\r\n"
+				+ "        text-decoration: none;\r\n"
+				+ "        -ms-interpolation-mode: bicubic;\r\n"
+				+ "      }\r\n"
+				+ "\r\n"
+				+ "      p {\r\n"
+				+ "        display: block;\r\n"
+				+ "        margin: 13px 0;\r\n"
+				+ "      }\r\n"
+				+ "    </style>\r\n"
+				+ "    <link\r\n"
+				+ "      href=\"https://fonts.googleapis.com/css?family=Poppins\"\r\n"
+				+ "      rel=\"stylesheet\"\r\n"
+				+ "      type=\"text/css\"\r\n"
+				+ "    />\r\n"
+				+ "    <style type=\"text/css\">\r\n"
+				+ "      @import url(https://fonts.googleapis.com/css?family=Poppins);\r\n"
+				+ "    </style>\r\n"
+				+ "    <style type=\"text/css\">\r\n"
+				+ "      @media only screen and (min-width: 480px) {\r\n"
+				+ "        .mj-column-per-100 {\r\n"
+				+ "          width: 100% !important;\r\n"
+				+ "          max-width: 100%;\r\n"
+				+ "        }\r\n"
+				+ "      }\r\n"
+				+ "    </style>\r\n"
+				+ "    <style media=\"screen and (min-width:480px)\">\r\n"
+				+ "      .moz-text-html .mj-column-per-100 {\r\n"
+				+ "        width: 100% !important;\r\n"
+				+ "        max-width: 100%;\r\n"
+				+ "      }\r\n"
+				+ "    </style>\r\n"
+				+ "    <style type=\"text/css\"></style>\r\n"
+				+ "  </head>\r\n"
+				+ "\r\n"
+				+ "  <body style=\"word-spacing: normal\">\r\n"
+				+ "    <div style=\"\">\r\n"
+				+ "      <div\r\n"
+				+ "        style=\"\r\n"
+				+ "          background: #07b4d2;\r\n"
+				+ "          background-color: #07b4d2;\r\n"
+				+ "          margin: 0px auto;\r\n"
+				+ "          max-width: 600px;\r\n"
+				+ "        \"\r\n"
+				+ "      >\r\n"
+				+ "        <table\r\n"
+				+ "          align=\"center\"\r\n"
+				+ "          border=\"0\"\r\n"
+				+ "          cellpadding=\"0\"\r\n"
+				+ "          cellspacing=\"0\"\r\n"
+				+ "          role=\"presentation\"\r\n"
+				+ "          style=\"background: #07b4d2; background-color: #07b4d2; width: 100%\"\r\n"
+				+ "        >\r\n"
+				+ "          <tbody>\r\n"
+				+ "            <tr>\r\n"
+				+ "              <td\r\n"
+				+ "                style=\"\r\n"
+				+ "                  direction: ltr;\r\n"
+				+ "                  font-size: 0px;\r\n"
+				+ "                  padding: 20px 0;\r\n"
+				+ "                  padding-bottom: 0px;\r\n"
+				+ "                  padding-top: 0;\r\n"
+				+ "                  text-align: center;\r\n"
+				+ "                \"\r\n"
+				+ "              >\r\n"
+				+ "                <div\r\n"
+				+ "                  class=\"mj-column-per-100 mj-outlook-group-fix\"\r\n"
+				+ "                  style=\"\r\n"
+				+ "                    font-size: 0px;\r\n"
+				+ "                    text-align: left;\r\n"
+				+ "                    direction: ltr;\r\n"
+				+ "                    display: inline-block;\r\n"
+				+ "                    vertical-align: top;\r\n"
+				+ "                    width: 100%;\r\n"
+				+ "                  \"\r\n"
+				+ "                >\r\n"
+				+ "                  <table\r\n"
+				+ "                    border=\"0\"\r\n"
+				+ "                    cellpadding=\"0\"\r\n"
+				+ "                    cellspacing=\"0\"\r\n"
+				+ "                    role=\"presentation\"\r\n"
+				+ "                    style=\"vertical-align: top\"\r\n"
+				+ "                    width=\"100%\"\r\n"
+				+ "                  >\r\n"
+				+ "                    <tbody>\r\n"
+				+ "                      <tr>\r\n"
+				+ "                        <td\r\n"
+				+ "                          align=\"left\"\r\n"
+				+ "                          style=\"\r\n"
+				+ "                            font-size: 0px;\r\n"
+				+ "                            padding: 10px 25px;\r\n"
+				+ "                            padding-top: 50px;\r\n"
+				+ "                            padding-right: 25px;\r\n"
+				+ "                            padding-bottom: 30px;\r\n"
+				+ "                            padding-left: 25px;\r\n"
+				+ "                            word-break: break-word;\r\n"
+				+ "                          \"\r\n"
+				+ "                        >\r\n"
+				+ "                          <div\r\n"
+				+ "                            style=\"\r\n"
+				+ "                              font-family: Poppins, sans-serif;\r\n"
+				+ "                              font-size: 45px;\r\n"
+				+ "                              font-weight: bold;\r\n"
+				+ "                              line-height: 1;\r\n"
+				+ "                              text-align: left;\r\n"
+				+ "                              color: #fff; ;\r\n"
+				+ "                            \"\r\n"
+				+ "                          >\r\n"
+				+ "                            $TITLE\r\n"
+				+ "                          </div>\r\n"
+				+ "                        </td>\r\n"
+				+ "                      </tr>\r\n"
+				+ "                    </tbody>\r\n"
+				+ "                  </table>\r\n"
+				+ "                </div>\r\n"
+				+ "                <!--[if mso | IE]></td></tr></table><![endif]-->\r\n"
+				+ "              </td>\r\n"
+				+ "            </tr>\r\n"
+				+ "          </tbody>\r\n"
+				+ "        </table>\r\n"
+				+ "      </div>\r\n"
+				+ "      <div style=\"margin: 0px auto; max-width: 600px\">\r\n"
+				+ "        <table\r\n"
+				+ "          align=\"center\"\r\n"
+				+ "          border=\"0\"\r\n"
+				+ "          cellpadding=\"0\"\r\n"
+				+ "          cellspacing=\"0\"\r\n"
+				+ "          role=\"presentation\"\r\n"
+				+ "          style=\"width: 100%\"\r\n"
+				+ "        >\r\n"
+				+ "          <tbody>\r\n"
+				+ "            <tr>\r\n"
+				+ "              <td\r\n"
+				+ "                style=\"\r\n"
+				+ "                  direction: ltr;\r\n"
+				+ "                  font-size: 0px;\r\n"
+				+ "                  padding: 20px 0;\r\n"
+				+ "                  padding-bottom: 20px;\r\n"
+				+ "                  padding-top: 20px;\r\n"
+				+ "                  text-align: center;\r\n"
+				+ "                \"\r\n"
+				+ "              >\r\n"
+				+ "                <div\r\n"
+				+ "                  class=\"mj-column-per-100 mj-outlook-group-fix\"\r\n"
+				+ "                  style=\"\r\n"
+				+ "                    font-size: 0px;\r\n"
+				+ "                    text-align: left;\r\n"
+				+ "                    direction: ltr;\r\n"
+				+ "                    display: inline-block;\r\n"
+				+ "                    vertical-align: middle;\r\n"
+				+ "                    width: 100%;\r\n"
+				+ "                  \"\r\n"
+				+ "                >\r\n"
+				+ "                  <table\r\n"
+				+ "                    border=\"0\"\r\n"
+				+ "                    cellpadding=\"0\"\r\n"
+				+ "                    cellspacing=\"0\"\r\n"
+				+ "                    role=\"presentation\"\r\n"
+				+ "                    style=\"vertical-align: middle\"\r\n"
+				+ "                    width=\"100%\"\r\n"
+				+ "                  >\r\n"
+				+ "                    <tbody>\r\n"
+				+ "                      <tr>\r\n"
+				+ "                        <td\r\n"
+				+ "                          align=\"left\"\r\n"
+				+ "                          style=\"\r\n"
+				+ "                            font-size: 0px;\r\n"
+				+ "                            padding: 10px 25px;\r\n"
+				+ "                            padding-right: 25px;\r\n"
+				+ "                            padding-left: 25px;\r\n"
+				+ "                            word-break: break-word;\r\n"
+				+ "                          \"\r\n"
+				+ "                        >\r\n"
+				+ "                          <div\r\n"
+				+ "                            style=\"\r\n"
+				+ "                              font-family: Poppins, sans-serif;\r\n"
+				+ "                              font-size: 15px;\r\n"
+				+ "                              line-height: 1;\r\n"
+				+ "                              text-align: left;\r\n"
+				+ "                              color: #333333;\r\n"
+				+ "                            \"\r\n"
+				+ "                          >\r\n"
+				+ "                            $HELLO\r\n"
+				+ "                          </div>\r\n"
+				+ "                        </td>\r\n"
+				+ "                      </tr>\r\n"
+				+ "                      <tr>\r\n"
+				+ "                        <td\r\n"
+				+ "                          align=\"left\"\r\n"
+				+ "                          style=\"\r\n"
+				+ "                            font-size: 0px;\r\n"
+				+ "                            padding: 10px 25px;\r\n"
+				+ "                            padding-right: 25px;\r\n"
+				+ "                            padding-left: 25px;\r\n"
+				+ "                            word-break: break-word;\r\n"
+				+ "                          \"\r\n"
+				+ "                        >\r\n"
+				+ "                          <div\r\n"
+				+ "                            style=\"\r\n"
+				+ "                              font-family: Poppins, sans-serif;\r\n"
+				+ "                              font-size: 15px;\r\n"
+				+ "                              line-height: 1;\r\n"
+				+ "                              text-align: left;\r\n"
+				+ "                              color: #333333;\r\n"
+				+ "                            \"\r\n"
+				+ "                          >\r\n"
+				+ "                            $FIRST_INFO\r\n"
+				+ "                          </div>\r\n"
+				+ "                        </td>\r\n"
+				+ "                      </tr>\r\n"
+				+ "                      <tr>\r\n"
+				+ "                        <td\r\n"
+				+ "                          align=\"left\"\r\n"
+				+ "                          style=\"\r\n"
+				+ "                            font-size: 0px;\r\n"
+				+ "                            padding: 10px 25px;\r\n"
+				+ "                            padding-right: 25px;\r\n"
+				+ "                            padding-left: 25px;\r\n"
+				+ "                            word-break: break-word;\r\n"
+				+ "                          \"\r\n"
+				+ "                        >\r\n"
+				+ "                          <div\r\n"
+				+ "                            style=\"\r\n"
+				+ "                              font-family: Poppins, sans-serif;\r\n"
+				+ "                              font-size: 15px;\r\n"
+				+ "                              line-height: 1;\r\n"
+				+ "                              text-align: left;\r\n"
+				+ "                              color: #000000;\r\n"
+				+ "                            \"\r\n"
+				+ "                          >\r\n"
+				+ "                            <a\r\n"
+				+ "                              style=\"color: #07b4d2\"\r\n"
+				+ "                              href=\"$BASE_URL/auth/redefine-password?token=$TOKEN&language=$LANGUAGE\"\r\n"
+				+ "                            >\r\n"
+				+ "                              $LINK\r\n"
+				+ "                            </a>\r\n"
+				+ "                          </div>\r\n"
+				+ "                        </td>\r\n"
+				+ "                      </tr>\r\n"
+				+ "                      <tr>\r\n"
+				+ "                        <td\r\n"
+				+ "                          align=\"left\"\r\n"
+				+ "                          style=\"\r\n"
+				+ "                            font-size: 0px;\r\n"
+				+ "                            padding: 10px 25px;\r\n"
+				+ "                            padding-right: 25px;\r\n"
+				+ "                            padding-left: 25px;\r\n"
+				+ "                            word-break: break-word;\r\n"
+				+ "                          \"\r\n"
+				+ "                        >\r\n"
+				+ "                          <div\r\n"
+				+ "                            style=\"\r\n"
+				+ "                              font-family: Poppins, sans-serif;\r\n"
+				+ "                              font-size: 15px;\r\n"
+				+ "                              line-height: 1;\r\n"
+				+ "                              text-align: left;\r\n"
+				+ "                              color: #333333;\r\n"
+				+ "                            \"\r\n"
+				+ "                          >\r\n"
+				+ "                            $BYE\r\n"
+				+ "                          </div>\r\n"
+				+ "                        </td>\r\n"
+				+ "                      </tr>\r\n"
+				+ "                      <tr>\r\n"
+				+ "                        <td\r\n"
+				+ "                          align=\"left\"\r\n"
+				+ "                          style=\"\r\n"
+				+ "                            font-size: 0px;\r\n"
+				+ "                            padding: 10px 25px;\r\n"
+				+ "                            padding-right: 25px;\r\n"
+				+ "                            padding-left: 25px;\r\n"
+				+ "                            word-break: break-word;\r\n"
+				+ "                          \"\r\n"
+				+ "                        >\r\n"
+				+ "                          <div\r\n"
+				+ "                            style=\"\r\n"
+				+ "                              font-family: Poppins, sans-serif;\r\n"
+				+ "                              font-size: 15px;\r\n"
+				+ "                              line-height: 1;\r\n"
+				+ "                              text-align: left;\r\n"
+				+ "                              color: #959595;\r\n"
+				+ "                            \"\r\n"
+				+ "                          >\r\n"
+				+ "                            Lixt\r\n"
+				+ "                          </div>\r\n"
+				+ "                        </td>\r\n"
+				+ "                      </tr>\r\n"
+				+ "                    </tbody>\r\n"
+				+ "                  </table>\r\n"
+				+ "                </div>\r\n"
+				+ "              </td>\r\n"
+				+ "            </tr>\r\n"
+				+ "          </tbody>\r\n"
+				+ "        </table>\r\n"
+				+ "      </div>\r\n"
+				+ "    </div>\r\n"
+				+ "  </body>\r\n"
+				+ "</html>\r\n";
 	}
 
 }
