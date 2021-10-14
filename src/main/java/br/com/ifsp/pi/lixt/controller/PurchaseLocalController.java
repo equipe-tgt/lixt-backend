@@ -1,6 +1,5 @@
 package br.com.ifsp.pi.lixt.controller;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -70,8 +69,8 @@ public class PurchaseLocalController {
 
 	@ApiOperation(value = "Buscar o nome de um estabelecimento pelas coordenadas")
 	@GetMapping("/coordinates/{latitude}/{longitude}")
-	public String findLocalNameByCoordinates(@PathVariable Double latitude, @PathVariable Double longitude) {
+	public FeatureCollection findLocalNameByCoordinates(@PathVariable Double latitude, @PathVariable Double longitude) {
 		FeatureCollection response = this.geolocationService.getGeocodingDataByCoordinates(latitude, longitude);
-		return response.getFeatures()[0].getText();
+		return response;
 	}
 }

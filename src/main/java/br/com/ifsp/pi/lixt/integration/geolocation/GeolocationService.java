@@ -2,14 +2,9 @@ package br.com.ifsp.pi.lixt.integration.geolocation;
 
 import br.com.ifsp.pi.lixt.integration.geolocation.data.FeatureCollection;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor

@@ -10,7 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FeatureCollection {
+    private String type;
     private Query[] query;
-    private Features[] features;
+    private Feature[] features;
     private String attribution;
 }

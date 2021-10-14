@@ -13,6 +13,5 @@ public class Geocoding {
 
     private String type;
     private Query[] query;
-
     private String attribution;
 }
