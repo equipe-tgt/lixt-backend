@@ -68,9 +68,9 @@ public class PurchaseLocalController {
 	}
 
 	@ApiOperation(value = "Buscar o nome de um estabelecimento pelas coordenadas")
-	@GetMapping("/coordinates/{latitude}/{longitude}")
-	public FeatureCollection findLocalNameByCoordinates(@PathVariable Double latitude, @PathVariable Double longitude) {
-		FeatureCollection response = this.geolocationService.getGeocodingDataByCoordinates(latitude, longitude);
-		return response;
+	@PostMapping("/detect-new-purchase-place")
+	public PurchaseLocalDto findLocalNameByCoordinates(@RequestBody PurchaseLocalDto purchaseLocalDto) {
+		PurchaseLocalDto newLocal = this.geolocationService.getPurchaseLocalByCoordinates(purchaseLocalDto);
+		return newLocal;
 	}
 }
