@@ -19,6 +19,16 @@ public class GeolocationService {
 
     public PurchaseLocalDto getPurchaseLocalByCoordinates(PurchaseLocalDto purchaseLocalDto) {
 
+        if (purchaseLocalDto.getLatitude() < -90 || purchaseLocalDto.getLatitude() > 90)
+        {
+            throw new IllegalArgumentException("Latitude must be between -90 and 90 degrees inclusive.");
+        }
+
+        if (purchaseLocalDto.getLatitude() < -180 || purchaseLocalDto.getLatitude() > 180)
+        {
+            throw new IllegalArgumentException("Longitude must be between -180 and 180 degrees inclusive.");
+        }
+
         final String uri = url +
                 purchaseLocalDto.getLongitude() + ","+
                 purchaseLocalDto.getLatitude() + ".json" +
