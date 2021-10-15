@@ -2,8 +2,11 @@ package br.com.ifsp.pi.lixt.integration.geolocation;
 
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.integration.geolocation.data.FeatureCollection;
+import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.io.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -16,6 +19,8 @@ import java.util.List;
 public class GeolocationService {
     @Value("${lixt.geolocation.token}") String token;
     @Value("${lixt.geolocation.url}") String url;
+
+    private static final Logger logger = LoggerFactory.getLogger(SenderMail.class);
 
     public PurchaseLocalDto getPurchaseLocalByCoordinates(PurchaseLocalDto purchaseLocalDto) {
 
@@ -37,7 +42,9 @@ public class GeolocationService {
 
         RestTemplate restTemplate = new RestTemplate();
 
+        logger.info("Enviando requisição a API MapBox...");
         FeatureCollection featureCollection = restTemplate.getForObject(uri, FeatureCollection.class);
+        logger.info("Requisição a API MapBox enviada.");
 
         PurchaseLocalDto newPurchaseLocalDto = new PurchaseLocalDto();
 
