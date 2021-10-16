@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
-import br.com.ifsp.pi.lixt.integration.geolocation.data.FeatureCollection;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
