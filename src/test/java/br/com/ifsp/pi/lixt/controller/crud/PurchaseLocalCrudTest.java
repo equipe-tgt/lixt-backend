@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
+import br.com.ifsp.pi.lixt.integration.geolocation.logger.GeolocationLoggerService;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -32,7 +34,13 @@ class PurchaseLocalCrudTest {
 	
 	@Autowired
 	private PurchaseLocalController purchaseLocalController;
-	
+
+	@Autowired
+	private GeolocationService geolocationService;
+
+	@Autowired
+	private GeolocationLoggerService geolocationLoggerService;
+
 	private PurchaseLocalDto purchaseLocal;
 	
 	@BeforeAll
@@ -125,61 +133,51 @@ class PurchaseLocalCrudTest {
 	}
 
 	@Test
-	@DisplayName("Consultar a API com coordenadas inválidas")
+	@DisplayName("Procurar local não cadastrado e sem ponto de interesse próximo")
 	@Order(5)
-	void invalidRequestToApi() {
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(93.0).longitude(20.77777).build())
-		);
-
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(-93.0).longitude(20.77777).build())
-		);
-
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(23.66666).longitude(183.0).build())
-		);
-
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(23.66666).longitude(-183.0).build())
-		);
-
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(-93.0).longitude(-183.0).build())
-		);
-
-		assertThrows(
-				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(183.0).longitude(93.0).build())
-		);
+	void searchNearLocalNotSavedAndNotPOI() throws ParseException {
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(PurchaseLocalDto.builder().latitude(24.2733562461887).longitude(16.36125626341889).build())).isEmpty();
 	}
 
 	@Test
-	@DisplayName("Consultar a API com coordenadas válidas sem ponto de interesse")
+	@DisplayName("Procurar local já cadastrado e exceder limite de requisições")
 	@Order(6)
-	void requestToApiCoordinatesWithoutPOI() {
-		assertThrows(
-				NotFoundException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(24.2733562461887).longitude(16.36125626341889).build())
-		);
+	void searchNearLocalSavedAndExceedNumberOfRequests() throws ParseException {
+
+		Long numberOfRequests = this.geolocationLoggerService.getTotalCount();
+		this.geolocationLoggerService.increaseCounter((100000-numberOfRequests));
+
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(
+				PurchaseLocalDto.builder().longitude(20.77777).latitude(23.66666).build()
+		)).isNotEmpty();
+		numberOfRequests += 1;
+
+		this.geolocationLoggerService.increaseCounter(-(100000-numberOfRequests));
 	}
 
 	@Test
-	@DisplayName("Consultar a API com coordenadas válidas de um ponto de interesse")
+	@DisplayName("Procurar local já cadastrado e requisição da API com mesmo nome")
 	@Order(7)
-	void requestToApiCoordinatesWithPOI() {
-		assertEquals(this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(-23.598575943903683).longitude(-46.64251755477454).build()).getName(),
-				"Hirota Food Express, R. Pedro de Toledo, 591, São Paulo, São Paulo 04039, Brazil");
+	void searchNearLocalSavedAndAPIResultWithSameName() throws ParseException {
+		PurchaseLocalDto newPurchaseLocal = this.purchaseLocalController.save(
+				PurchaseLocalDto.builder().name("Hirota Food Express, R. Pedro de Toledo, 591, São Paulo, São Paulo 04039, Brazil")
+						.latitude(-23.598575943903683)
+						.longitude(-46.64251755477454).build()
+		);
+
+		assertThat(newPurchaseLocal).isNotNull();
+
+		assertThat(this.purchaseLocalController.findPurchasesLocalNear(
+				PurchaseLocalDto.builder()
+						.latitude(-23.598575943903683)
+						.longitude(-46.64251755477454).build()
+		)).hasSize(1);
+
+		this.purchaseLocalController.deleteById(newPurchaseLocal.getId());
 	}
 	
 	@AfterAll
 	void delete() {
 		this.purchaseLocalController.deleteById(purchaseLocal.getId());
 	}
-
 }

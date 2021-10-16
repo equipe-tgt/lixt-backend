@@ -65,11 +65,4 @@ public class PurchaseLocalController {
 		return this.purchaseLocalService.findPurchasesLocalNear(PurchaseLocalMapper.dtoToEntity(purchaseLocal))
 				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
 	}
-
-	@ApiOperation(value = "Buscar o nome de um estabelecimento pelas coordenadas")
-	@PostMapping("/detect-new-purchase-place")
-	public PurchaseLocalDto findLocalNameByCoordinates(@RequestBody PurchaseLocalDto purchaseLocalDto) {
-		PurchaseLocalDto newLocal = this.geolocationService.getPurchaseLocalByCoordinates(purchaseLocalDto);
-		return newLocal;
-	}
 }

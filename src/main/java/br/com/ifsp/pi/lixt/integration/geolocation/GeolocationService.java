@@ -5,6 +5,7 @@ import br.com.ifsp.pi.lixt.integration.geolocation.data.FeatureCollection;
 import br.com.ifsp.pi.lixt.integration.geolocation.logger.GeolocationLoggerService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -27,12 +28,12 @@ public class GeolocationService {
 
         if (purchaseLocalDto.getLatitude() < -90 || purchaseLocalDto.getLatitude() > 90)
         {
-            throw new IllegalArgumentException("Latitude must be between -90 and 90 degrees inclusive.");
+            throw new PreconditionFailedException("Eixos inválidos");
         }
 
         if (purchaseLocalDto.getLongitude() < -180 || purchaseLocalDto.getLongitude() > 180)
         {
-            throw new IllegalArgumentException("Longitude must be between -180 and 180 degrees inclusive.");
+            throw new PreconditionFailedException("Eixos inválidos");
         }
 
         final String uri = url +
@@ -51,7 +52,10 @@ public class GeolocationService {
             this.geolocationLoggerService.increaseCounter(1L);
 
             if(featureCollection.getFeatures().length == 0){
-                throw new NotFoundException("Não foi encontrado nenhum Ponto de interesse nas coordenadas enviadas.");
+                logger.error("Não foi encontrado nenhum ponto de interesse nas coordenadas [latitude: " +
+                        purchaseLocalDto.getLatitude() +
+                        ", longitude: " + purchaseLocalDto.getLongitude() + "]");
+                return null;
             }
 
             PurchaseLocalDto newPurchaseLocalDto = new PurchaseLocalDto();
@@ -63,7 +67,7 @@ public class GeolocationService {
             return newPurchaseLocalDto;
         } else {
             logger.error("Não foi possível fazer requisição à API MapBox: número máximo de requisições atingido.");
-            throw new NotFoundException("Máximo de requisições atingido");
+            return null;
         }
     }
 }
