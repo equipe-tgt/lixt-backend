@@ -121,6 +121,41 @@ class PurchaseLocalCrudTest {
 				() -> this.purchaseLocalController.save(PurchaseLocalDto.builder().name("Mercado Extra").latitude(183.0).longitude(93.0).build())
 		);
 	}
+
+	@Test
+	@DisplayName("Consultar a API com coordenadas inválidas")
+	@Order(5)
+	void invalidRequestToApi() {
+		assertThrows(
+				IllegalArgumentException.class,
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(93.0).longitude(20.77777).build())
+		);
+
+		assertThrows(
+				IllegalArgumentException.class,
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(-93.0).longitude(20.77777).build())
+		);
+
+		assertThrows(
+				IllegalArgumentException.class,
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(23.66666).longitude(183.0).build())
+		);
+
+		assertThrows(
+				IllegalArgumentException.class,
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(23.66666).longitude(-183.0).build())
+		);
+
+		assertThrows(
+				IllegalArgumentException.class,
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(-93.0).longitude(-183.0).build())
+		);
+
+		assertThrows(
+				IllegalArgumentException.class,
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(183.0).longitude(93.0).build())
+		);
+	}
 	
 	@AfterAll
 	void delete() {
