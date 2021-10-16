@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -133,27 +134,37 @@ class PurchaseLocalCrudTest {
 
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(-93.0).longitude(20.77777).build())
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(-93.0).longitude(20.77777).build())
 		);
 
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(23.66666).longitude(183.0).build())
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(23.66666).longitude(183.0).build())
 		);
 
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(23.66666).longitude(-183.0).build())
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(23.66666).longitude(-183.0).build())
 		);
 
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(-93.0).longitude(-183.0).build())
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(-93.0).longitude(-183.0).build())
 		);
 
 		assertThrows(
 				IllegalArgumentException.class,
-				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().name(null).latitude(183.0).longitude(93.0).build())
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(183.0).longitude(93.0).build())
+		);
+	}
+
+	@Test
+	@DisplayName("Consultar a API com coordenadas válidas sem ponto de interesse")
+	@Order(6)
+	void requestToApiCoordinatesWithoutPOI() {
+		assertThrows(
+				NotFoundException.class,
+				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(24.2733562461887).longitude(16.36125626341889).build())
 		);
 	}
 	
