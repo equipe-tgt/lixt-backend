@@ -2,6 +2,8 @@ package br.com.ifsp.pi.lixt.integration.geolocation;
 
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.integration.geolocation.data.FeatureCollection;
+import br.com.ifsp.pi.lixt.integration.geolocation.logger.GeolocationLoggerService;
+import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ public class GeolocationService {
     @Value("${lixt.geolocation.url}") String url;
 
     private static final Logger logger = LoggerFactory.getLogger(SenderMail.class);
+    private static final Long MAX_AMOUNT_REQUEST = Long.parseLong("100000");
+    private final GeolocationLoggerService geolocationLoggerService;
 
     public PurchaseLocalDto getPurchaseLocalByCoordinates(PurchaseLocalDto purchaseLocalDto) {
 
@@ -39,20 +43,27 @@ public class GeolocationService {
 
         RestTemplate restTemplate = new RestTemplate();
 
-        logger.info("Enviando requisição a API MapBox...");
-        FeatureCollection featureCollection = restTemplate.getForObject(uri, FeatureCollection.class);
-        logger.info("Requisição a API MapBox enviada.");
+        if(this.geolocationLoggerService.getTotalCount() < MAX_AMOUNT_REQUEST){
+            logger.info("Enviando requisição a API MapBox...");
+            FeatureCollection featureCollection = restTemplate.getForObject(uri, FeatureCollection.class);
+            logger.info("Requisição a API MapBox enviada.");
 
-        if(featureCollection.getFeatures().length == 0){
-            throw new NotFoundException("Não foi encontrado nenhum Ponto de interesse nas coordenadas enviadas.");
+            this.geolocationLoggerService.increaseCounter(1L);
+
+            if(featureCollection.getFeatures().length == 0){
+                throw new NotFoundException("Não foi encontrado nenhum Ponto de interesse nas coordenadas enviadas.");
+            }
+
+            PurchaseLocalDto newPurchaseLocalDto = new PurchaseLocalDto();
+
+            newPurchaseLocalDto.setLatitude(purchaseLocalDto.getLatitude());
+            newPurchaseLocalDto.setLongitude(purchaseLocalDto.getLongitude());
+            newPurchaseLocalDto.setName(featureCollection.getFeatures()[0].getPlace_name());
+
+            return newPurchaseLocalDto;
+        } else {
+            logger.error("Não foi possível fazer requisição à API MapBox: número máximo de requisições atingido.");
+            throw new NotFoundException("Máximo de requisições atingido");
         }
-
-        PurchaseLocalDto newPurchaseLocalDto = new PurchaseLocalDto();
-
-        newPurchaseLocalDto.setLatitude(purchaseLocalDto.getLatitude());
-        newPurchaseLocalDto.setLongitude(purchaseLocalDto.getLongitude());
-        newPurchaseLocalDto.setName(featureCollection.getFeatures()[0].getPlace_name());
-
-        return newPurchaseLocalDto;
     }
 }
