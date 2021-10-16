@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.integration.geolocation;
 
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.integration.geolocation.data.FeatureCollection;
+import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.io.ParseException;
@@ -29,7 +30,7 @@ public class GeolocationService {
             throw new IllegalArgumentException("Latitude must be between -90 and 90 degrees inclusive.");
         }
 
-        if (purchaseLocalDto.getLatitude() < -180 || purchaseLocalDto.getLatitude() > 180)
+        if (purchaseLocalDto.getLongitude() < -180 || purchaseLocalDto.getLongitude() > 180)
         {
             throw new IllegalArgumentException("Longitude must be between -180 and 180 degrees inclusive.");
         }
@@ -45,6 +46,10 @@ public class GeolocationService {
         logger.info("Enviando requisição a API MapBox...");
         FeatureCollection featureCollection = restTemplate.getForObject(uri, FeatureCollection.class);
         logger.info("Requisição a API MapBox enviada.");
+
+        if(featureCollection.getFeatures().length == 0){
+            throw new NotFoundException("Não foi encontrado nenhum Ponto de interesse nas coordenadas enviadas.");
+        }
 
         PurchaseLocalDto newPurchaseLocalDto = new PurchaseLocalDto();
 
