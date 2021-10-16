@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.controller.crud;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -166,6 +167,14 @@ class PurchaseLocalCrudTest {
 				NotFoundException.class,
 				() -> this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(24.2733562461887).longitude(16.36125626341889).build())
 		);
+	}
+
+	@Test
+	@DisplayName("Consultar a API com coordenadas válidas de um ponto de interesse")
+	@Order(7)
+	void requestToApiCoordinatesWithPOI() {
+		assertEquals(this.purchaseLocalController.findLocalNameByCoordinates(PurchaseLocalDto.builder().latitude(-23.598575943903683).longitude(-46.64251755477454).build()).getName(),
+				"Hirota Food Express, R. Pedro de Toledo, 591, São Paulo, São Paulo 04039, Brazil");
 	}
 	
 	@AfterAll
