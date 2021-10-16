@@ -25,7 +25,5 @@ public class Feature {
 
     private String place_name;
 
-    private Query[] center;
-
     private Context[] context;
 }

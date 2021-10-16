@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 public class FeatureCollection {
     private String type;
-    private Query[] query;
     private Feature[] features;
     private String attribution;
 }

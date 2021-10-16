@@ -10,6 +10,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Geometry {
-    private Query[] coordinates;
     private String type;
 }
