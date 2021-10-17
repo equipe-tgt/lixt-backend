@@ -3,8 +3,6 @@ package br.com.ifsp.pi.lixt.integration.geolocation;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.integration.geolocation.data.FeatureCollection;
 import br.com.ifsp.pi.lixt.integration.geolocation.logger.GeolocationLoggerService;
-import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
-import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
 import lombok.RequiredArgsConstructor;
