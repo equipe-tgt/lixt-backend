@@ -8,9 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.Table;
-
 import org.locationtech.jts.geom.Point;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -47,6 +47,10 @@ lixt:
     token: KlrbMerss0GnOBwvj2g9-g
     api: https://cosmos.bluesoft.com.br/api
 
+  geolocation:
+    url: https://api.mapbox.com/geocoding/v5/mapbox.places/
+    token: pk.eyJ1IjoibGl4dCIsImEiOiJja3Vsamw3azUxbWlyMnhteGsxZWZ5dzJtIn0.x6k9-84Te7yYg6EETauq4w
+
   jwt:
     secretKey: 6ca6f0f8-d17d-4e04-bb31-3f401a5d8acf
     tokenPrefix: "Bearer "
