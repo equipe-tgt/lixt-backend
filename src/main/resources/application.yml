@@ -1,12 +1,5 @@
 server:
   port: 8080
-  ssl:
-    enabled: true
-    protocol: TLS
-    key-store-password: senhalixt
-    key-store-type: JKS
-    key-store: classpath:keystore/keystore.jks
-    key-alias: lixt-key
 
 spring:
   application:

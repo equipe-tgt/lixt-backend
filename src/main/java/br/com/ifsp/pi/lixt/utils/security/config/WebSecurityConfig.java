@@ -17,7 +17,7 @@ import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWrite
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private static final String[] AUTH_WHITELIST = {
-			"/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**"
+			"/swagger-resources/**", "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/actuator/**"
 	};
 
 	@Override
