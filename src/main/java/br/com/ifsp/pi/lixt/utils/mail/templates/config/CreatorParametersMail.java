@@ -9,12 +9,14 @@ public abstract class CreatorParametersMail {
 	
 	private CreatorParametersMail() {}
 	
-	public static Map<String, String> resetPassword(String username, String password) {
+	public static Map<String, String> resetPassword(String username, String baseUrl, String token, Languages language) {
 		Map<String, String> map = new HashMap<>();
 		
 		map.put("$USERNAME", username);
-		map.put("$PASSWORD", password);
-		
+		map.put("$LANGUAGE", language.getDescription());
+		map.put("$BASE_URL", baseUrl);
+		map.put("$TOKEN", token);
+
 		return map;
 	}
 	

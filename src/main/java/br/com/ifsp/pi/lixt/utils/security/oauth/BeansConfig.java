@@ -27,8 +27,9 @@ public class BeansConfig {
 		tokenServices = new DefaultTokenServices();
 
 		tokenServices.setTokenStore(tokenStore);
-		tokenServices.setSupportRefreshToken(true);
 		tokenServices.setAccessTokenValiditySeconds(60 * 60);
+		tokenServices.setSupportRefreshToken(true);
+//		tokenServices.setReuseRefreshToken(false);
 		
 		oauth2TableGenerator.createOauth2Tables();
 	}
@@ -46,7 +47,7 @@ public class BeansConfig {
 	@Bean
 	@Primary
 	public DefaultTokenServices tokenServices() {
-	    return tokenServices;
+		return tokenServices;
 	}
 
 }

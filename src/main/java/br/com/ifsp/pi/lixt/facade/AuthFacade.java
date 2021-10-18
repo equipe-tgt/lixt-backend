@@ -5,7 +5,11 @@ import java.util.Objects;
 
 import javax.transaction.Transactional;
 
+import br.com.ifsp.pi.lixt.utils.security.jwt.JwtService;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,7 @@ import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.utils.database.validators.ValidatorResponse;
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
+import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
@@ -34,7 +39,8 @@ public class AuthFacade {
 	private final PasswordEncoder passwordEncoder;
 	private final UserService userService;
 	private final SenderMail senderMail;
-	
+	private final JwtService jwtService;
+
 	@Value("${lixt.base.url}") String baseUrl;
 	
 	@Transactional
@@ -54,8 +60,7 @@ public class AuthFacade {
 		
 		MailDto mail = TypeMail.CREATE_ACCOUNT.apply(language);
 		Map<String, String> params = CreatorParametersMail.createAccount(user.getUsername(), baseUrl, user.getFirstAccessToken(), language);
-		mail = FormatterMail.build(mail, params);
-		mail.setRecipientTo(user.getEmail());
+		mail = FormatterMail.build(mail, params, user.getEmail());
 
 		boolean responseSendMail = senderMail.sendEmail(mail);
 		
@@ -73,31 +78,64 @@ public class AuthFacade {
 	@Transactional
 	public Integer forgetPassword(String email, Languages language) {
 		
-		var user = this.userService.findByEmail(email);
+		var user = this.userService.findByUsernameOrEmail(email);
 		
 		if(Objects.isNull(user)) {
 			throw new NotFoundException("Usuário não encontrado");
 		}
-		
-		String password = SecurityGenerator.generateRandomPassword();
-		
-		Integer responseUpdate = this.userService.updatePassword(email, passwordEncoder.encode(password));
-		
-		if(ValidatorResponse.wasUpdated(responseUpdate)) {
-			
-			MailDto mail = TypeMail.RESET_PASSWORD.apply(language);
-			Map<String, String> params = CreatorParametersMail.resetPassword(user.getUsername(), password);
-			mail = FormatterMail.build(mail, params);
-			mail.setRecipientTo(email);
-			
-			boolean responseSendMail = senderMail.sendEmail(mail);
-			
-			if(!responseSendMail) {
-				throw new SendMailException();
-			}
+
+		String token = this.jwtService.createJwtToken(email);
+		user.setResetPasswordToken(token);
+		this.userService.save(user);
+
+		MailDto mail = TypeMail.RESET_PASSWORD.apply(language);
+		Map<String, String> params = CreatorParametersMail.resetPassword(user.getUsername(), baseUrl, token, language);
+		mail = FormatterMail.build(mail, params, email);
+
+		boolean responseSendMail = senderMail.sendEmail(mail);
+
+		if(!responseSendMail) {
+			throw new SendMailException();
 		}
-		
-		return responseUpdate;
+
+		return HttpStatus.OK.value();
+	}
+
+	public String validateToken(String token, Languages language) {
+
+		try {
+			String email = this.jwtService.getSubjectByJwtToken(token);
+			var user = this.userService.findByEmailAndToken(email, token);
+			
+			if(Objects.isNull(user)) {
+				throw new NotFoundException("Solicitação não encontrado.");
+			}
+			
+			return FormNewPasswordView.getView(language, token, baseUrl);
+
+		} catch (Exception e) {
+			return ErrorForgotPasswordView.getView(language);
+		}
+	}
+
+	public String saveNewPassword(String token, Languages language, String newPassword) {
+
+		try {
+			String email = this.jwtService.getSubjectByJwtToken(token);
+			var user = this.userService.findByUsernameOrEmail(email);
+			
+			if(newPassword.length() < 8)
+				throw new PreconditionFailedException("Senha não suportada");
+
+			Integer result = this.userService.updatePasswordByToken(user.getEmail(), passwordEncoder.encode(newPassword), token);
+
+			if(ValidatorResponse.wasUpdated(result))
+				return ActiveAccountView.getView(language);
+			else
+				return ErrorForgotPasswordView.getView(language);
+		} catch (Exception e) {
+			return ErrorForgotPasswordView.getView(language);
+		}
 	}
 	
 	public String activeUser(String token, Languages language) {

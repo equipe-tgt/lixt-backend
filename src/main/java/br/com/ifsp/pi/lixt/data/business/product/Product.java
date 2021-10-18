@@ -72,7 +72,7 @@ public class Product {
 	private Category category;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "id_product_of_list", insertable = false, updatable = false)
+	@JoinColumn(name = "id_product", insertable = false, updatable = false)
 	private List<GlobalComment> globalComments;
 
 }

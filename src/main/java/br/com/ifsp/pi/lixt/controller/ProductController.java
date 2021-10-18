@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
+import br.com.ifsp.pi.lixt.integration.barcode.BarcodeService;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductController {
 	
 	private final ProductService productService;
+	private final BarcodeService barcodeService;
 	
 	@ApiOperation(value = "Buscar produto por id")
 	@GetMapping("/{id}")
@@ -65,7 +67,7 @@ public class ProductController {
 	
 	@GetMapping("/by-barcode/{barcode}")
 	public ProductDto findByBarcode(@PathVariable String barcode) {
-		return ProductMapper.entityToDto(this.productService.findByBarcode(barcode));
+		return ProductMapper.entityToDto(this.barcodeService.findByBarcode(barcode));
 	}
 
 }

@@ -1,10 +1,14 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.views.activeaccount.ActiveAccountView;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.errorforgotpassword.ErrorForgotPasswordViewTranslators;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordView;
+import br.com.ifsp.pi.lixt.utils.views.formnewpassword.FormNewPasswordViewTranslators;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -102,15 +106,28 @@ class AuthControllerTest {
 	}
 	
 	@Test
-	@DisplayName("Gerar nova senha para usuário existente")
+	@DisplayName("Processo de resetar senha")
 	void newPasswordExistingUser() throws Exception {
 		assertThat(authController.forgetPassword("user@hotmail.com", null).getStatusCode()).isEqualTo(HttpStatus.OK);
-	}
-	
-	@Test
-	@DisplayName("Gerar nova senha para usuário inexistente")
-	void newPasswordUnexistingUser() throws Exception {
-		assertThat(authController.forgetPassword("bob@email.com", null).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
+		String token = this.userService.findResetPasswordTokenById(user.getId());
+		
+		String view1 = FormNewPasswordView.getView(Languages.ENGLISH, token, "http://localhost:8080");
+		for(String key : FormNewPasswordViewTranslators.toEnglish().keySet())
+			view1 = view1.replace(key, FormNewPasswordViewTranslators.toEnglish().get(key));
+		
+		String view2 = ErrorForgotPasswordView.getView(Languages.ENGLISH);
+		for(String key : ErrorForgotPasswordViewTranslators.toEnglish().keySet())
+			view2 = view2.replace(key, InvalidTokenViewTranslators.toEnglish().get(key));
+		
+		assertThat(authController.validateToken(token, null)).isEqualTo(view1);
+		assertThat(authController.receiveNewPassword(token, null, "")).isEqualTo(ErrorForgotPasswordView.getView(Languages.ENGLISH));
+		assertThat(authController.receiveNewPassword(token + "aaa", null, "")).isEqualTo(ErrorForgotPasswordView.getView(Languages.ENGLISH));
+		assertThat(authController.receiveNewPassword(token, null, "12345678")).isEqualTo(ActiveAccountView.getView(Languages.ENGLISH));
+		
+		assertThat(authController.validateToken(token, null)).isEqualTo(view2);
+		assertThat(authController.receiveNewPassword(token, null, "12345678")).isEqualTo(ErrorForgotPasswordView.getView(Languages.ENGLISH));
+		
+		assertThat(authController.forgetPassword("k@hotmail.com", null).getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 	
 	@Test
@@ -143,6 +160,7 @@ class AuthControllerTest {
 	
 	@AfterAll
 	void deleteUser() {
+		this.userService.desactiveAccount(user.getId());
 		this.userService.deleteById(user.getId());
 	}
 

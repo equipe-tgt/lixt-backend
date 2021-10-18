@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AbstractMail {
 	
-	protected static void translate(MailDto mailDto, Map<String, String> params) {
+	protected static MailDto translate(MailDto mailDto, Map<String, String> params) {
 		params.forEach((key, value) -> mailDto.setMsgHTML(mailDto.getMsgHTML().replace(key, value)));
+		return mailDto;
 	}
 
 }

@@ -1,8 +1,10 @@
 package br.com.ifsp.pi.lixt.data.business.globalcomment;
 
+import br.com.ifsp.pi.lixt.data.business.user.User;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -29,6 +31,13 @@ public class GlobalComment {
 	@Column(name = "id_user", updatable = false)
 	private Long userId;
 
-	@Column(name = "id_product", updatable = false)
+	@Column(name = "dt_created_at")
+	private LocalDateTime date;
+
+	@Column(name = "id_product", nullable = false, updatable = false)
 	private Long productId;
+
+	@ManyToOne
+	@JoinColumn(name = "id_user", insertable = false, updatable = false)
+	private User user;
 }

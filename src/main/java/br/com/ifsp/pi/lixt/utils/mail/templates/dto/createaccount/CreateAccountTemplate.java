@@ -23,16 +23,12 @@ public abstract class CreateAccountTemplate extends AbstractMail {
 		switch(language) {
 
 			case PORTUGUESE:
-				translate(mailDto, CreateAccountTemplateTranslators.toPortuguese());
-				break;
+				return translate(mailDto, CreateAccountTemplateTranslators.toPortuguese());
 			
 			case ENGLISH:
 			default:
-				translate(mailDto, CreateAccountTemplateTranslators.toEnglish());
-				break;
+				return translate(mailDto, CreateAccountTemplateTranslators.toEnglish());
 		}
-		
-		return mailDto;
 	}
 	
 }

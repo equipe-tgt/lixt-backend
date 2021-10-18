@@ -1,9 +1,11 @@
 package br.com.ifsp.pi.lixt.data.business.purchaselocal;
 
 import java.util.List;
+import java.util.Objects;
 
+import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
+import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
 import org.springframework.stereotype.Service;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -12,6 +14,7 @@ public class PurchaseLocalService {
 	
 	private final PurchaseLocalRepository purchaseLocalRepository;
 	private final PurchaseLocalSpecRepository purchaseLocalSpecRepository;
+	private final GeolocationService geolocationService;
 	
 	private static final double DISTANCE_IN_METERS_NEAR = 10;
 	
@@ -32,7 +35,22 @@ public class PurchaseLocalService {
 	}
 	
 	public List<PurchaseLocal> findPurchasesLocalNear(PurchaseLocal purchaseLocal) {
-		return this.purchaseLocalSpecRepository.findPurchasesLocalNear(purchaseLocal, DISTANCE_IN_METERS_NEAR);
+
+		List<PurchaseLocal> locals = this.purchaseLocalSpecRepository.findPurchasesLocalNear(purchaseLocal, DISTANCE_IN_METERS_NEAR);
+
+		PurchaseLocal searchedLocal = PurchaseLocalMapper.dtoToEntity(this.geolocationService.getPurchaseLocalByCoordinates(PurchaseLocalMapper.entityToDto(purchaseLocal)));
+		if(!locals.isEmpty() && Objects.nonNull(searchedLocal)){
+			for(PurchaseLocal local : locals){
+				if(local.getName().equalsIgnoreCase(searchedLocal.getName())){
+					return locals;
+				}
+			}
+		}
+
+		if(Objects.nonNull(searchedLocal))
+			locals.add(searchedLocal);
+
+		return locals;
 	}
 
 }

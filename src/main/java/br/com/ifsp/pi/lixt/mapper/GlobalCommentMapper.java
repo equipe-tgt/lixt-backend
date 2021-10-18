@@ -18,6 +18,7 @@ public abstract class GlobalCommentMapper extends Mapper {
                 .id(entity.getId())
                 .content(entity.getContent())
                 .userId(entity.getUserId())
+                .date(entity.getDate())
                 .productId(entity.getProductId())
                 .build();
     }
@@ -30,6 +31,7 @@ public abstract class GlobalCommentMapper extends Mapper {
                 .id(dto.getId())
                 .content(dto.getContent())
                 .userId(dto.getUserId())
+                .date(dto.getDate())
                 .productId(dto.getProductId())
                 .build();
     }

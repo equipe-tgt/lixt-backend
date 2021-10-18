@@ -245,7 +245,7 @@ class ProductOfListControllerTest {
 
 		ValidatorStatusResponsePut.isOk(mockMvc,
 										oauthUsers.get(0),
-									"/productOfList/" + this.productsOfList.get(0).getId() + "/mark-amount/" + this.productsOfList.get(0).getMarkedAmount(),
+										"/productOfList/" + this.productsOfList.get(0).getId() + "/mark-amount/" + this.productsOfList.get(0).getMarkedAmount(),
 										ProductOfListDtoInstantior.createProductOfListJson(this.productsOfList.get(0)));
 
 		ProductOfListDto productTemp = (ProductOfListDto) RequestWithResponse.createGetRequestJson(
@@ -264,6 +264,48 @@ class ProductOfListControllerTest {
 				mockMvc, "/productOfList/" + this.productsOfList.get(0).getId(), token, ProductOfListDto.class);
 
 		assertThat(productTemp.getMarkedAmount()).isEqualTo(3);
+	}
+	
+	@DisplayName("Marcar e atribuir itens")
+	@Test
+	@Order(7)
+	void markAndAtribute() throws Exception {
+		
+		for(int i=2; i<5; i++) {
+			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/mark/" + this.productsOfList.get(0).getId());
+			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/clean/" + this.productsOfList.get(0).getId());
+			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/"+ this.productsOfList.get(0).getId() + "/assigned-to-me");
+			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId() + "/assigned-to/" + oauthUsers.get(1).getId());
+			ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/list/" + this.listOfItems.getId() + "/clean-marked-itens");
+		}
+		
+		for(int i=0; i<2; i++) {
+			ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(i), "/productOfList/mark/" + this.productsOfList.get(0).getId());
+			ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(i), "/productOfList/clean/" + this.productsOfList.get(0).getId());
+			ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(i), "/productOfList/"+ this.productsOfList.get(0).getId() + "/assigned-to-me");
+			
+			if(i == 0)
+				ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId() + "/assigned-to/" + oauthUsers.get(1).getId());
+			if(i == 1)
+				ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(i), "/productOfList/" + this.productsOfList.get(0).getId() + "/assigned-to/" + oauthUsers.get(1).getId());
+		}
+		
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/productOfList/mark/" + this.productsOfList.get(1).getId());
+		assertThat(RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(1).getId() + "/assigned-to-me", oauthUsers.get(1), Integer.class)).isOne();
+		assertThat(RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/mark/" + this.productsOfList.get(1).getId(), oauthUsers.get(0), Integer.class)).isZero();
+		assertThat(RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(1).getId() + "/assigned-to-me", oauthUsers.get(0), Integer.class)).isZero();
+		
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/productOfList/"+ this.productsOfList.get(2).getId() + "/assigned-to-me");
+		assertThat(RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/mark/" + this.productsOfList.get(2).getId(), oauthUsers.get(1), Integer.class)).isZero();
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/productOfList/"+ this.productsOfList.get(2).getId() + "/assigned-to-me");
+		assertThat(RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/mark/" + this.productsOfList.get(2).getId(), oauthUsers.get(1), Integer.class)).isOne();
+
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/productOfList/clean/" + this.productsOfList.get(0).getId());
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/productOfList/" + this.productsOfList.get(0).getId() + "/assigned-to/" + oauthUsers.get(1).getId());
+		assertThat(RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productsOfList.get(0).getId() + "/assigned-to/" + oauthUsers.get(1).getId(), oauthUsers.get(0), Integer.class)).isOne();
+		
+		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(1), "/list/" + this.listOfItems.getId() + "/clean-marked-itens");
+		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/" + this.listOfItems.getId() + "/clean-marked-itens");
 	}
 
 	@AfterAll

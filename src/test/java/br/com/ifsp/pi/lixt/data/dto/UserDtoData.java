@@ -45,5 +45,17 @@ public abstract class UserDtoData {
 		
 		return users;
 	}
+	
+	public static List<UserDto> dataForGlobalCommentControllerTest() {
+		List<UserDto> users = new ArrayList<>();
+		
+		users.add(UserDtoInstantior.createUser("teste16", "teste16", "teste11@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste17", "teste17", "teste12@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste18", "teste18", "teste13@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste19", "teste19", "teste14@gmail.com", "123"));
+		users.add(UserDtoInstantior.createUser("teste20", "teste20", "teste15@gmail.com", "123"));
+		
+		return users;
+	}
 
 }

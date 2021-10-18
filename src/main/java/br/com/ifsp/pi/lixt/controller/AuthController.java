@@ -47,7 +47,7 @@ public class AuthController {
 	}
 	
 	@PostMapping(value = "/forget-password", consumes = MediaType.TEXT_PLAIN_VALUE)
-	@ApiOperation(value = "Gera uma nova senha de um usuário na plataforma que será enviado por email")
+	@ApiOperation(value = "Solicitação de cadastro de nova senha")
 	public ResponseEntity<Integer> forgetPassword(@RequestBody String email, @RequestParam(defaultValue = "en-us", required = false) String language) {
 		try {
 			return ResponseEntity.ok(this.authFacade.forgetPassword(email, Languages.convertStringToEnum(language)));
@@ -56,6 +56,20 @@ public class AuthController {
 		} catch(SendMailException e) {
 			return new ResponseEntity<>(0, HttpStatus.SERVICE_UNAVAILABLE);
 		}
+	}
+
+	@GetMapping("/redefine-password")
+	@ApiOperation(value = "Validar o token de redefinição da senha")
+	public String validateToken(@RequestParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language){
+		return authFacade.validateToken(token, Languages.convertStringToEnum(language));
+	}
+
+	@PostMapping(path = "/form/update-password")
+	@ApiOperation(value = "Recebe o novo valor da senha")
+	public String receiveNewPassword(@RequestParam(value = "token") String token,
+								   @RequestParam(defaultValue = "en-us", required = false) String language,
+								   @RequestParam(value = "newPassword") String password) {
+		return this.authFacade.saveNewPassword(token, Languages.convertStringToEnum(language), password);
 	}
 	
 	@PostMapping(path = "/update-password", consumes = MediaType.TEXT_PLAIN_VALUE)

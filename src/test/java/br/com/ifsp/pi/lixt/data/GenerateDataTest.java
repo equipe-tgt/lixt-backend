@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +19,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.ifsp.pi.lixt.controller.AuthController;
 import br.com.ifsp.pi.lixt.controller.CategoryController;
 import br.com.ifsp.pi.lixt.controller.PurchaseLocalController;
 import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
+import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseService;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.data.dto.json.CommentDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.json.ListOfItemsDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.ProductDtoData;
+import br.com.ifsp.pi.lixt.data.dto.PurchaseDtoData;
 import br.com.ifsp.pi.lixt.data.dto.json.ProductOfListDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.UserDtoData;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
@@ -34,10 +40,12 @@ import br.com.ifsp.pi.lixt.dto.CommentDto;
 import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.dto.PurchaseDto;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
+import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponseList;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePost;
@@ -66,6 +74,11 @@ class GenerateDataTest {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private PurchaseService purchaseService;
+	
+	ObjectMapper mapper = new ObjectMapper();
 	
 	private List<UserDto> oauthUsers = new ArrayList<>();
 	private List<Product> products = new ArrayList<>();
@@ -175,6 +188,18 @@ class GenerateDataTest {
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/comment/" + this.comments.get(0).getId());
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(1), "/comment/" + this.comments.get(0).getId());
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/comment/" + this.comments.get(0).getId());		
+	}
+	
+	@DisplayName("Criar compra")
+	@Test
+	@Order(6)
+	void createPurchase() throws Exception {
+		PurchaseDto purchase = PurchaseDtoData.createPurchase(purchaseLocal.getId(), productsOfList);
+		purchase = RequestWithResponse.createPostRequestJson(mockMvc, "/purchase", mapper.writeValueAsString(purchase), oauthUsers.get(0), PurchaseDto.class);
+		
+		assertNotNull(RequestWithResponse.createGetRequestJson(mockMvc, "/purchase/" + purchase.getId(), oauthUsers.get(0), PurchaseDto.class));
+		assertThat(RequestWithResponseList.createGetRequestJson(mockMvc, "/purchase/by-user", oauthUsers.get(0), PurchaseDto.class).size()).isOne();
+		this.purchaseService.deleteById(purchase.getId());
 	}
 	
 	@AfterAll

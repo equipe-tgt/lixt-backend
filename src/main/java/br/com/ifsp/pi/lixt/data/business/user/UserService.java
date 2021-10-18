@@ -1,7 +1,5 @@
 package br.com.ifsp.pi.lixt.data.business.user;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -11,10 +9,6 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserRepository userRepository;
-	
-	public List<User> findAll() {
-		return this.userRepository.findAll();
-	}
 	
 	public User findByUsername(String username) {
 		return this.userRepository.findByUsername(username);
@@ -26,6 +20,10 @@ public class UserService {
 	
 	public User findByUsernameOrEmail(String username) {
 		return this.userRepository.findByUsernameOrEmail(username);
+	}
+	
+	public User findByEmailAndToken(String email, String token) {
+		return this.userRepository.findByEmailAndToken(email, token);
 	}
 	
 	public User save(User user) {
@@ -48,12 +46,16 @@ public class UserService {
 		return this.userRepository.updatePassword(password, email);
 	}
 	
-	public String findUsernameByEmail(String email) {
-		return this.userRepository.findUsernameByEmail(email);
-	}
+	public Integer updatePasswordByToken(String email, String password, String token) {
+		return this.userRepository.updatePasswordByToken(password, email, token);
+	}	
 	
 	public String findFirstAccesTokenById(Long id) {
 		return this.userRepository.findFirstAccesTokenById(id);
+	}
+	
+	public String findResetPasswordTokenById(Long id) {
+		return this.userRepository.findResetPasswordTokenById(id);
 	}
 	
 }

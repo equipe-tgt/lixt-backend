@@ -20,6 +20,9 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 	@Query("select u from User u where u.activated = true and (u.email = ?1 or u.username = ?1)")
 	User findByUsernameOrEmail(String username);
 	
+	@Query("select u from User u where u.email = ?1 and u.resetPasswordToken = ?2")
+	User findByEmailAndToken(String email, String token);
+	
 	@Modifying(clearAutomatically = true)
 	@Transactional
 	@Query("update User u set u.activated = true, u.firstAccessToken = null where u.firstAccessToken = ?1")
@@ -40,5 +43,13 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 	
 	@Query("select u.firstAccessToken from User u where u.id = ?1")
 	String findFirstAccesTokenById(Long id);
+	
+	@Query("select u.resetPasswordToken from User u where u.id = ?1")
+	String findResetPasswordTokenById(Long id);
+
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query("update User u set u.password = ?1, u.resetPasswordToken = null where u.email = ?2 and u.resetPasswordToken = ?3")
+	Integer updatePasswordByToken(String password, String email, String token);
 	
 }
