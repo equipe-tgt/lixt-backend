@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 @Configuration
 @EnableWebSecurity
@@ -39,9 +40,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.headers()
 				.httpStrictTransportSecurity().maxAgeInSeconds(31536000).includeSubDomains(true).and()
-				.contentSecurityPolicy("hello").and()
+				.contentSecurityPolicy("default-src 'self';").and()
 				.referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.SAME_ORIGIN).and()
-				.permissionsPolicy().policy("geolocation=(self, \"https://lixt-ws.azure.net\")");
+				.addHeaderWriter(new StaticHeadersWriter(
+						"Permissions-Policy",
+						"geolocation=(self)"));
 
 		http.authorizeRequests()
 			.antMatchers(AUTH_WHITELIST).permitAll()
