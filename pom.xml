@@ -169,13 +169,12 @@
 			<id>prod</id>
 			<properties>
 				<activatedProperties>prod</activatedProperties>
-				<db.driver>software.aws.rds.jdbc.Driver</db.driver>
+				<db.driver>com.mysql.jdbc.Driver</db.driver>
 			</properties>
 			<dependencies>
 				<dependency>
-					<groupId>software.aws.rds</groupId>
-					<artifactId>aws-mysql-jdbc</artifactId>
-					<version>0.1.0</version>
+					<groupId>mysql</groupId>
+					<artifactId>mysql-connector-java</artifactId>
 				</dependency>
 			</dependencies>
 		</profile>
@@ -225,6 +224,17 @@
 							</resource>
 						</resources>
 					</deployment>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.heroku.sdk</groupId>
+				<artifactId>heroku-maven-plugin</artifactId>
+				<version>3.0.3</version>
+				<configuration>
+					<appName>lixt-be</appName>
+					<processTypes>
+						<web>java -Dspring.profiles.active=prod $JAVA_OPTS -cp target/classes:target/dependency/* br.com.ifsp.pi.lixt.LixtBackendApplication</web>
+					</processTypes>
 				</configuration>
 			</plugin>
 		</plugins>
