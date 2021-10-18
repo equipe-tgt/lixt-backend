@@ -4,7 +4,6 @@ server:
 spring:
   datasource:
     driverClassName:
-    url: jdbc:mysql://b3d007cc32648c:004a5099@us-cdbr-east-04.cleardb.com/heroku_4db6dd425bd1fd5?reconnect=true
     username: b3d007cc32648c
 
 lixt:
