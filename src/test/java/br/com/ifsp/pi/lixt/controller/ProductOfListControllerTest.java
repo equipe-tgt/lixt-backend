@@ -19,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
@@ -77,7 +78,8 @@ class ProductOfListControllerTest {
 	@BeforeAll
 	void createProducts() {
 		category = categoryController.save(CategoryDto.builder().name("alimento").build());
-		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
+		ResponseEntity<Object> response = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
+		product = (ProductDto) response.getBody();
 
 		UserDtoData.dataForProductOfListControllerTest().forEach(user -> {
 			oauthUsers.add((UserDto) this.authController.register(user, null).getBody());

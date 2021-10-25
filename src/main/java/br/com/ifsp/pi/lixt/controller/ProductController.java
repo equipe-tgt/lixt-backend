@@ -3,6 +3,11 @@ package br.com.ifsp.pi.lixt.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.ifsp.pi.lixt.mapper.UserMapper;
+import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,8 +44,14 @@ public class ProductController {
 	
 	@ApiOperation(value = "Salvar um produto")
 	@PostMapping
-	public ProductDto save(@RequestBody(required = false) ProductDto product) {
-		return ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product)));
+	public ResponseEntity<Object> save(@RequestBody(required = false) ProductDto product) {
+		//return ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product)));
+		try {
+			//return ResponseEntity.ok(UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user), Languages.convertStringToEnum(language))));
+			return ResponseEntity.ok(ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product))));
+		} catch (DuplicatedDataException e) {
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+		}
 	}
 	
 	@ApiOperation(value = "Atualizar produto")

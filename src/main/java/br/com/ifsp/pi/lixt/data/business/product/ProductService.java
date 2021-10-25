@@ -1,6 +1,9 @@
 package br.com.ifsp.pi.lixt.data.business.product;
 
 import java.util.List;
+import java.util.Objects;
+
+import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -22,6 +25,12 @@ public class ProductService {
 	}
 	
 	public Product save(Product product) {
+		if(product.getUserId() == null){
+			Product productByBarcode = this.productRepository.findByBarcode(product.getBarcode());
+			if(Objects.nonNull(productByBarcode)){
+				throw new DuplicatedDataException("Código de barras já cadastrado na plataforma.");
+			}
+		}
 		return this.productRepository.save(product);
 	}
 	

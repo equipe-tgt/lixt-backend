@@ -35,7 +35,7 @@ class BarcodeIntegrationControllerTest {
 	private BarcodeLoggerRepository barcodeLoggerRepository;
 	
 	@Test
-	void testResquestToApiBarcode() {
+	void testRequestToApiBarcode() {
 		Long requests = barcodeLoggerRepository.findCounterOfDay();
 		
 		ProductDto product = this.productController.findByBarcode("7891268400014");

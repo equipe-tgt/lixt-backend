@@ -1,8 +1,7 @@
 package br.com.ifsp.pi.lixt.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -22,6 +21,10 @@ import br.com.ifsp.pi.lixt.dto.ProductDto;
 import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
+import java.math.BigDecimal;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -43,7 +46,8 @@ class ProductControllerTest {
 	@BeforeAll
 	void createProducts() {
 		category = categoryController.save(CategoryDto.builder().name("alimento").build());
-		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
+		ResponseEntity<Object> arroz = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
+		product = (ProductDto) arroz.getBody();
 	}
 	
 	@Test
@@ -66,6 +70,30 @@ class ProductControllerTest {
 	void updateCategoryWithError() {
 		product.setName("Maçã");
 		assertThrows(PreconditionFailedException.class, () -> productController.update(product, 0l));
+	}
+
+	@Test
+	@DisplayName("Tentar adicionar um produto com código de barras já cadastrado")
+	@Order(4)
+	void saveProductWithAlreadyExistBarcode(){
+		ProductDto newProduct  = new ProductDto(null,
+				"Pão de batata",
+				null,
+				category.getId(),
+				"7891268400014",
+				BigDecimal.valueOf(1),
+				MeasureType.UNITY,
+				category);
+
+		ResponseEntity<Object> response = this.productController.save(newProduct);
+
+		ProductDto registeredProduct = (ProductDto) response.getBody();
+
+		assertEquals(registeredProduct.getName(), newProduct.getName());
+
+		assertEquals(this.productController.save(newProduct).getStatusCode().value(), HttpStatus.CONFLICT.value());
+
+		this.productController.deleteById(registeredProduct.getId());
 	}
 	
 	@AfterAll
