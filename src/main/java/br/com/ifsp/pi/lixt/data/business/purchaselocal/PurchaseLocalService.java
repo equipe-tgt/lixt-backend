@@ -1,12 +1,18 @@
 package br.com.ifsp.pi.lixt.data.business.purchaselocal;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import br.com.ifsp.pi.lixt.data.business.purchase.Purchase;
+import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseRepository;
 import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
+
+import static java.util.stream.Collectors.groupingBy;
 
 @Service
 @RequiredArgsConstructor
@@ -15,6 +21,7 @@ public class PurchaseLocalService {
 	private final PurchaseLocalRepository purchaseLocalRepository;
 	private final PurchaseLocalSpecRepository purchaseLocalSpecRepository;
 	private final GeolocationService geolocationService;
+	private final PurchaseRepository purchaseRepository;
 	
 	private static final double DISTANCE_IN_METERS_NEAR = 10;
 	
@@ -51,6 +58,17 @@ public class PurchaseLocalService {
 			locals.add(searchedLocal);
 
 		return locals;
+	}
+
+	public void findAllPurchaseLocalRecords(Long userId) {
+		List<Purchase> userPurchases = this.purchaseRepository.findUserPurchases(userId);
+
+		List<PurchaseLocal> purchaseLocals = userPurchases.stream()
+				.map(e -> e.getPurchaseLocal())
+				.collect(Collectors.toList());
+
+		Map<String, List<PurchaseLocal>> groupedPurchaseLocals = purchaseLocals.stream()
+				.collect(groupingBy(PurchaseLocal::getName));
 	}
 
 }
