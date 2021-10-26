@@ -60,7 +60,7 @@ public class PurchaseLocalService {
 		return locals;
 	}
 
-	public void findAllPurchaseLocalRecords(Long userId) {
+	public Map<String, List<PurchaseLocal>> findAllPurchaseLocalRecords(Long userId) {
 		List<Purchase> userPurchases = this.purchaseRepository.findUserPurchases(userId);
 
 		List<PurchaseLocal> purchaseLocals = userPurchases.stream()
@@ -69,6 +69,8 @@ public class PurchaseLocalService {
 
 		Map<String, List<PurchaseLocal>> groupedPurchaseLocals = purchaseLocals.stream()
 				.collect(groupingBy(PurchaseLocal::getName));
+
+		return groupedPurchaseLocals;
 	}
 
 }
