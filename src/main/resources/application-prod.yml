@@ -1,9 +1,9 @@
 spring:
   datasource:
     driverClassName:
-    url: jdbc:mysql://lixt-db.mysql.database.azure.com:3306/lixt?useSSL=true&requireSSL=false
-    username: lixt_root
-    password: SenhadaAzure123!
+    url: ${DATABASE_STRING_CONNECTION}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
 
 lixt:
   base:

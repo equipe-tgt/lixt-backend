@@ -12,9 +12,9 @@ import org.springframework.web.client.RestTemplate;
 
 import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.business.product.ProductRepository;
-import br.com.ifsp.pi.lixt.integration.barcode.logger.BarcodeLogger;
 import br.com.ifsp.pi.lixt.integration.barcode.logger.BarcodeLoggerService;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
+import br.com.ifsp.pi.lixt.mapper.logger.BarcodeLoggerMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,12 +48,12 @@ public class BarcodeService {
 		if(requestsDone < MAX_AMOUNT_REQUEST) {
 			try {
 				product = this.productRepository.save(ProductMapper.modelIntoApiParams(this.doRequest(barcode)));
-				this.barcodeLoggerService.save(BarcodeLogger.builder().counterOfDay(requestsDone+1).barcode(barcode).idProduct(product.getId()).build());
+				this.barcodeLoggerService.save(BarcodeLoggerMapper.build(requestsDone + 1, barcode, product.getId()));
 				log.info("Produto " + product.getName() + " (código de barras: " + barcode + ") cadastrado na plataforma. [" + (requestsDone+1) + "/25]");
 				return product;
 			}
 			catch(Exception e) {
-				this.barcodeLoggerService.save(BarcodeLogger.builder().counterOfDay(requestsDone+1).barcode(barcode).build());
+				this.barcodeLoggerService.save(BarcodeLoggerMapper.build(requestsDone + 1, barcode));
 				log.error("Produto (código de barras: " + barcode + ") não encontrado. [" + (requestsDone+1) + "/25]");
 				return null;
 			}

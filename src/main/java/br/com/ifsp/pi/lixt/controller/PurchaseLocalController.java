@@ -3,7 +3,6 @@ package br.com.ifsp.pi.lixt.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,6 @@ import lombok.RequiredArgsConstructor;
 public class PurchaseLocalController {
 	
 	private final PurchaseLocalService purchaseLocalService;
-	private final GeolocationService geolocationService;
 
 	@ApiOperation(value = "Buscar local de compra por id")
 	@GetMapping("/{id}")

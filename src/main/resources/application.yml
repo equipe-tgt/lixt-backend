@@ -40,15 +40,20 @@ lixt:
     
   barcode:
     url: https://api.cosmos.bluesoft.com.br/gtins/
-    token: KlrbMerss0GnOBwvj2g9-g
+    token: ${INTEGRATION_BARCODE_TOKEN}
     api: https://cosmos.bluesoft.com.br/api
 
   geolocation:
     url: https://api.mapbox.com/geocoding/v5/mapbox.places/
-    token: pk.eyJ1IjoibGl4dCIsImEiOiJja3Vsamw3azUxbWlyMnhteGsxZWZ5dzJtIn0.x6k9-84Te7yYg6EETauq4w
+    token: ${INTEGRATION_GEOLOCATION_TOKEN}
 
   jwt:
-    secretKey: 6ca6f0f8-d17d-4e04-bb31-3f401a5d8acf
-    tokenPrefix: "Bearer "
+    secretKey: ${JWT_SECRET_KEY}
     tokenExpirationAfterMillis: 86400000
+
+  mail:
+    server: smtp.gmail.com
+    port: 465
+    username: ${EMAIL_ADDRESS}
+    password: ${EMAIL_PASSWORD}
 
