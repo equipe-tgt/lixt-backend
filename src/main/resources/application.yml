@@ -55,4 +55,5 @@ lixt:
     server: smtp.gmail.com
     port: 465
     username: ${EMAIL_ADDRESS}
-    password: ${EMAIL_PASSWO
+    password: ${EMAIL_PASSWORD}
+
