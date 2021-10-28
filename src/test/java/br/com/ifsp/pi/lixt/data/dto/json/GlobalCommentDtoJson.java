@@ -15,9 +15,9 @@ public abstract class GlobalCommentDtoJson {
 	public static List<String> initializeValues(UserDto userDto, ProductDto productDto) {
 		List<String> globalComments = new ArrayList<>();
 
-		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productDto.getId()));
-		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productDto.getId()));
-		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productDto.getId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productDto.getId(), Boolean.TRUE));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productDto.getId(), Boolean.TRUE));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productDto.getId(),Boolean.FALSE));
 
 		return globalComments;
 	}
@@ -25,9 +25,9 @@ public abstract class GlobalCommentDtoJson {
 	public static List<String> initializeValues(UserDto userDto, ProductOfListDto productOfListDto) {
 		List<String> globalComments = new ArrayList<>();
 
-		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productOfListDto.getProductId()));
-		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productOfListDto.getProductId()));
-		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productOfListDto.getProductId()));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 1", userDto.getId(), productOfListDto.getProductId(), Boolean.TRUE));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 2", userDto.getId(), productOfListDto.getProductId(), Boolean.TRUE));
+		globalComments.add(GlobalCommentDtoInstantior.createGlobalCommentJson("Comentário global 3", userDto.getId(), productOfListDto.getProductId(), Boolean.FALSE));
 
 		return globalComments;
 	}

@@ -23,6 +23,8 @@ public class GlobalCommentDto {
 
     private Long productId;
 
+    private Boolean isPublic;
+
     @JsonSerialize(using = LocalDateTimeSerializer.class)
     @JsonDeserialize(using = LocalDateTimeDeserializer.class)
     private LocalDateTime date;
