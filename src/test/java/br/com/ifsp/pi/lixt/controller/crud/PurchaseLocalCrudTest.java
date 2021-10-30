@@ -1,13 +1,10 @@
 package br.com.ifsp.pi.lixt.controller.crud;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
 import br.com.ifsp.pi.lixt.integration.geolocation.logger.GeolocationLoggerService;
-import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -34,9 +31,6 @@ class PurchaseLocalCrudTest {
 	
 	@Autowired
 	private PurchaseLocalController purchaseLocalController;
-
-	@Autowired
-	private GeolocationService geolocationService;
 
 	@Autowired
 	private GeolocationLoggerService geolocationLoggerService;

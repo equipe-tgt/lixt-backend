@@ -3,7 +3,6 @@ package br.com.ifsp.pi.lixt.data;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
 import br.com.ifsp.pi.lixt.integration.geolocation.logger.GeolocationLoggerService;
-import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
