@@ -50,7 +50,8 @@ public class ProductController {
 			//return ResponseEntity.ok(UserMapper.entityToDto(authFacade.register(UserMapper.dtoToEntity(user), Languages.convertStringToEnum(language))));
 			return ResponseEntity.ok(ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product))));
 		} catch (DuplicatedDataException e) {
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+			ProductDto dto = ProductMapper.entityToDto(this.barcodeService.findByBarcode(product.getBarcode()));
+			return new ResponseEntity<>(dto, HttpStatus.CONFLICT);
 		}
 	}
 	

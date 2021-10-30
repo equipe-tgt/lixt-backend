@@ -19,6 +19,7 @@ public abstract class PurchaseMapper extends Mapper {
 		return Purchase.builder()
 				.id(dto.getId())
 				.userId(dto.getUserId())
+				.purchasePrice(dto.getPurchasePrice())
 				.purchaseLocalId(dto.getPurchaseLocalId())
 				.purchaseDate(dto.getPurchaseDate())
 				.purchaseLocal(PurchaseLocalMapper.dtoToEntity(dto.getPurchaseLocal()))
@@ -36,6 +37,7 @@ public abstract class PurchaseMapper extends Mapper {
 				.userId(entity.getUserId())
 				.purchaseLocalId(entity.getPurchaseLocalId())
 				.purchaseDate(entity.getPurchaseDate())
+				.purchasePrice(entity.getPurchasePrice())
 				.purchaseLocal(map(entity.getPurchaseLocal(), PurchaseLocalMapper::entityToDto))
 				.purchaseLists(map(entity.getPurchaseLists(), PurchaseListMapper::entityToDto))
 				.build();
