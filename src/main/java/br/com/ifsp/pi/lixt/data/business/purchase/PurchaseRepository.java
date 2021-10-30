@@ -17,8 +17,8 @@ public interface PurchaseRepository extends CrudRepository<Purchase, Long>, JpaS
 	
 	@Query("SELECT MONTH(p.purchaseDate) as month, SUM(ip.price) as price FROM Purchase p "
 			+ "JOIN p.purchaseLists pl JOIN pl.itemsOfPurchase ip JOIN ip.product pr JOIN pr.category c "
-			+ "WHERE p.userId = :userId AND c.name = :#{#filter.category} AND p.purchaseDate >= :#{#filter.minDate} "
-			+ "GROUP BY MONTH(p.purchaseDate)")
+			+ "WHERE p.userId = :userId AND c.name = :#{#filter.category} AND p.purchaseDate BETWEEN :#{#filter.minDate} AND :#{#filter.maxDate} "
+			+ "GROUP BY MONTH(p.purchaseDate) ORDER BY MONTH(p.purchaseDate) ASC")
 	List<IDashboardCategory> findDashboardCategory(@Param("userId") Long userId, @Param("filter") DashboardCategoryFilter filter);
 	
 }

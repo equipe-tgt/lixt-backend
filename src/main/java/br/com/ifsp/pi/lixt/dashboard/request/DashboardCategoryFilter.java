@@ -13,6 +13,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class DashboardCategoryFilter {
 	
+	private LocalDateTime maxDate;
+	
 	private LocalDateTime minDate;
 	
 	private String category;
