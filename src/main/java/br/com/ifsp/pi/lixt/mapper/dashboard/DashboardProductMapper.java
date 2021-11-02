@@ -14,6 +14,7 @@ public class DashboardProductMapper {
 		return DashboardProductDto.builder()
 				.date(entity.getDate())
 				.price(entity.getPrice())
+				.name(entity.getName())
 				.build();
 	}
 

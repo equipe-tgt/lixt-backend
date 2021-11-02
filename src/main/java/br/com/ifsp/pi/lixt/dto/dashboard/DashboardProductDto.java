@@ -17,5 +17,7 @@ public class DashboardProductDto {
 	private LocalDateTime date;
 	
 	private BigDecimal price;
+	
+	private String name;
 
 }

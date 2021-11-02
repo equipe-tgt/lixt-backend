@@ -8,5 +8,7 @@ public interface IDashboardProduct {
 	public LocalDateTime getDate();
 	
 	public BigDecimal getPrice();
+	
+	public String getName();
 
 }

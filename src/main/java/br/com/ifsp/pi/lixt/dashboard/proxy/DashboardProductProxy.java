@@ -19,6 +19,8 @@ public class DashboardProductProxy implements InvocationHandler {
 				return data[0];
 			case "getPrice":
 				return data[1];
+			case "getName":
+				return data[2];
 			default:
 				return null;
 		}

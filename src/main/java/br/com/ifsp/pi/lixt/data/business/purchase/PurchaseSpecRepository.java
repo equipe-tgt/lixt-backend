@@ -61,7 +61,7 @@ public class PurchaseSpecRepository {
 		String jpql = "";
 		Map<String, Object> parameters = new HashMap<>();
 		
-		jpql = jpql.concat("SELECT p.purchaseDate AS date, ip.price as price FROM Purchase p ");
+		jpql = jpql.concat("SELECT p.purchaseDate AS date, ip.price as price, ip.name as name FROM Purchase p ");
 		jpql = jpql.concat("JOIN p.purchaseLists pl JOIN pl.itemsOfPurchase ip ");
 		
 		jpql = jpql.concat("WHERE p.userId = :userId ");
@@ -84,18 +84,12 @@ public class PurchaseSpecRepository {
 			parameters.put("measureType", filter.getMeasureType());
 		}
 		
-		if(Objects.nonNull(filter.getName()) && Objects.nonNull(filter.getBrand())) {
-			jpql = jpql.concat("AND ip.name = :name ");
-			parameters.put("name", Like.contains(filter.getName() + "%" + filter.getBrand()));
+		if(Objects.nonNull(filter.getName()) || Objects.nonNull(filter.getBrand())) {
+			jpql = jpql.concat("AND ip.name LIKE :name ");
+			parameters.put("name", Like.contains(Like.specialCharacters(filter.getName()), Like.specialCharacters(filter.getBrand())));
 		}
-		else if(Objects.nonNull(filter.getName())) {
-			jpql = jpql.concat("AND ip.name = :name ");
-			parameters.put("name", Like.contains(filter.getName()));
-		}
-		else if(Objects.nonNull(filter.getBrand())) {
-			jpql = jpql.concat("AND ip.name = :name ");
-			parameters.put("name", Like.contains(filter.getBrand()));
-		}
+		
+		jpql = jpql.concat("ORDER BY p.purchaseDate ASC");
 		
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
 		parameters.forEach(query::setParameter);
