@@ -2,6 +2,7 @@ package br.com.ifsp.pi.lixt.data.business.purchase;
 
 import java.util.List;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -21,4 +22,6 @@ public interface PurchaseRepository extends CrudRepository<Purchase, Long>, JpaS
 			+ "GROUP BY MONTH(p.purchaseDate) ORDER BY MONTH(p.purchaseDate) ASC")
 	List<IDashboardCategory> findDashboardCategory(@Param("userId") Long userId, @Param("filter") DashboardCategoryFilter filter);
 	
+	@Query("SELECT id FROM Purchase")
+	List<Long> findIdPurchases(Specification<Purchase> specification);
 }

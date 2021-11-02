@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import br.com.ifsp.pi.lixt.utils.database.operations.Like;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -42,10 +43,9 @@ public class ProductService {
 		this.productRepository.deleteById(id);
 	}
 	
-	public List<Product> findByName(String name, Long userId) {
-		return this.productRepository.findByName(
-				Like.contains(name), 
-				userId,
+	public Page<Product> findByName(String name) {
+		return this.productRepository.findAll(
+				ProductSpecifications.byBarcode(name).or(ProductSpecifications.byName(name).and(ProductSpecifications.byUser())),
 				PageRequest.of(0, LENGTH_DATA_BY_DEFAULT, Sort.by(SORT_DATA_BY_DEFAULT))
 		);
 	}

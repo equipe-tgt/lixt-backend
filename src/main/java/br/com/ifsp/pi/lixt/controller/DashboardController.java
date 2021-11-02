@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.dashboard.DashboardService;
 import br.com.ifsp.pi.lixt.dashboard.request.DashboardCategoryFilter;
+import br.com.ifsp.pi.lixt.dashboard.request.DashboardProductFilter;
 import br.com.ifsp.pi.lixt.dashboard.request.DashboardTimeFilter;
 import br.com.ifsp.pi.lixt.dto.dashboard.DashboardCategoryDto;
+import br.com.ifsp.pi.lixt.dto.dashboard.DashboardProductDto;
 import br.com.ifsp.pi.lixt.dto.dashboard.DashboardTimeDto;
 import br.com.ifsp.pi.lixt.mapper.dashboard.DashboardCategoryMapper;
+import br.com.ifsp.pi.lixt.mapper.dashboard.DashboardProductMapper;
 import br.com.ifsp.pi.lixt.mapper.dashboard.DashboardTimeMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,6 +40,12 @@ public class DashboardController {
 	@PostMapping("/category")
 	public List<DashboardCategoryDto> findDashboardCategory(@RequestBody DashboardCategoryFilter filter) {
 		return this.dashboardService.findDashboardCategory(filter).stream().map(DashboardCategoryMapper::build).collect(Collectors.toList());
+	}
+	
+	@ApiOperation(value = "Dashboard: Gastos de Produto por Tempo")
+	@PostMapping("/product")
+	public List<DashboardProductDto> findDashboardProduct(@RequestBody DashboardProductFilter filter) {
+		return this.dashboardService.findDashboardProduct(filter).stream().map(DashboardProductMapper::build).collect(Collectors.toList());
 	}
 
 }
