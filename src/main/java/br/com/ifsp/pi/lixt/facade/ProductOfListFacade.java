@@ -1,23 +1,23 @@
 package br.com.ifsp.pi.lixt.facade;
 
-import java.util.List;
-import java.util.Objects;
-
-import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
-import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
-import org.springframework.stereotype.Service;
-
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalCommentService;
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfListService;
+import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
+import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.PreconditionFailedException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +87,10 @@ public class ProductOfListFacade {
 			throw new ForbiddenException();
 		}
 
-		List<GlobalComment> globalComments = this.globalCommentService.findByUserId(ownerId);
+		List<GlobalComment> globalComments = this.globalCommentService.findByProductId(id);
+		globalComments = globalComments.stream()
+				.filter(comment -> comment.getIsPublic() || Objects.equals(Users.getUserId(), comment.getUserId()))
+				.collect(Collectors.toList());
 		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
 		
 		return AllCommentsMapper.entityToDto(globalComments, comments);
@@ -135,7 +138,7 @@ public class ProductOfListFacade {
 		if(Objects.isNull(oldAssignedUserId)) {
 			return this.productOfListService.assignedItemToUser(Users.getUserId(), true, productOfListId);
 		}
-		if(Users.getUserId().equals(oldAssignedUserId)) {
+		if(Objects.equals(Users.getUserId(), oldAssignedUserId)) {
 			return this.productOfListService.assignedItemToUser(null, false, productOfListId);
 		}
 		
