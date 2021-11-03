@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchase;
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchaseService;
+import br.com.ifsp.pi.lixt.data.business.list.ListOfItemsService;
 import br.com.ifsp.pi.lixt.data.business.purchase.Purchase;
 import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseService;
 import br.com.ifsp.pi.lixt.data.business.purchaselist.PurchaseList;
@@ -21,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PurchaseFacade {
 	
+	private final ListOfItemsService listOfItemsService;
 	private final PurchaseService purchaseService;
 	private final ItemOfPurchaseService itemOfPurchaseService;
 	private final PurchaseListService purchaseListService;
@@ -30,7 +32,6 @@ public class PurchaseFacade {
 	}
 		
 	public Purchase save(PurchaseDto purchaseDto) {
-		
 		purchaseDto.setUserId(Users.getUserId());
 		purchaseDto.setPurchaseDate(LocalDateTime.now());
 		
@@ -53,13 +54,13 @@ public class PurchaseFacade {
 	}
 	
 	private void savePurchasesList(PurchaseDto purchaseDto, Purchase purchase) {
-		
 		List<PurchaseList> purchaseLists = new ArrayList<>();
 
 		for(var i=0; i<purchaseDto.getPurchaseLists().size(); i++) {
 			var purchaseListTemp = PurchaseListMapper.dtoToEntity(purchaseDto.getPurchaseLists().get(i));
 			purchaseListTemp.setPurchaseId(purchase.getId());
 			purchaseListTemp.setItemsOfPurchase(null);
+			purchaseListTemp.setNameList(this.listOfItemsService.findNameById(purchaseListTemp.getListId()));
 			purchaseLists.add(purchaseListTemp);
 		}
 		

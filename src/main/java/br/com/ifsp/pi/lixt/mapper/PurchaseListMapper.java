@@ -19,6 +19,7 @@ public abstract class PurchaseListMapper extends Mapper {
 				.id(dto.getId())
 				.purchaseId(dto.getPurchaseId())
 				.listId(dto.getListId())
+				.nameList(dto.getNameList())
 				.partialPurchasePrice(dto.getPartialPurchasePrice())
 				.itemsOfPurchase(map(dto.getItemsOfPurchase(), ItemOfPurchaseMapper::dtoToEntity))
 				.build();
@@ -33,6 +34,7 @@ public abstract class PurchaseListMapper extends Mapper {
 				.id(entity.getId())
 				.purchaseId(entity.getPurchaseId())
 				.listId(entity.getListId())
+				.nameList(entity.getNameList())
 				.partialPurchasePrice(entity.getPartialPurchasePrice())
 				.itemsOfPurchase(map(entity.getItemsOfPurchase(), ItemOfPurchaseMapper::entityToDto))
 				.build();

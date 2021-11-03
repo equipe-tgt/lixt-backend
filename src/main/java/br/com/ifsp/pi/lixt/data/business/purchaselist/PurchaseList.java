@@ -43,6 +43,9 @@ public class PurchaseList {
 	@Column(name = "id_list")
 	private Long listId;
 	
+	@Column(name = "st_name_list")
+	private String nameList;
+	
 	@Column(name = "nr_partial_purchase_price")
 	private BigDecimal partialPurchasePrice;
 

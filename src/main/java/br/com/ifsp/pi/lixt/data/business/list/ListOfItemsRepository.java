@@ -23,6 +23,9 @@ public interface ListOfItemsRepository extends CrudRepository<ListOfItems, Long>
 	@Query("select distinct lm from ListOfItems l join l.listMembers lm where l.ownerId = ?1")
 	List<ListMembers> findListMembersSentByUser(Long userId);
 	
+	@Query("select l.nameList from ListOfItems l where l.id = ?1")
+	String findNameById(Long id);
+	
 	
 	@Query("select distinct l.ownerId from ListOfItems l left join l.productsOfList p where p.id = ?1")
 	Long findOwnerIdByProductOfListId(Long productOfListId);

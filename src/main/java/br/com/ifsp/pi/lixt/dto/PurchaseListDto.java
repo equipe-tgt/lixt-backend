@@ -22,6 +22,8 @@ public class PurchaseListDto {
 	
 	private Long listId;
 	
+	private String nameList;
+	
 	private BigDecimal partialPurchasePrice;
 
 	private List<ItemOfPurchaseDto> itemsOfPurchase;
