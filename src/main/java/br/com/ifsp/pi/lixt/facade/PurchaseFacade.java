@@ -1,5 +1,6 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class PurchaseFacade {
 	public Purchase save(PurchaseDto purchaseDto) {
 		
 		purchaseDto.setUserId(Users.getUserId());
+		purchaseDto.setPurchaseDate(LocalDateTime.now());
 		
 		var result = createPurchase(purchaseDto);
 		
