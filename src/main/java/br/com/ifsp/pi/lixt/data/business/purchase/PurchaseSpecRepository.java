@@ -50,7 +50,7 @@ public class PurchaseSpecRepository {
 		}
 		
 		jpql = jpql.concat("GROUP BY " + filter.getUnityTime().getParams("p.purchaseDate") + " ");
-		jpql = jpql.concat("ORDER BY " + filter.getUnityTime().getParams("p.purchaseDate") + " ASC");
+		jpql = jpql.concat("ORDER BY p.purchaseDate ASC");
 		
 		TypedQuery<Object[]> query = entityManager.createQuery(jpql, Object[].class);
 		parameters.forEach(query::setParameter);
