@@ -40,5 +40,9 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 	
 	@Query("select u.firstAccessToken from User u where u.id = ?1")
 	String findFirstAccesTokenById(Long id);
-	
+
+	@Modifying(clearAutomatically = true)
+	@Transactional
+	@Query("update User u set u.globalCommentsChronOder = ?2 where u.id = ?1")
+	void saveGlobalCommentsPreferences(Long id, boolean preference);
 }

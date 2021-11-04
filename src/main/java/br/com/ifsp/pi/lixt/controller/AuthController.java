@@ -5,12 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.facade.AuthFacade;
@@ -83,7 +78,14 @@ public class AuthController {
 	public UserDetails findDataUser(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
 		return oauth2Service.findDataUser(userDetails);
 	}
-	
+
+	@PutMapping("/global-comments-preferences")
+	@ApiOperation(value = "Atualizar preferencias de ordenação dos comentários globais do usuário")
+	public ResponseEntity<UserDto> updateUserData(@ApiIgnore @RequestBody UserDto userDetails) {
+		userDetails = authFacade.updateGlobalCommentsPreferences(userDetails);
+		return ResponseEntity.ok(userDetails);
+	}
+
 	@GetMapping("/active-user")
 	@ApiOperation(value = "Ativar conta de usuário na plataforma")
 	public String activeUser(@RequestParam(value = "token") String token, @RequestParam(defaultValue = "en-us", required = false) String language) {

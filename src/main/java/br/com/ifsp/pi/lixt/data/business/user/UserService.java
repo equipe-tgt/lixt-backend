@@ -1,10 +1,10 @@
 package br.com.ifsp.pi.lixt.data.business.user;
 
-import java.util.List;
-
+import br.com.ifsp.pi.lixt.dto.UserDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import lombok.RequiredArgsConstructor;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +55,9 @@ public class UserService {
 	public String findFirstAccesTokenById(Long id) {
 		return this.userRepository.findFirstAccesTokenById(id);
 	}
-	
+
+	public UserDto saveGlobalCommentsPreferences(UserDto userDto) {
+		this.userRepository.saveGlobalCommentsPreferences(userDto.getId(), userDto.isGlobalCommentsChronOrder());
+		return userDto;
+	}
 }
