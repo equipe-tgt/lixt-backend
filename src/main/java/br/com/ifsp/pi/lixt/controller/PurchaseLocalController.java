@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
+import br.com.ifsp.pi.lixt.dto.specific.PurchaseLocalDataDto;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,7 +69,7 @@ public class PurchaseLocalController {
 
 	@ApiOperation(value = "Encontrar o histórico de locais de compra do usuário")
 	@GetMapping("/all-purchase-local-data/{userId}")
-	public Map<String, List<PurchaseLocal>> getAllPuchaseLocalData(@PathVariable Long userId) {
+	public List<PurchaseLocalDataDto> getAllPuchaseLocalData(@PathVariable Long userId) {
 		return this.purchaseLocalService.findAllPurchaseLocalRecords(userId);
 	}
 }

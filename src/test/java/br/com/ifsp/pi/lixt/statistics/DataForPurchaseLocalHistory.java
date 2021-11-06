@@ -13,22 +13,22 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
 public abstract class DataForPurchaseLocalHistory {
 
-
+    private static final int amountOfCategories = 3;
+    private static final int amountOfLists = 7;
+    private static final int amountOfProductsPerCategory = 5;
 
     public static List<CategoryDto> createCategories() {
-        final Integer amountOfCategories = 7;
 
         List<CategoryDto> categories = new ArrayList<>();
 
         for (int x=0; x<=amountOfCategories; x++) {
-            String categoryName = "Categoria " + Integer.toString(x);
+            String categoryName = "Categoria " + x;
             categories.add(
                     CategoryDto.builder()
                             .name(categoryName)
@@ -40,12 +40,11 @@ public abstract class DataForPurchaseLocalHistory {
     }
 
     public static List<ListOfItemsDto> createListOfItems(Long userId) {
-        final Integer amountOfLists = 7;
 
         List<ListOfItemsDto> listOfItemsDtos = new ArrayList<>();
 
         for (int x=0; x<=amountOfLists; x++) {
-            String listName = "Lista " + Integer.toString(x);
+            String listName = "Lista " + x;
             listOfItemsDtos.add(
                     ListOfItemsDto.builder()
                             .description("Lista de compras usada para testes")
@@ -63,13 +62,12 @@ public abstract class DataForPurchaseLocalHistory {
     }
 
     public static List<Product> createProducts(List<CategoryDto> categories) {
-        final Integer amountOfProductsPerCategory = 5;
 
         List<Product> products = new ArrayList<>();
 
         for (CategoryDto category : categories) {
             for(int x=0; x<=amountOfProductsPerCategory; x++) {
-                String productName = "Produto "+Integer.toString(x);
+                String productName = "Produto "+ x;
                 products.add(
                         ProductDtoInstantior.createProduct(
                                 productName,
@@ -110,9 +108,6 @@ public abstract class DataForPurchaseLocalHistory {
                 );
             }
         }
-
-        /*return productsOfList.stream().sorted(Comparator.comparing(ProductOfListDto::getPrice))
-                .collect(Collectors.toList());*/
         return productsOfList;
     }
 
@@ -159,7 +154,7 @@ public abstract class DataForPurchaseLocalHistory {
                                 -46.57289902605527)).build()
         );
 
-        purchaseLocals.add(
+        /*purchaseLocals.add(
                 PurchaseLocal.builder()
                         .name("Pão de Açúcar")
                         .location(GeolocalizationConvert.convertCoordsToPoint(
@@ -197,7 +192,7 @@ public abstract class DataForPurchaseLocalHistory {
                         .location(GeolocalizationConvert.convertCoordsToPoint(
                                 -23.69944409364102,
                                 -46.60914957493367)).build()
-        );
+        );*/
 
         return purchaseLocals;
     }
@@ -235,7 +230,7 @@ public abstract class DataForPurchaseLocalHistory {
                     PurchaseDto.builder()
                             .purchaseLocalId(purchaseLocalId)
                             .purchasePrice(purchasePrice)
-                            .purchaseDate(LocalDateTime.now())
+                            .purchaseDate(purchaseDate)
                             .purchaseLists(createPurchaseLists(list, purchasePrice))
                             .build()
                 );

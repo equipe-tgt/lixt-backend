@@ -1,12 +1,13 @@
 package br.com.ifsp.pi.lixt.data.business.purchaselocal;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.purchase.Purchase;
 import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseRepository;
+import br.com.ifsp.pi.lixt.dto.specific.PurchaseLocalDataDto;
 import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
 import org.springframework.stereotype.Service;
@@ -60,17 +61,44 @@ public class PurchaseLocalService {
 		return locals;
 	}
 
-	public Map<String, List<PurchaseLocal>> findAllPurchaseLocalRecords(Long userId) {
+	public List<PurchaseLocalDataDto> findAllPurchaseLocalRecords(Long userId) {
+		List<PurchaseLocalDataDto> localsData = new ArrayList<>();
 		List<Purchase> userPurchases = this.purchaseRepository.findUserPurchases(userId);
 
-		List<PurchaseLocal> purchaseLocals = userPurchases.stream()
-				.map(e -> e.getPurchaseLocal())
+		List<String> localsNames = userPurchases.stream()
+				.map(e -> e.getPurchaseLocal().getName())
+				.distinct()
 				.collect(Collectors.toList());
 
-		Map<String, List<PurchaseLocal>> groupedPurchaseLocals = purchaseLocals.stream()
-				.collect(groupingBy(PurchaseLocal::getName));
+		for (String localName : localsNames) {
+			PurchaseLocalDataDto localData = new PurchaseLocalDataDto();
 
-		return groupedPurchaseLocals;
+			localData.setPurchaseLocalName(localName);
+
+			List<Purchase> purchasesOnLocal = userPurchases.stream()
+					.filter(e -> e.getPurchaseLocal().getName().equalsIgnoreCase(localName))
+					.collect(Collectors.toList());
+			purchasesOnLocal.sort(Comparator.comparing(Purchase::getPurchaseDate));
+
+			Integer purchaseAmount = Math.toIntExact(purchasesOnLocal.stream().count());
+			localData.setPurchaseAmount(purchaseAmount);
+
+			localData.setFirstPurchase(purchasesOnLocal.get(0).getPurchaseDate());
+			localData.setLastPurchase(purchasesOnLocal.get(purchasesOnLocal.size()-1).getPurchaseDate());
+
+			BigDecimal totalValue = purchasesOnLocal.stream()
+					.map(e -> e.getPurchasePrice())
+					.reduce(BigDecimal.ZERO, BigDecimal::add);
+			localData.setTotalValue(totalValue);
+
+			BigDecimal averageValue = totalValue.divide(BigDecimal.valueOf(purchaseAmount))
+					.setScale(2, RoundingMode.CEILING);
+			localData.setAverageValue(averageValue);
+
+			localsData.add(localData);
+		}
+
+		return localsData;
 	}
 
 }
