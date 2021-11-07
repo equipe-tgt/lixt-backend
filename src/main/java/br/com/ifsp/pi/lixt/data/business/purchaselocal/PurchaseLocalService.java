@@ -91,7 +91,7 @@ public class PurchaseLocalService {
 					.reduce(BigDecimal.ZERO, BigDecimal::add);
 			localData.setTotalValue(totalValue);
 
-			BigDecimal averageValue = totalValue.divide(BigDecimal.valueOf(purchaseAmount))
+			BigDecimal averageValue = totalValue.divide(BigDecimal.valueOf(purchaseAmount), 2, RoundingMode.HALF_UP)
 					.setScale(2, RoundingMode.CEILING);
 			localData.setAverageValue(averageValue);
 
