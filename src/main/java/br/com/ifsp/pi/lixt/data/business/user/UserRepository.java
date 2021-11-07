@@ -43,6 +43,6 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 
 	@Modifying(clearAutomatically = true)
 	@Transactional
-	@Query("update User u set u.globalCommentsChronOder = ?2 where u.id = ?1")
+	@Query("update User u set u.globalCommentsChronOrder = ?2 where u.id = ?1")
 	void saveGlobalCommentsPreferences(Long id, boolean preference);
 }

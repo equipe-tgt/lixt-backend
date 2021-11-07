@@ -1,5 +1,15 @@
 package br.com.ifsp.pi.lixt.facade;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
+import br.com.ifsp.pi.lixt.mapper.specific.AllCommentsMapper;
+import org.springframework.stereotype.Service;
+
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalCommentService;
@@ -78,20 +88,22 @@ public class ProductOfListFacade {
 		this.productOfListService.deleteById(id);
 	}
 	
-	public AllCommentsDto findCommentsByProductOfListId(Long id) {
+	public AllCommentsDto findCommentsByProductOfListId(Long productOfListId) {
 		
-		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(id);
-		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(id);
+		Long ownerId = this.listOfItemsService.findOwnerIdByProductOfListId(productOfListId);
+		List<Long> membersIds = this.listOfItemsService.findMembersIdsByProductOfListId(productOfListId);
 		
 		if(!(ValidatorAccess.canAcces(membersIds) || ValidatorAccess.canAcces(ownerId))) {
 			throw new ForbiddenException();
 		}
 
-		List<GlobalComment> globalComments = this.globalCommentService.findByProductId(id);
+		Long productId = this.productOfListService.findById(productOfListId).getProductId();
+
+		List<GlobalComment> globalComments = this.globalCommentService.findByProductId(productId);
 		globalComments = globalComments.stream()
 				.filter(comment -> comment.getIsPublic() || Objects.equals(Users.getUserId(), comment.getUserId()))
 				.collect(Collectors.toList());
-		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(id);
+		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(productOfListId);
 		
 		return AllCommentsMapper.entityToDto(globalComments, comments);
 	}

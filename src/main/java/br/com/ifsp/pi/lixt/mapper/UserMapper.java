@@ -21,6 +21,7 @@ public abstract class UserMapper extends Mapper {
 				.name(entity.getName())
 				.username(entity.getUsername())
 				.email(entity.getEmail())
+				.globalCommentsChronOrder(entity.isGlobalCommentsChronOrder())
 				.build();
 	}
 	
@@ -35,6 +36,7 @@ public abstract class UserMapper extends Mapper {
 				.username(dto.getUsername())
 				.email(dto.getEmail())
 				.password(dto.getPassword())
+				.globalCommentsChronOrder(dto.isGlobalCommentsChronOrder())
 				.build();
 	}
 	
@@ -48,6 +50,7 @@ public abstract class UserMapper extends Mapper {
 				.name(dtoOauth.getName())
 				.username(dtoOauth.getUsername())
 				.email(dtoOauth.getEmail())
+				.globalCommentsChronOrder(dtoOauth.isGlobalCommentsChronOrder())
 				.build();
 	}
 
