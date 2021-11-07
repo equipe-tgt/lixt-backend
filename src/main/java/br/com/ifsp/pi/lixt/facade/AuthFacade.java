@@ -169,4 +169,8 @@ public class AuthFacade {
 	public UserDto updateGlobalCommentsPreferences(UserDto userDto) {
 		return userService.saveGlobalCommentsPreferences(userDto);
 	}
+
+	public User getUserData(String username) {
+		return userService.findByUsernameOrEmail(username);
+	}
 }
