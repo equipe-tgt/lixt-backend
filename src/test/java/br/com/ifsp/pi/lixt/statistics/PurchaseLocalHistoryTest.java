@@ -8,6 +8,7 @@ import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseService;
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.dto.*;
+import br.com.ifsp.pi.lixt.dto.specific.PurchaseLocalDataDto;
 import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
 import br.com.ifsp.pi.lixt.mapper.*;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
@@ -62,6 +63,7 @@ public class PurchaseLocalHistoryTest {
     ObjectMapper mapper = new ObjectMapper();
 
     private UserDto userDto = new UserDto();
+    private UserDto userDto2 = new UserDto();
     private List<CategoryDto> categories = new ArrayList<>();
     private List<PurchaseLocalDto> purchaseLocalsDto = new ArrayList<>();
     private List<PurchaseDto> purchasesDto = new ArrayList<>();
@@ -141,9 +143,36 @@ public class PurchaseLocalHistoryTest {
     @Test
     @DisplayName("Estatísticas de compra por local")
     void recordsByLocal(){
-        assertThat(
-                this.purchaseLocalController.getAllPuchaseLocalData(userDto.getId()).size()
-        ).isEqualTo(5);
+        List<PurchaseLocalDataDto> data = this.purchaseLocalController.getAllPuchaseLocalData(userDto.getId());
+        assertThat(data).hasSize(5);
+
+        for (PurchaseLocalDataDto localData : data) {
+            assertThat(localData).isNotNull();
+            assertThat(localData.getPurchaseAmount()).isEqualTo(lists.size());
+            assertThat(localData.getAverageValue()).isPositive();
+            assertThat(localData.getTotalValue()).isPositive();
+        }
+
+
+    }
+
+    @Test
+    @DisplayName("Solicitar estatísticas para usuário sem compras")
+    void emptyRecordsByLocal() {
+        userDto2 = (UserDto) this.authController.register(UserDtoInstantior.createUser(
+                        "teste2",
+                        "teste2",
+                        "teste2@gmail.com",
+                        "123"),
+                null).getBody();
+
+        userDto2.setPassword("123");
+
+        this.authController.activeUser(this.userService.findFirstAccesTokenById(userDto2.getId()), null);
+
+        List<PurchaseLocalDataDto> data = this.purchaseLocalController.getAllPuchaseLocalData(userDto2.getId());
+
+        assertThat(data).isEmpty();
     }
 
     @AfterAll
@@ -167,5 +196,6 @@ public class PurchaseLocalHistoryTest {
             this.categoryController.deleteById(category.getId());
         }
         this.userService.deleteById(userDto.getId());
+        this.userService.deleteById(userDto2.getId());
     }
 }
