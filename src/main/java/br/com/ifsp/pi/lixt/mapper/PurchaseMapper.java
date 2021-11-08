@@ -21,6 +21,7 @@ public abstract class PurchaseMapper extends Mapper {
 				.userId(dto.getUserId())
 				.purchasePrice(dto.getPurchasePrice())
 				.purchaseLocalId(dto.getPurchaseLocalId())
+				.purchasePrice(dto.getPurchasePrice())
 				.purchaseDate(dto.getPurchaseDate())
 				.purchaseLocal(PurchaseLocalMapper.dtoToEntity(dto.getPurchaseLocal()))
 				.purchaseLists(map(dto.getPurchaseLists(), PurchaseListMapper::dtoToEntity))
