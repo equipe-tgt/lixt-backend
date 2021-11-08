@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public abstract class DataForPurchaseLocalHistory {
 
     private static final int amountOfCategories = 3;
-    private static final int amountOfLists = 7;
+    private static final int amountOfLists = 1;
     private static final int amountOfProductsPerCategory = 5;
 
     public static List<CategoryDto> createCategories() {
