@@ -68,6 +68,7 @@ public abstract class ProductOfListMapper extends Mapper {
 		if(Objects.isNull(productOfList.getProduct()) || Objects.isNull(productOfList.getProduct().getGlobalComments()))
 			return 0;
 		return productOfList.getProduct().getGlobalComments()
-				.stream().filter(e -> e.getUserId() == productOfList.getListOfItems().getOwnerId()).collect(Collectors.toList()).size();
+				.stream()
+				.filter(e -> e.getIsPublic() == true).collect(Collectors.toList()).size();
 	}
 }

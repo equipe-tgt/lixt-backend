@@ -41,5 +41,5 @@ public class User {
 
 	@Builder.Default
 	@Column(name= "bl_global_comments_chronological_order")
-	private boolean globalCommentsChronOder = true;
+	private boolean globalCommentsChronOrder = true;
 }

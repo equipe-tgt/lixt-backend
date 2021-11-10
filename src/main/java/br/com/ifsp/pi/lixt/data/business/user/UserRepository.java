@@ -19,6 +19,9 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 	
 	@Query("select u from User u where u.activated = true and (u.email = ?1 or u.username = ?1)")
 	User findByUsernameOrEmail(String username);
+
+	@Query("select u from User u where u.id = ?1")
+	User findUserById(Long id);
 	
 	@Modifying(clearAutomatically = true)
 	@Transactional
@@ -43,6 +46,6 @@ public interface UserRepository extends CrudRepository<User, Long>, JpaSpecifica
 
 	@Modifying(clearAutomatically = true)
 	@Transactional
-	@Query("update User u set u.globalCommentsChronOder = ?2 where u.id = ?1")
+	@Query("update User u set u.globalCommentsChronOrder = ?2 where u.id = ?1")
 	void saveGlobalCommentsPreferences(Long id, boolean preference);
 }

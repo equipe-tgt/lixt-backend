@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalCommentService;
+import br.com.ifsp.pi.lixt.data.business.user.User;
+import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
@@ -17,6 +19,7 @@ import java.util.List;
 public class GlobalCommentFacade {
 
 	private final GlobalCommentService globalCommentService;
+	private final UserService userService;
 
 	public List<GlobalComment> findAll() {
 		return this.globalCommentService.findAll();
@@ -29,6 +32,9 @@ public class GlobalCommentFacade {
 	public GlobalComment save(GlobalComment globalComment) {
 		globalComment.setDate(LocalDateTime.now());
 		globalComment.setUserId(Users.getUserId());
+
+		User user = this.userService.findById(Users.getUserId());
+		globalComment.setUser(user);
 		return this.globalCommentService.save(globalComment);
 	}
 

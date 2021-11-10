@@ -75,8 +75,10 @@ public class AuthController {
 	
 	@GetMapping("/data-user")
 	@ApiOperation(value = "Buscar dados não-sensíveis do usuário através do token")
-	public UserDetails findDataUser(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
-		return oauth2Service.findDataUser(userDetails);
+	public UserDto findDataUser(@ApiIgnore @AuthenticationPrincipal UserDetails userDetails) {
+		UserDetails ud =  oauth2Service.findDataUser(userDetails);
+		UserDto userDto = UserMapper.entityToDto(authFacade.getUserData(ud.getUsername()));
+		return userDto;
 	}
 
 	@PutMapping("/global-comments-preferences")
