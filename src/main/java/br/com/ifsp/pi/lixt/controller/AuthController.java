@@ -81,10 +81,10 @@ public class AuthController {
 		return userDto;
 	}
 
-	@PutMapping("/global-comments-preferences")
+	@PutMapping("/save-user-preferences")
 	@ApiOperation(value = "Atualizar preferencias de ordenação dos comentários globais do usuário")
 	public ResponseEntity<UserDto> updateUserData(@ApiIgnore @RequestBody UserDto userDetails) {
-		userDetails = authFacade.updateGlobalCommentsPreferences(userDetails);
+		userDetails = authFacade.updateUserPreferences(userDetails);
 		return ResponseEntity.ok(userDetails);
 	}
 

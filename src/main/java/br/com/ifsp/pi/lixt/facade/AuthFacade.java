@@ -166,7 +166,7 @@ public class AuthFacade {
 	}
 
 
-	public UserDto updateGlobalCommentsPreferences(UserDto userDto) {
+	public UserDto updateUserPreferences(UserDto userDto) {
 		userDto = userService.saveOlderCommentsFirst(userDto);
 		return userService.saveGlobalCommentsPreferences(userDto);
 	}
