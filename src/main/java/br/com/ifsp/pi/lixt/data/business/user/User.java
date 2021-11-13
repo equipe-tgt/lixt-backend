@@ -40,6 +40,10 @@ public class User {
 	private boolean activated = false;
 
 	@Builder.Default
-	@Column(name= "bl_global_comments_chronological_order")
+	@Column(name = "bl_global_comments_chronological_order")
 	private boolean globalCommentsChronOrder = true;
+
+	@Builder.Default
+	@Column(name = "bl_older_comments_first")
+	private boolean olderCommentsFirst = true;
 }

@@ -33,6 +33,8 @@ public class OauthUserDto implements UserDetails, CredentialsContainer {
 
 	private boolean globalCommentsChronOrder;
 
+	private boolean olderCommentsFirst;
+
 	@Override
 	public void eraseCredentials() {
 		password = null;

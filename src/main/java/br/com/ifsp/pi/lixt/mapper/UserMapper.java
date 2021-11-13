@@ -37,6 +37,7 @@ public abstract class UserMapper extends Mapper {
 				.email(dto.getEmail())
 				.password(dto.getPassword())
 				.globalCommentsChronOrder(dto.isGlobalCommentsChronOrder())
+				.olderCommentsFirst(dto.isOlderCommentsFirst())
 				.build();
 	}
 	
@@ -51,6 +52,7 @@ public abstract class UserMapper extends Mapper {
 				.username(dtoOauth.getUsername())
 				.email(dtoOauth.getEmail())
 				.globalCommentsChronOrder(dtoOauth.isGlobalCommentsChronOrder())
+				.olderCommentsFirst(dtoOauth.isOlderCommentsFirst())
 				.build();
 	}
 

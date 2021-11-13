@@ -27,4 +27,6 @@ public class UserDto {
 
 	private boolean globalCommentsChronOrder;
 
+	private boolean olderCommentsFirst;
+
 }

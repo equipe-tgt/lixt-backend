@@ -64,4 +64,9 @@ public class UserService {
 		this.userRepository.saveGlobalCommentsPreferences(userDto.getId(), userDto.isGlobalCommentsChronOrder());
 		return userDto;
 	}
+
+	public UserDto saveOlderCommentsFirst(UserDto userDto) {
+		this.userRepository.saveOlderCommentsFirst(userDto.getId(), userDto.isOlderCommentsFirst());
+		return userDto;
+	}
 }
