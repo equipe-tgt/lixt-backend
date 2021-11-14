@@ -3,9 +3,9 @@ package br.com.ifsp.pi.lixt.instantiator;
 import br.com.ifsp.pi.lixt.dto.GlobalCommentDto;
 import br.com.ifsp.pi.lixt.utils.conversion.Operators;
 
-public abstract class GlobalCommentDtoInstantior extends Operators {
+public abstract class GlobalCommentDtoInstantiator extends Operators {
 
-	private GlobalCommentDtoInstantior() {}
+	private GlobalCommentDtoInstantiator() {}
 
 	public static String createGlobalCommentJson(String content, Long userId, Long productId, Boolean isPublic) {
 		StringBuilder stringBuilder = new StringBuilder();

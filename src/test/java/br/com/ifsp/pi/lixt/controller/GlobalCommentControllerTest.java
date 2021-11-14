@@ -9,13 +9,14 @@ import br.com.ifsp.pi.lixt.data.dto.json.ProductOfListDtoDataJson;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.*;
 import br.com.ifsp.pi.lixt.dto.specific.AllCommentsDto;
-import br.com.ifsp.pi.lixt.instantiator.GlobalCommentDtoInstantior;
-import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
+import br.com.ifsp.pi.lixt.instantiator.GlobalCommentDtoInstantiator;
+import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantiator;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePut;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,6 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @DisplayName("Testar endpoints na classe GlobalCommentController")
+@Slf4j
 class GlobalCommentControllerTest {
 
 	@Autowired
@@ -71,7 +74,7 @@ class GlobalCommentControllerTest {
 	@BeforeAll
 	void createTestPreconditions() throws Exception {
 		category = categoryController.save(CategoryDto.builder().name("Alimentação").build());
-		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantior.createProduct("Arroz", category, MeasureType.KG, 5)));
+		product = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantiator.createProduct("Arroz", category, MeasureType.KG, 5)));
 
 		UserDtoData.dataForProductOfListControllerTest().subList(0, 2).forEach(user -> {
 			oauthUsers.add((UserDto) this.authController.register(user, null).getBody());
@@ -87,7 +90,8 @@ class GlobalCommentControllerTest {
 
 		assertThat(listOfItems).isNotNull();
 
-		String productOfListJson = ProductOfListDtoDataJson.initializeValues(this.listOfItems, ProductMapper.dtoToEntity(this.product)).get(0);
+		String productOfListJson = ProductOfListDtoDataJson.initializeValues(this.listOfItems,
+				Objects.requireNonNull(ProductMapper.dtoToEntity(this.product))).get(0);
 
 		productOfListDto = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfListJson, tokenOauthUser0, ProductOfListDto.class);
 	}
@@ -146,7 +150,7 @@ class GlobalCommentControllerTest {
 		ValidatorStatusResponsePut.isOk(mockMvc,
 				oauthUsers.get(0),
 				"/globalComment",
-				GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
+				GlobalCommentDtoInstantiator.createGlobalCommentJson(globalCommentDto1));
 
 		assertThat(
 				RequestWithResponse.createGetRequestJson(mockMvc,
@@ -181,7 +185,7 @@ class GlobalCommentControllerTest {
 
 		assertThat(otherList).isNotNull();
 
-		String productOfListJson = ProductOfListDtoDataJson.initializeValues(otherList, ProductMapper.dtoToEntity(this.product)).get(0);
+		String productOfListJson = ProductOfListDtoDataJson.initializeValues(otherList, Objects.requireNonNull(ProductMapper.dtoToEntity(this.product))).get(0);
 
 		ProductOfListDto productOfListDto2 = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfListJson, tokenOauthUser0, ProductOfListDto.class);
 
@@ -221,6 +225,14 @@ class GlobalCommentControllerTest {
 						.getGlobalCommentsDto().size()
 		).isEqualTo(1);
 
+		String globalComment3 = GlobalCommentDtoJson.initializeValues(oauthUsers.get(0), this.productOfListDto).get(2);
+
+		GlobalCommentDto globalCommentDto3 = RequestWithResponse.createPostRequestJson(mockMvc, "/globalComment", globalComment3, oauthUsers.get(0), GlobalCommentDto.class);
+
+		assertThat(
+				RequestWithResponse.createGetRequestJson(mockMvc, "/productOfList/" + this.productOfListDto.getId() + "/comments", tokenOauthUser0, AllCommentsDto.class)
+						.getGlobalCommentsDto().size()
+		).isEqualTo(2);
 
 		ListMembersDto listMember = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), tokenOauthUser0, ListMembersDto.class);
 
@@ -237,6 +249,7 @@ class GlobalCommentControllerTest {
 
 
 		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto1.getId());
+		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/globalComment/" + globalCommentDto3.getId());
 		ValidatorStatusResponseDelete.isOk(mockMvc, oauthUsers.get(0), "/membersList/" + listMember.getId());
 	}
 
@@ -257,7 +270,7 @@ class GlobalCommentControllerTest {
 		ValidatorStatusResponsePut.isOk(mockMvc,
 				oauthUsers.get(0),
 				"/globalComment",
-				GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
+				GlobalCommentDtoInstantiator.createGlobalCommentJson(globalCommentDto1));
 
 		assertThat(
 				RequestWithResponse.createGetRequestJson(mockMvc,
@@ -277,7 +290,7 @@ class GlobalCommentControllerTest {
 		ValidatorStatusResponsePut.isForbidden(mockMvc,
 				oauthUsers.get(1),
 				"/globalComment",
-				GlobalCommentDtoInstantior.createGlobalCommentJson(globalCommentDto1));
+				GlobalCommentDtoInstantiator.createGlobalCommentJson(globalCommentDto1));
 
 		assertThat(
 				RequestWithResponse.createGetRequestJson(mockMvc,
