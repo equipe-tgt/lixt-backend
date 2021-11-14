@@ -22,6 +22,7 @@ public abstract class UserMapper extends Mapper {
 				.username(entity.getUsername())
 				.email(entity.getEmail())
 				.globalCommentsChronOrder(entity.isGlobalCommentsChronOrder())
+				.olderCommentsFirst(entity.isOlderCommentsFirst())
 				.build();
 	}
 	
