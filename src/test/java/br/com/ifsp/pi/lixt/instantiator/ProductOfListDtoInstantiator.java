@@ -3,17 +3,17 @@ package br.com.ifsp.pi.lixt.instantiator;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
 import br.com.ifsp.pi.lixt.utils.conversion.Operators;
 
-public abstract class ProductOfListDtoInstantior extends Operators {
+public abstract class ProductOfListDtoInstantiator extends Operators {
 
-	private ProductOfListDtoInstantior() {}
-	
+	private ProductOfListDtoInstantiator() {}
+
 	public static String createProductOfListJson(int plannedAmount, int markedAmount, Long listId, String measureType, String measureValue, Long productId, String name) {
 		StringBuilder stringBuilder = new StringBuilder();
 
-		stringBuilder = stringBuilder.append(KEY_OPEN)
+		stringBuilder.append(KEY_OPEN)
 				.append(createJsonLine("plannedAmount", plannedAmount)).append(COMMA)
 				.append(createJsonLine("markedAmount")).append(COMMA)
-				.append(createJsonLine("assignedUserId")).append(COMMA)				
+				.append(createJsonLine("assignedUserId")).append(COMMA)
 				.append(createJsonLine("amountComment")).append(COMMA)
 				.append(createJsonLine("id")).append(COMMA)
 				.append(createJsonLine("isMarked", false)).append(COMMA)
@@ -26,17 +26,17 @@ public abstract class ProductOfListDtoInstantior extends Operators {
 				.append(createJsonLine("userWhoMarkedId")).append(COMMA)
 				.append(createJsonLine("productId", productId))
 				.append(KEY_CLOSE);
-		
-		return stringBuilder.toString();		
+
+		return stringBuilder.toString();
 	}
-	
+
 	public static String createProductOfListJson(ProductOfListDto productOfList) {
 		StringBuilder stringBuilder = new StringBuilder();
 
-		stringBuilder = stringBuilder.append(KEY_OPEN)
+		stringBuilder.append(KEY_OPEN)
 				.append(createJsonLine("plannedAmount", productOfList.getPlannedAmount())).append(COMMA)
 				.append(createJsonLine("markedAmount")).append(COMMA)
-				.append(createJsonLine("assignedUserId", productOfList.getAssignedUserId())).append(COMMA)				
+				.append(createJsonLine("assignedUserId", productOfList.getAssignedUserId())).append(COMMA)
 				.append(createJsonLine("amountComment")).append(COMMA)
 				.append(createJsonLine("id", productOfList.getId())).append(COMMA)
 				.append(createJsonLine("isMarked", productOfList.getIsMarked())).append(COMMA)
@@ -49,7 +49,7 @@ public abstract class ProductOfListDtoInstantior extends Operators {
 				.append(createJsonLine("userWhoMarkedId", productOfList.getUserWhoMarkedId())).append(COMMA)
 				.append(createJsonLine("productId", productOfList.getProductId()))
 				.append(KEY_CLOSE);
-		
+
 		return stringBuilder.toString();
 	}
 

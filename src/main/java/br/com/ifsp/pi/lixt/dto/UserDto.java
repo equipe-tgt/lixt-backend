@@ -18,15 +18,17 @@ public class UserDto {
 	private Long id;
 
 	private String name;
-	
+
 	private String username;
 
 	private String email;
-	
+
 	private String password;
 
-	private boolean globalCommentsChronOrder;
+	@Builder.Default
+	private boolean globalCommentsChronOrder = true;
 
-	private boolean olderCommentsFirst;
+	@Builder.Default
+	private boolean olderCommentsFirst = true;
 
 }
