@@ -1,15 +1,14 @@
 package br.com.ifsp.pi.lixt.utils.security.oauth.objects;
 
-import java.util.List;
-
-import org.springframework.security.core.CredentialsContainer;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.security.core.CredentialsContainer;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.List;
 
 @SuppressWarnings("serial")
 @Builder
@@ -31,6 +30,10 @@ public class OauthUserDto implements UserDetails, CredentialsContainer {
 	private List<GrantedAuthority> authorities;
 	
 	private boolean enabled;
+
+	private boolean globalCommentsChronOrder;
+
+	private boolean olderCommentsFirst;
 
 	@Override
 	public void eraseCredentials() {

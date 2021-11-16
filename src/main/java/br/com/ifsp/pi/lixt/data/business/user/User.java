@@ -1,18 +1,8 @@
 package br.com.ifsp.pi.lixt.data.business.user;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import javax.persistence.*;
 
 @Builder
 @Data
@@ -52,4 +42,11 @@ public class User {
 	@Column(name = "bl_activated")
 	private boolean activated = false;
 
-} 
+	@Builder.Default
+	@Column(name = "bl_global_comments_chronological_order")
+	private boolean globalCommentsChronOrder = true;
+
+	@Builder.Default
+	@Column(name = "bl_older_comments_first")
+	private boolean olderCommentsFirst = true;
+}

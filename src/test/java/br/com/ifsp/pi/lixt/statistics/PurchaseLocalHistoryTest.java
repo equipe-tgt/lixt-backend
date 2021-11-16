@@ -9,7 +9,7 @@ import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.dto.*;
 import br.com.ifsp.pi.lixt.dto.specific.PurchaseLocalDataDto;
-import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantior;
+import br.com.ifsp.pi.lixt.instantiator.UserDtoInstantiator;
 import br.com.ifsp.pi.lixt.mapper.*;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -73,7 +73,7 @@ public class PurchaseLocalHistoryTest {
 
     @BeforeAll
     void createTestConditions() throws Exception {
-        userDto = (UserDto) this.authController.register(UserDtoInstantior.createUser(
+        userDto = (UserDto) this.authController.register(UserDtoInstantiator.createUser(
                 "teste1",
                 "teste1",
                 "teste1@gmail.com",
@@ -159,7 +159,7 @@ public class PurchaseLocalHistoryTest {
     @Test
     @DisplayName("Solicitar estatísticas para usuário sem compras")
     void emptyRecordsByLocal() {
-        userDto2 = (UserDto) this.authController.register(UserDtoInstantior.createUser(
+        userDto2 = (UserDto) this.authController.register(UserDtoInstantiator.createUser(
                         "teste2",
                         "teste2",
                         "teste2@gmail.com",

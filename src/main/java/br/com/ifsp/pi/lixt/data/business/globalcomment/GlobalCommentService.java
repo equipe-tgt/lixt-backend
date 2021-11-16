@@ -23,8 +23,8 @@ public class GlobalCommentService {
 		this.globalCommentRepository.deleteById(id);
 	}
 
-	public List<GlobalComment> findGlobalCommentsByUserIdAndProductId(Long userId, Long productId) {
-		return this.globalCommentRepository.findGlobalCommentsByUserIdAndProductId(userId, productId);
+	public List<GlobalComment> findByProductId(Long productId) {
+		return this.globalCommentRepository.findGlobalCommentsByProductId(productId);
 	}
 
 }

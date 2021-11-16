@@ -4,7 +4,7 @@ import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.business.purchaselocal.PurchaseLocal;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.*;
-import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantior;
+import br.com.ifsp.pi.lixt.instantiator.ProductDtoInstantiator;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
 import br.com.ifsp.pi.lixt.utils.database.operations.GeolocalizationConvert;
 import org.locationtech.jts.io.ParseException;
@@ -69,7 +69,7 @@ public abstract class DataForPurchaseLocalHistory {
             for(int x=0; x<=amountOfProductsPerCategory; x++) {
                 String productName = "Produto "+ x;
                 products.add(
-                        ProductDtoInstantior.createProduct(
+                        ProductDtoInstantiator.createProduct(
                                 productName,
                                 category,
                                 MeasureType.UNITY,

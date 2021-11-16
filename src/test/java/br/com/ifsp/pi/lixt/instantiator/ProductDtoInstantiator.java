@@ -7,10 +7,10 @@ import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
 import br.com.ifsp.pi.lixt.mapper.CategoryMapper;
 
-public abstract class ProductDtoInstantior {
+public abstract class ProductDtoInstantiator {
 
-	private ProductDtoInstantior() {}
-	
+	private ProductDtoInstantiator() {}
+
 	public static Product createProduct(String name, CategoryDto category, MeasureType measureType, int measureValue) {
 		return Product.builder()
 				.name(name)
@@ -18,5 +18,5 @@ public abstract class ProductDtoInstantior {
 				.measureType(measureType).measureValue(new BigDecimal(750))
 				.build();
 	}
-	
+
 }

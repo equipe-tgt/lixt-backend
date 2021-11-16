@@ -37,6 +37,9 @@ public class GlobalComment {
 	@Column(name = "id_product", nullable = false, updatable = false)
 	private Long productId;
 
+	@Column(name = "bool_public", nullable = false, updatable = true)
+	private Boolean isPublic;
+
 	@ManyToOne
 	@JoinColumn(name = "id_user", insertable = false, updatable = false)
 	private User user;
