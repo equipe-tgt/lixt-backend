@@ -15,7 +15,7 @@ public interface PurchaseLocalRepository extends CrudRepository<PurchaseLocal, L
 	@Query("update PurchaseLocal p set p.name = ?2 where p.id = ?1")
 	Integer updateNamePurchaseLocal(Long id, String name);
 	
-	@Query("select distinct pl from Purchase p join p.purchaseLocal pl where p.userId = ?1 order by p.purchaseDate")
+	@Query("select distinct pl from Purchase p join p.purchaseLocal pl where p.userId = ?1 order by p.purchaseDate desc")
 	List<PurchaseLocal> findByUser(Long userId);
 	
 }
