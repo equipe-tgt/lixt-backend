@@ -60,6 +60,12 @@ public class PurchaseLocalController {
 		this.purchaseLocalService.deleteById(id);
 	}
 	
+	@ApiOperation(value = "Buscar estabelecimentos no qual o usuário esteve")
+	@GetMapping("/by-user")
+	public List<PurchaseLocal> findByUser() {
+		return this.purchaseLocalService.findByUser();
+	}
+	
 	@ApiOperation(value = "Encontrar locais de compra a 10 metros de proximidade")
 	@PostMapping("/find-near")
 	public List<PurchaseLocalDto> findPurchasesLocalNear(@RequestBody(required = false) PurchaseLocalDto purchaseLocal) throws ParseException, PreconditionFailedException {
