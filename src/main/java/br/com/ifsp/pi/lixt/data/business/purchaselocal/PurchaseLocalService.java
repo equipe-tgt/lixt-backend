@@ -10,6 +10,8 @@ import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseRepository;
 import br.com.ifsp.pi.lixt.dto.specific.PurchaseLocalDataDto;
 import br.com.ifsp.pi.lixt.integration.geolocation.GeolocationService;
 import br.com.ifsp.pi.lixt.mapper.PurchaseLocalMapper;
+import br.com.ifsp.pi.lixt.utils.security.Users;
+
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
@@ -40,6 +42,10 @@ public class PurchaseLocalService {
 	
 	public Integer updateNamePurchaseLocal(Long id, String name) {
 		return this.purchaseLocalRepository.updateNamePurchaseLocal(id, name);
+	}
+	
+	public List<PurchaseLocal> findByUser() {
+		return this.purchaseLocalRepository.findByUser(Users.getUserId());
 	}
 	
 	public List<PurchaseLocal> findPurchasesLocalNear(PurchaseLocal purchaseLocal) {
