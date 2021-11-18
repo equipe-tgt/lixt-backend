@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.data;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,15 +19,20 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import br.com.ifsp.pi.lixt.controller.AuthController;
 import br.com.ifsp.pi.lixt.controller.CategoryController;
 import br.com.ifsp.pi.lixt.controller.PurchaseLocalController;
 import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
+import br.com.ifsp.pi.lixt.data.business.purchase.PurchaseService;
 import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import br.com.ifsp.pi.lixt.data.dto.json.CommentDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.json.ListOfItemsDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.ProductDtoData;
+import br.com.ifsp.pi.lixt.data.dto.PurchaseDtoData;
 import br.com.ifsp.pi.lixt.data.dto.json.ProductOfListDtoDataJson;
 import br.com.ifsp.pi.lixt.data.dto.UserDtoData;
 import br.com.ifsp.pi.lixt.dto.CategoryDto;
@@ -34,10 +40,12 @@ import br.com.ifsp.pi.lixt.dto.CommentDto;
 import br.com.ifsp.pi.lixt.dto.ListMembersDto;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.dto.PurchaseDto;
 import br.com.ifsp.pi.lixt.dto.PurchaseLocalDto;
 import br.com.ifsp.pi.lixt.dto.UserDto;
 import br.com.ifsp.pi.lixt.utils.tests.requests.RequestOauth2;
 import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponse;
+import br.com.ifsp.pi.lixt.utils.tests.response.RequestWithResponseList;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseDelete;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponseGet;
 import br.com.ifsp.pi.lixt.utils.tests.response.ValidatorStatusResponsePost;
@@ -67,6 +75,11 @@ class GenerateDataTest {
 	@Autowired
 	private UserService userService;
 	
+	@Autowired
+	private PurchaseService purchaseService;
+	
+	ObjectMapper mapper = new ObjectMapper();
+	
 	private List<UserDto> oauthUsers = new ArrayList<>();
 	private List<Product> products = new ArrayList<>();
 	private CategoryDto category;
@@ -80,12 +93,12 @@ class GenerateDataTest {
 	void initializeData() throws Exception {
 
 		UserDtoData.initializeValues().forEach(user -> {
-			oauthUsers.add((UserDto) this.authController.register(user).getBody());
+			oauthUsers.add((UserDto) this.authController.register(user, null).getBody());
 			oauthUsers.get(oauthUsers.size() - 1).setPassword("123");
-			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()));
+			this.authController.activeUser(this.userService.findFirstAccesTokenById(oauthUsers.get(oauthUsers.size() - 1).getId()), null);
 		});
 		
-		assertThat(this.authController.register(oauthUsers.get(0)).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+		assertThat(this.authController.register(oauthUsers.get(0), null).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
 		
 		this.category = categoryController.save(CategoryDto.builder().name("Alimentação").build());		
 		this.products = this.productService.saveAll(ProductDtoData.initializeValues(category));
@@ -102,7 +115,7 @@ class GenerateDataTest {
 	@Order(1)
 	void testList() throws Exception {
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		this.listOfItems = (ListOfItemsDto) RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
+		this.listOfItems = RequestWithResponse.createPostRequestJson(mockMvc, "/list", ListOfItemsDtoDataJson.initializeValues(), token, ListOfItemsDto.class);
 		
 		assertThat(listOfItems).isNotNull();
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
@@ -117,7 +130,7 @@ class GenerateDataTest {
 		
 		for(String productOfList : ProductOfListDtoDataJson.initializeValues(this.listOfItems, this.products.get(0))) {
 			String tokenUser = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-			ProductOfListDto product = (ProductOfListDto) RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
+			ProductOfListDto product = RequestWithResponse.createPostRequestJson(mockMvc, "/productOfList", productOfList, tokenUser, ProductOfListDto.class);
 			this.productsOfList.add(product);
 			assertThat(product).isNotNull();
 		}
@@ -131,7 +144,7 @@ class GenerateDataTest {
 	void testCreateListMembers() throws Exception {
 		
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(0));
-		listMembers = (ListMembersDto) RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), token, ListMembersDto.class);
+		listMembers = RequestWithResponse.createPostRequestJson(mockMvc, "/membersList/send-invite/" + this.listOfItems.getId(), oauthUsers.get(1).getUsername(), token, ListMembersDto.class);
 		assertThat(listMembers).isNotNull();
 		
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
@@ -145,7 +158,7 @@ class GenerateDataTest {
 	void testAcceptListMembers() throws Exception {
 		
 		String token = RequestOauth2.authenticate(mockMvc, oauthUsers.get(1));
-		listMembers = (ListMembersDto) RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.getId(), token, ListMembersDto.class);
+		listMembers = RequestWithResponse.createGetRequestJson(mockMvc, "/membersList/accept-invite/" + this.listMembers.getId(), token, ListMembersDto.class);
 		assertThat(listMembers).isNotNull();
 		
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/list/".concat(this.listOfItems.getId().toString()));
@@ -159,11 +172,11 @@ class GenerateDataTest {
 	void createComment() throws Exception {
 		
 		for(String comment : CommentDtoDataJson.initializeValues(this.oauthUsers.get(0), this.productsOfList.get(0))) {
-			CommentDto commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
+			CommentDto commentDto = RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(0), CommentDto.class);
 			this.comments.add(commentDto);
 			assertThat(commentDto).isNotNull();
 			
-			commentDto = (CommentDto) RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
+			commentDto = RequestWithResponse.createPostRequestJson(mockMvc, "/comment", comment, oauthUsers.get(1), CommentDto.class);
 			this.comments.add(commentDto);
 			assertThat(commentDto).isNotNull();
 			
@@ -175,6 +188,18 @@ class GenerateDataTest {
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(0), "/comment/" + this.comments.get(0).getId());
 		ValidatorStatusResponseGet.isOk(mockMvc, oauthUsers.get(1), "/comment/" + this.comments.get(0).getId());
 		ValidatorStatusResponseGet.isForbidden(mockMvc, oauthUsers.get(2), "/comment/" + this.comments.get(0).getId());		
+	}
+	
+	@DisplayName("Criar compra")
+	@Test
+	@Order(6)
+	void createPurchase() throws Exception {
+		PurchaseDto purchase = PurchaseDtoData.createPurchase(purchaseLocal.getId(), productsOfList);
+		purchase = RequestWithResponse.createPostRequestJson(mockMvc, "/purchase", mapper.writeValueAsString(purchase), oauthUsers.get(0), PurchaseDto.class);
+		
+		assertNotNull(RequestWithResponse.createGetRequestJson(mockMvc, "/purchase/" + purchase.getId(), oauthUsers.get(0), PurchaseDto.class));
+		assertThat(RequestWithResponseList.createGetRequestJson(mockMvc, "/purchase/by-user", oauthUsers.get(0), PurchaseDto.class).size()).isOne();
+		this.purchaseService.deleteById(purchase.getId());
 	}
 	
 	@AfterAll

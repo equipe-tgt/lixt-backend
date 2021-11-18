@@ -1,12 +1,15 @@
 package br.com.ifsp.pi.lixt.data.business.product;
 
 import java.util.List;
+import java.util.Objects;
 
+import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import br.com.ifsp.pi.lixt.utils.database.operations.Like;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -14,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 	
 	private final ProductRepository productRepository;
-	
+
 	private static final int LENGTH_DATA_BY_DEFAULT = 12;
 	private static final String SORT_DATA_BY_DEFAULT = "name";
 	
@@ -23,6 +26,12 @@ public class ProductService {
 	}
 	
 	public Product save(Product product) {
+		if(product.getUserId() == null){
+			Product productByBarcode = this.productRepository.findByBarcode(product.getBarcode());
+			if(Objects.nonNull(productByBarcode)){
+				throw new DuplicatedDataException("Código de barras já cadastrado na plataforma.");
+			}
+		}
 		return this.productRepository.save(product);
 	}
 	
@@ -34,10 +43,9 @@ public class ProductService {
 		this.productRepository.deleteById(id);
 	}
 	
-	public List<Product> findByName(String name, Long userId) {
-		return this.productRepository.findByName(
-				Like.contains(name), 
-				userId,
+	public Page<Product> findByName(String name) {
+		return this.productRepository.findAll(
+				ProductSpecifications.byBarcode(name).or(ProductSpecifications.byName(name).and(ProductSpecifications.byUser())),
 				PageRequest.of(0, LENGTH_DATA_BY_DEFAULT, Sort.by(SORT_DATA_BY_DEFAULT))
 		);
 	}

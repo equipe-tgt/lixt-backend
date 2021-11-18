@@ -3,8 +3,9 @@ package br.com.ifsp.pi.lixt.mapper;
 import java.util.Objects;
 import br.com.ifsp.pi.lixt.data.business.itemofpurchase.ItemOfPurchase;
 import br.com.ifsp.pi.lixt.dto.ItemOfPurchaseDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class ItemOfPurchaseMapper {
+public abstract class ItemOfPurchaseMapper extends Mapper {
 
 	private ItemOfPurchaseMapper() {}
 	
@@ -22,7 +23,7 @@ public abstract class ItemOfPurchaseMapper {
 				.amount(entity.getAmount())
 				.measureType(entity.getMeasureType())
 				.measureValue(entity.getMeasureValue())
-				.product(ProductMapper.entityToDto(entity.getProduct()))
+				.product(map(entity.getProduct(), ProductMapper::entityToDto))
 				.build();
 	}
 	
@@ -40,7 +41,7 @@ public abstract class ItemOfPurchaseMapper {
 				.amount(dto.getAmount())
 				.measureType(dto.getMeasureType())
 				.measureValue(dto.getMeasureValue())
-				.product(ProductMapper.dtoToEntity(dto.getProduct()))
+				.product(map(dto.getProduct(), ProductMapper::dtoToEntity))
 				.build();
 	}
 	

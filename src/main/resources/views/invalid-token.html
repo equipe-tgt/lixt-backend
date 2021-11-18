@@ -1,79 +1,45 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<html
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="format-detection" content="date=no" />
+    <meta name="format-detection" content="telephone=no" />
 
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="format-detection" content="date=no"> 
-        <meta name="format-detection" content="telephone=no">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Poppins&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../assets/theme.css" />
+  </head>
 
-        <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;700&family=Poppins&display=swap" rel="stylesheet">
+  <body>
+    <div id="active-account">
+      <div class="header">
+        <h1>Token Inválido</h1>
+      </div>
 
-        <style type="text/css">
+      <div class="body">
+        <img
+          class="illustration"
+          src="../assets/invalid.svg"
+          alt="Ilustração de uma mulher próxima a um celular com notificação positiva"
+        />
 
-            * {
-                margin: 0 !important;
-                padding: 0 !important;
-                box-sizing: border-box !important;
-            }
-
-            body {
-                margin: 0;
-                background-color: #F0F0F7 !important;
-            }
-
-            h1 {
-                font-family: Helvetica, Arial, sans-serif !important;
-                font-weight: 800 !important;
-                font-size: 2rem !important;
-                line-height: 2.25rem !important;
-                color: #32264D !important;
-
-                order: inherit;
-            }
-
-            p {
-                font-family: Helvetica, Arial, sans-serif !important;
-                font-style: normal !important;
-                font-weight: normal !important;
-                font-size: 16px !important;
-                line-height: 1.5rem !important;
-                color: #32264D !important;
-            }
-
-            #active-account {
-                margin: 1rem !important;
-                padding-top: 1rem !important;
-            }
-
-            #active-account .header {
-                background-color: #D3D3D3;
-                padding: 1rem 0 !important;
-                
-            }
-
-            #active-account .body {
-                padding: 1rem !important;
-                background: white !important;
-            }
-
-        </style>
-    </head>
-
-    <body>
-        <div id="active-account">
-
-            <div class="header">
-                <h1><center>Token Inválido!</center></h1>
-            </div>
-
-            <div class="body">
-                <p>Não foi possível acessar ao conteúdo solicitado! 😞</p>
-                <p>Recomendamos que acesse o aplicativo realizando login ou cadastra-se a partir do mesmo.</p>
-            </div>
-            
+        <div class="text">
+          <p>Não foi possível acessar ao conteúdo solicitado! 😞</p>
+          <p>
+            Recomendamos que acesse o aplicativo realizando
+            <b>login ou cadastre-se</b>
+            a partir do mesmo.
+          </p>
         </div>
-    </body>
-
+      </div>
+    </div>
+  </body>
 </html>

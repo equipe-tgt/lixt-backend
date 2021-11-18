@@ -1,12 +1,13 @@
 package br.com.ifsp.pi.lixt.mapper;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.list.ListOfItems;
+import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.dto.ListOfItemsDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class ListOfItemsMapper {
+public abstract class ListOfItemsMapper extends Mapper {
 	
 	private ListOfItemsMapper() {}
 	
@@ -20,9 +21,9 @@ public abstract class ListOfItemsMapper {
 				.nameList(entity.getNameList())
 				.description(entity.getDescription())
 				.ownerId(entity.getOwnerId())
-				.owner(Objects.isNull(entity.getUser()) ? null : entity.getUser().getName())
-				.productsOfList(Objects.isNull(entity.getProductsOfList()) ? null : entity.getProductsOfList().stream().map(ProductOfListMapper::entityToDto).collect(Collectors.toList()))
-				.listMembers(Objects.isNull(entity.getListMembers()) ? null : entity.getListMembers().stream().map(ListMembersMapper::entityToDto).collect(Collectors.toList()))
+				.owner(map(entity.getUser(), User::getName))
+				.productsOfList(map(entity.getProductsOfList(), ProductOfListMapper::entityToDto))
+				.listMembers(map(entity.getListMembers(), ListMembersMapper::entityToDto))
 				.build();
 	}
 	
@@ -36,8 +37,8 @@ public abstract class ListOfItemsMapper {
 				.nameList(dto.getNameList())
 				.description(dto.getDescription())
 				.ownerId(dto.getOwnerId())
-				.productsOfList(Objects.isNull(dto.getProductsOfList()) ? null : dto.getProductsOfList().stream().map(ProductOfListMapper::dtoToEntity).collect(Collectors.toList()))
-				.listMembers(Objects.isNull(dto.getListMembers()) ? null : dto.getListMembers().stream().map(ListMembersMapper::dtoToEntity).collect(Collectors.toList()))
+				.productsOfList(map(dto.getProductsOfList(), ProductOfListMapper::dtoToEntity))
+				.listMembers(map(dto.getListMembers(), ListMembersMapper::dtoToEntity))
 				.build();
 	}
 

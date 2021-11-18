@@ -30,6 +30,7 @@ public class OauthUserDetailsService implements UserDetailsService {
 					.email(user.getEmail())
 					.password(user.getPassword())
 					.enabled(user.isActivated())
+					.globalCommentsChronOrder(user.isGlobalCommentsChronOrder())
 					.build();
 		}
 		

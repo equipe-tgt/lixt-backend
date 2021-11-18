@@ -41,16 +41,16 @@ public class ProductOfListService {
 		return this.productOfListRepository.markProduct(userId, productId);
 	}
 	
-	public Integer markProducts(Long userId, List<Long> productsId) {
-		return this.productOfListRepository.markProducts(userId, productsId);
-	}
-	
 	public Integer assignedItemToUser(Long userId, Long productOfListId) {
 		return this.productOfListRepository.assignedItemToUser(userId, productOfListId);
 	}
 	
 	public Integer assignedItemToUser(Long userId, boolean isMarked, Long productOfListId) {
 		return this.productOfListRepository.assignedItemToUser(userId, isMarked, productOfListId);
+	}
+
+	public Integer updateMarkedAmount(Integer markedAmount, Long productOfListId) {
+		return this.productOfListRepository.updateMarkedAmount(markedAmount, productOfListId);
 	}
 
 }

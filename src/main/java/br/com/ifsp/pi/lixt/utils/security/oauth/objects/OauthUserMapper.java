@@ -18,6 +18,7 @@ public abstract class OauthUserMapper {
 				.name(entity.getName())
 				.username(entity.getUsername())
 				.email(entity.getEmail())
+				.globalCommentsChronOrder(entity.isGlobalCommentsChronOrder())
 				.build();
 	}
 	
@@ -32,6 +33,7 @@ public abstract class OauthUserMapper {
 				.username(dto.getUsername())
 				.email(dto.getEmail())
 				.password(dto.getPassword())
+				.globalCommentsChronOrder(dto.isGlobalCommentsChronOrder())
 				.build();
 	}
 

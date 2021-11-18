@@ -1,11 +1,14 @@
 package br.com.ifsp.pi.lixt.mapper;
 
+import java.util.Map;
 import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.product.Product;
+import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class ProductMapper {
+public abstract class ProductMapper extends Mapper {
 	
 	private ProductMapper() {}
 
@@ -22,7 +25,7 @@ public abstract class ProductMapper {
 				.barcode(entity.getBarcode())
 				.measureType(entity.getMeasureType())
 				.measureValue(entity.getMeasureValue())
-				.category(CategoryMapper.entityToDto(entity.getCategory()))
+				.category(map(entity.getCategory(), CategoryMapper::entityToDto))
 				.build();
 	}
 	
@@ -39,7 +42,20 @@ public abstract class ProductMapper {
 				.barcode(dto.getBarcode())
 				.measureType(dto.getMeasureType())
 				.measureValue(dto.getMeasureValue())
-				.category(CategoryMapper.dtoToEntity(dto.getCategory()))
+				.category(map(dto.getCategory(), CategoryMapper::dtoToEntity))
 				.build();
 	}
+	
+	public static Product modelIntoApiParams(Map<String, Object> values) {
+		return Product.builder()
+				.id(null)
+				.name(values.get("description").toString())
+				.userId(null)
+				.categoryId(null)
+				.barcode(values.get("gtin").toString())
+				.measureType(MeasureType.UNITY)
+				.measureValue(null)
+				.build();
+		}
+	
 }

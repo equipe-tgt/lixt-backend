@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class CategoryDto {
-	
+
 	private Long id;
 	
 	private String name;

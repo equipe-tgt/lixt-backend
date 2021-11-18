@@ -1,11 +1,15 @@
 package br.com.ifsp.pi.lixt.mapper;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.productoflist.ProductOfList;
 import br.com.ifsp.pi.lixt.dto.ProductOfListDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class ProductOfListMapper {
+public abstract class ProductOfListMapper extends Mapper {
 	
 	private ProductOfListMapper() {}
 
@@ -23,11 +27,12 @@ public abstract class ProductOfListMapper {
 				.name(entity.getName())
 				.isMarked(entity.getIsMarked())
 				.price(entity.getPrice())
-				.amount(entity.getAmount())
+				.plannedAmount(entity.getPlannedAmount())
+				.markedAmount(entity.getMarkedAmount())
 				.measureType(entity.getMeasureType())
 				.measureValue(entity.getMeasureValue())
-				.product(ProductMapper.entityToDto(entity.getProduct()))
-				.amountComment(Objects.isNull(entity.getComments()) ? null : entity.getComments().size())
+				.product(map(entity.getProduct(), ProductMapper::entityToDto))
+				.amountComment(extractAmountCommentsInList(entity.getComments()) + extractAmountGlobalCommentsInList(entity))
 				.build();
 	}
 	
@@ -45,10 +50,25 @@ public abstract class ProductOfListMapper {
 				.name(dto.getName())
 				.isMarked(dto.getIsMarked())
 				.price(dto.getPrice())
-				.amount(dto.getAmount())
+				.plannedAmount(dto.getPlannedAmount())
+				.markedAmount(dto.getMarkedAmount())
 				.measureType(dto.getMeasureType())
 				.measureValue(dto.getMeasureValue())
-				.product(ProductMapper.dtoToEntity(dto.getProduct()))
+				.product(map(dto.getProduct(), ProductMapper::dtoToEntity))
 				.build();
+	}
+	
+	private static Integer extractAmountCommentsInList(List<Comment> comments) {
+		if(Objects.isNull(comments))
+			return 0;
+		return comments.size();
+	}
+	
+	private static Integer extractAmountGlobalCommentsInList(ProductOfList productOfList) {
+		if(Objects.isNull(productOfList.getProduct()) || Objects.isNull(productOfList.getProduct().getGlobalComments()))
+			return 0;
+		return productOfList.getProduct().getGlobalComments()
+				.stream()
+				.filter(e -> e.getIsPublic() == true).collect(Collectors.toList()).size();
 	}
 }

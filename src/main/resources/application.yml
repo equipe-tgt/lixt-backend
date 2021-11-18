@@ -31,7 +31,29 @@ spring:
     schemas: lixt
 
 lixt:
+  version: @project.version@
+  
+  basic:
+    auth:
+      clientId: client
+      secretId: 123456
+    
+  barcode:
+    url: https://api.cosmos.bluesoft.com.br/gtins/
+    token: ${INTEGRATION_BARCODE_TOKEN}
+    api: https://cosmos.bluesoft.com.br/api
+
+  geolocation:
+    url: https://api.mapbox.com/geocoding/v5/mapbox.places/
+    token: ${INTEGRATION_GEOLOCATION_TOKEN}
+
+  jwt:
+    secretKey: ${JWT_SECRET_KEY}
+    tokenExpirationAfterMillis: 86400000
+
   mail:
-    username: noreply.lixt@gmail.com
-    password: lixtapp2021!
+    server: smtp.gmail.com
+    port: 465
+    username: ${EMAIL_ADDRESS}
+    password: ${EMAIL_PASSWORD}
 

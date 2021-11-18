@@ -3,6 +3,8 @@ package br.com.ifsp.pi.lixt.facade;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import br.com.ifsp.pi.lixt.data.business.user.User;
+import br.com.ifsp.pi.lixt.data.business.user.UserService;
 import org.springframework.stereotype.Service;
 import br.com.ifsp.pi.lixt.data.business.comment.Comment;
 import br.com.ifsp.pi.lixt.data.business.comment.CommentService;
@@ -19,6 +21,7 @@ public class CommentFacade {
 	
 	private final CommentService commentService;
 	private final ListOfItemsService listOfItemsService;
+	private final UserService userService;
 	
 	public Comment findById(Long id) {
 		
@@ -43,6 +46,9 @@ public class CommentFacade {
 		
 		comment.setDate(LocalDateTime.now());
 		comment.setUserId(Users.getUserId());
+
+		User user = this.userService.findById(Users.getUserId());
+		comment.setUser(user);
 		return this.commentService.save(comment);
 	}
 	

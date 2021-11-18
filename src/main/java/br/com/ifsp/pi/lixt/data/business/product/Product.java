@@ -1,19 +1,25 @@
 package br.com.ifsp.pi.lixt.data.business.product;
 
 import java.math.BigDecimal;
+import java.util.List;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import br.com.ifsp.pi.lixt.data.business.category.Category;
+import br.com.ifsp.pi.lixt.data.business.globalcomment.GlobalComment;
 import br.com.ifsp.pi.lixt.data.enumeration.MeasureType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -48,7 +54,7 @@ public class Product {
 	@Column(name = "id_user", updatable = false)
 	private Long userId;
 	
-	@Column(name = "id_category", nullable = false)
+	@Column(name = "id_category")
 	private Long categoryId;
 	
 	@Column(name = "st_barcode")
@@ -64,5 +70,9 @@ public class Product {
 	@ManyToOne
 	@JoinColumn(name = "id_category", insertable = false, updatable = false)
 	private Category category;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_product", insertable = false, updatable = false)
+	private List<GlobalComment> globalComments;
 
 }

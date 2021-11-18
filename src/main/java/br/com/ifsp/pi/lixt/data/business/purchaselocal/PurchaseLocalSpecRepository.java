@@ -8,7 +8,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.stereotype.Repository;
-
 import br.com.ifsp.pi.lixt.utils.database.operations.Like;
 
 @Repository

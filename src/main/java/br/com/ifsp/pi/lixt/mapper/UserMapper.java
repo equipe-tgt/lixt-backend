@@ -4,9 +4,10 @@ import java.util.Objects;
 
 import br.com.ifsp.pi.lixt.data.business.user.User;
 import br.com.ifsp.pi.lixt.dto.UserDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 import br.com.ifsp.pi.lixt.utils.security.oauth.objects.OauthUserDto;
 
-public abstract class UserMapper {
+public abstract class UserMapper extends Mapper {
 	
 	private UserMapper() {}
 	
@@ -20,6 +21,8 @@ public abstract class UserMapper {
 				.name(entity.getName())
 				.username(entity.getUsername())
 				.email(entity.getEmail())
+				.globalCommentsChronOrder(entity.isGlobalCommentsChronOrder())
+				.olderCommentsFirst(entity.isOlderCommentsFirst())
 				.build();
 	}
 	
@@ -34,6 +37,8 @@ public abstract class UserMapper {
 				.username(dto.getUsername())
 				.email(dto.getEmail())
 				.password(dto.getPassword())
+				.globalCommentsChronOrder(dto.isGlobalCommentsChronOrder())
+				.olderCommentsFirst(dto.isOlderCommentsFirst())
 				.build();
 	}
 	
@@ -47,6 +52,8 @@ public abstract class UserMapper {
 				.name(dtoOauth.getName())
 				.username(dtoOauth.getUsername())
 				.email(dtoOauth.getEmail())
+				.globalCommentsChronOrder(dtoOauth.isGlobalCommentsChronOrder())
+				.olderCommentsFirst(dtoOauth.isOlderCommentsFirst())
 				.build();
 	}
 

@@ -43,6 +43,10 @@ public class ListOfItemsService {
 		return this.listOfItemsRepository.findListMembersSentByUser(userId);
 	}
 	
+	public String findNameById(Long id) {
+		return this.listOfItemsRepository.findNameById(id);
+	}
+	
 	
 	public Long findOwnerIdByListMemberId(Long listMembersId) {
 		return this.listOfItemsRepository.findOwnerIdByListMemberId(listMembersId);

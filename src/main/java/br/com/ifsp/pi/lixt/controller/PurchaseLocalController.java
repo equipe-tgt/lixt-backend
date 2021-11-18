@@ -3,6 +3,7 @@ package br.com.ifsp.pi.lixt.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import br.com.ifsp.pi.lixt.dto.specific.PurchaseLocalDataDto;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,11 +58,22 @@ public class PurchaseLocalController {
 		this.purchaseLocalService.deleteById(id);
 	}
 	
+	@ApiOperation(value = "Buscar estabelecimentos no qual o usuário esteve")
+	@GetMapping("/by-user")
+	public List<PurchaseLocalDto> findByUser() {
+		return this.purchaseLocalService.findByUser().stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
+	}
+	
 	@ApiOperation(value = "Encontrar locais de compra a 10 metros de proximidade")
 	@PostMapping("/find-near")
 	public List<PurchaseLocalDto> findPurchasesLocalNear(@RequestBody(required = false) PurchaseLocalDto purchaseLocal) throws ParseException, PreconditionFailedException {
 		return this.purchaseLocalService.findPurchasesLocalNear(PurchaseLocalMapper.dtoToEntity(purchaseLocal))
 				.stream().map(PurchaseLocalMapper::entityToDto).collect(Collectors.toList());
 	}
-	
+
+	@ApiOperation(value = "Encontrar o histórico de locais de compra do usuário")
+	@GetMapping("/all-purchase-local-data/{userId}")
+	public List<PurchaseLocalDataDto> getAllPuchaseLocalData(@PathVariable Long userId) {
+		return this.purchaseLocalService.findAllPurchaseLocalRecords(userId);
+	}
 }

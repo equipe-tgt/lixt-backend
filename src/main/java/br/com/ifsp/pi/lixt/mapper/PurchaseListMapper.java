@@ -1,26 +1,27 @@
 package br.com.ifsp.pi.lixt.mapper;
 
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import br.com.ifsp.pi.lixt.data.business.purchaselist.PurchaseList;
 import br.com.ifsp.pi.lixt.dto.PurchaseListDto;
+import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 
-public abstract class PurchaseListMapper {
+public abstract class PurchaseListMapper extends Mapper {
 	
 	private PurchaseListMapper() {}
 	
 	public static PurchaseList dtoToEntity(PurchaseListDto dto) {
 		
-		if(Objects.isNull(dto)) 
+		if(Objects.isNull(dto) || dto.getItemsOfPurchase().isEmpty()) 
 			return null;
 		
 		return PurchaseList.builder()
 				.id(dto.getId())
 				.purchaseId(dto.getPurchaseId())
 				.listId(dto.getListId())
+				.nameList(dto.getNameList())
 				.partialPurchasePrice(dto.getPartialPurchasePrice())
-				.itemsOfPurchase(Objects.isNull(dto.getItemsOfPurchase()) ? null : dto.getItemsOfPurchase().stream().map(ItemOfPurchaseMapper::dtoToEntity).collect(Collectors.toList()))
+				.itemsOfPurchase(map(dto.getItemsOfPurchase(), ItemOfPurchaseMapper::dtoToEntity))
 				.build();
 	}
 	
@@ -33,8 +34,9 @@ public abstract class PurchaseListMapper {
 				.id(entity.getId())
 				.purchaseId(entity.getPurchaseId())
 				.listId(entity.getListId())
+				.nameList(entity.getNameList())
 				.partialPurchasePrice(entity.getPartialPurchasePrice())
-				.itemsOfPurchase(Objects.isNull(entity.getItemsOfPurchase()) ? null : entity.getItemsOfPurchase().stream().map(ItemOfPurchaseMapper::entityToDto).collect(Collectors.toList()))
+				.itemsOfPurchase(map(entity.getItemsOfPurchase(), ItemOfPurchaseMapper::entityToDto))
 				.build();
 	}
 
