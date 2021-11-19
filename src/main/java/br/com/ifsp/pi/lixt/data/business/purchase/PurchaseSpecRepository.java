@@ -30,7 +30,7 @@ public class PurchaseSpecRepository {
 		String jpql = "";
 		Map<String, Object> parameters = new HashMap<>();
 		
-		jpql = jpql.concat("SELECT SUM(ip.price) AS price, " + filter.getUnityTime().getParams("p.purchaseDate") + " AS time FROM Purchase p ");
+		jpql = jpql.concat("SELECT SUM(ip.price * ip.amount) AS price, " + filter.getUnityTime().getParams("p.purchaseDate") + " AS time FROM Purchase p ");
 		jpql = jpql.concat("JOIN p.purchaseLists pl JOIN pl.itemsOfPurchase ip ");
 		
 		jpql = jpql.concat("WHERE p.userId = :userId ");

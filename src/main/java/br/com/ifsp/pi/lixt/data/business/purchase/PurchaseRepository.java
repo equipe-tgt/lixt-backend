@@ -16,7 +16,7 @@ public interface PurchaseRepository extends CrudRepository<Purchase, Long>, JpaS
 	@Query("SELECT p FROM Purchase p where p.userId = ?1")
 	List<Purchase> findUserPurchases(Long userId);
 	
-	@Query("SELECT concat(MONTH(p.purchaseDate), '/', YEAR(p.purchaseDate)) as month, SUM(ip.price) as price FROM Purchase p "
+	@Query("SELECT concat(MONTH(p.purchaseDate), '/', YEAR(p.purchaseDate)) as month, SUM(ip.price * ip.amount) as price FROM Purchase p "
 			+ "JOIN p.purchaseLists pl JOIN pl.itemsOfPurchase ip JOIN ip.product pr JOIN pr.category c "
 			+ "WHERE p.userId = :userId AND c.name = :#{#filter.category} AND p.purchaseDate BETWEEN :#{#filter.minDate} AND :#{#filter.maxDate} "
 			+ "GROUP BY concat(MONTH(p.purchaseDate), '/', YEAR(p.purchaseDate)) "
