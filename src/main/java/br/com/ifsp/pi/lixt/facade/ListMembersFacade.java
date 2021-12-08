@@ -1,6 +1,7 @@
 package br.com.ifsp.pi.lixt.facade;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
@@ -13,6 +14,13 @@ import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
 import br.com.ifsp.pi.lixt.utils.exceptions.DuplicatedDataException;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
+import br.com.ifsp.pi.lixt.utils.exceptions.SendMailException;
+import br.com.ifsp.pi.lixt.utils.mail.MailDto;
+import br.com.ifsp.pi.lixt.utils.mail.SenderMail;
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
+import br.com.ifsp.pi.lixt.utils.mail.templates.TypeMail;
+import br.com.ifsp.pi.lixt.utils.mail.templates.config.CreatorParametersMail;
+import br.com.ifsp.pi.lixt.utils.mail.templates.config.FormatterMail;
 import br.com.ifsp.pi.lixt.utils.security.Users;
 import br.com.ifsp.pi.lixt.utils.security.oauth.function.ValidatorAccess;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +32,7 @@ public class ListMembersFacade {
 	private final UserService userService;
 	private final ListMembersService listMembersService;
 	private final ListOfItemsService listOfItemsService;
+	private final SenderMail senderMail;
 	
 	public ListMembers sendInvite(Long listId, String username) throws ForbiddenException, NotFoundException {
 		
@@ -85,6 +94,20 @@ public class ListMembersFacade {
 	
 	public List<ListMembers> findListMembersReceviedByUser() {
 		return this.listMembersService.findListMembersReceviedByUser(Users.getUserId());
+	}
+	
+	public boolean inviteJoinPlatform(String email, Languages language) {
+		MailDto mail = TypeMail.INVITE.apply(language);
+		Map<String, String> params = CreatorParametersMail.invite(Users.getName(), Users.getEmail());
+		FormatterMail.build(mail, params, email);
+		
+		boolean responseSendMail = senderMail.sendEmail(mail);
+
+		if(!responseSendMail) {
+			throw new SendMailException();
+		}
+		
+		return true;
 	}
 
 }

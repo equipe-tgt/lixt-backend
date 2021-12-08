@@ -30,5 +30,14 @@ public abstract class CreatorParametersMail {
 		
 		return map;
 	}
+	
+	public static Map<String, String> invite(String username, String email) {
+		Map<String, String> map = new HashMap<>();
+		
+		map.put("$USERNAME", username);
+		map.put("$EMAIL", email);
+		
+		return map;
+	}
 
 }

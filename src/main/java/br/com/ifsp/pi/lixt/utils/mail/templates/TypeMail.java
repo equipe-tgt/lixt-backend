@@ -3,6 +3,7 @@ package br.com.ifsp.pi.lixt.utils.mail.templates;
 import br.com.ifsp.pi.lixt.utils.mail.MailDto;
 import br.com.ifsp.pi.lixt.utils.mail.templates.dto.createaccount.CreateAccountTemplate;
 import br.com.ifsp.pi.lixt.utils.mail.templates.dto.forgetpassword.ForgetPasswordTemplate;
+import br.com.ifsp.pi.lixt.utils.mail.templates.dto.invite.InviteTemplate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
@@ -20,6 +21,13 @@ public enum TypeMail {
 		@Override
 		public MailDto apply(Languages language) {
 			return CreateAccountTemplate.getTemplate(language);
+		}
+	},
+	
+	INVITE {
+		@Override
+		public MailDto apply(Languages language) {
+			return InviteTemplate.getTemplate(language);
 		}
 	};
 	

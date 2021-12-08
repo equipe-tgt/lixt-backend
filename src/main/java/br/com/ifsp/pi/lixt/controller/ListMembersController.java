@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifsp.pi.lixt.data.enumeration.StatusListMember;
@@ -20,6 +21,7 @@ import br.com.ifsp.pi.lixt.mapper.ListMembersMapper;
 import br.com.ifsp.pi.lixt.mapper.specific.InviteMapper;
 import br.com.ifsp.pi.lixt.utils.exceptions.ForbiddenException;
 import br.com.ifsp.pi.lixt.utils.exceptions.NotFoundException;
+import br.com.ifsp.pi.lixt.utils.mail.templates.Languages;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +68,12 @@ public class ListMembersController {
 	@GetMapping("/received")
 	public List<InviteDto> findListMembersReceviedByUser() {
 		return this.listMembersFacade.findListMembersReceviedByUser().stream().map(InviteMapper::entityToDto).collect(Collectors.toList());
+	}
+	
+	@ApiOperation(value = "Enviar um email para participar da plataforma Lixt")
+	@PostMapping(value = "/invite-join-platform", consumes = MediaType.TEXT_PLAIN_VALUE)
+	public boolean inviteJoinPlatform(@RequestBody String email, @RequestParam(defaultValue = "en-us", required = false) String language) {
+		return this.listMembersFacade.inviteJoinPlatform(email, Languages.convertStringToEnum(language));
 	}
 
 }

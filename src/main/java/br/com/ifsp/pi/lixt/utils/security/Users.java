@@ -40,4 +40,15 @@ public abstract class Users {
 		return user.getEmail();
 	}
 	
+	
+	public static String getName() {
+		OauthUserDto user = getUserAuthenticated();
+		
+		if(Objects.isNull(user)) {
+			return null;
+		}
+		
+		return user.getName();
+	}
+	
 }
