@@ -3,6 +3,8 @@ package br.com.ifsp.pi.lixt.data;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
+import java.sql.SQLException;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -14,8 +16,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import br.com.ifsp.pi.lixt.controller.ProductController;
 import br.com.ifsp.pi.lixt.data.business.product.ProductService;
 import br.com.ifsp.pi.lixt.dto.ProductDto;
-import br.com.ifsp.pi.lixt.integration.barcode.logger.BarcodeLogger;
-import br.com.ifsp.pi.lixt.integration.barcode.logger.BarcodeLoggerRepository;
+import br.com.ifsp.pi.lixt.integration.barcode.v1.logger.BarcodeLogger;
+import br.com.ifsp.pi.lixt.integration.barcode.v1.logger.BarcodeLoggerRepository;
 import br.com.ifsp.pi.lixt.utils.database.validators.ValidatorResponse;
 
 @SpringBootTest
@@ -35,7 +37,7 @@ class BarcodeIntegrationControllerTest {
 	private BarcodeLoggerRepository barcodeLoggerRepository;
 	
 	@Test
-	void testRequestToApiBarcode() {
+	void testRequestToApiBarcode() throws SQLException {
 		Long requests = barcodeLoggerRepository.findCounterOfDay();
 		
 		ProductDto product = this.productController.findByBarcode("7891268400014");
@@ -44,7 +46,10 @@ class BarcodeIntegrationControllerTest {
 		
 		assertNull(this.productController.findByBarcode("789126840001400"));
 		assertNull(this.productController.findByBarcode("789126840001400"));
-				
+		
+		this.barcodeLoggerRepository.save(BarcodeLogger.builder().counterOfDay(Long.valueOf(1)).build());
+		this.barcodeLoggerRepository.save(BarcodeLogger.builder().counterOfDay(Long.valueOf(2)).build());
+		
 		for(Integer i = requests.intValue() + 3; i <= 25; i++) {
 			this.barcodeLoggerRepository.save(BarcodeLogger.builder().counterOfDay(i.longValue()).build());
 		}

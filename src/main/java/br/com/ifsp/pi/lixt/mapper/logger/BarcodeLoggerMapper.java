@@ -1,6 +1,6 @@
 package br.com.ifsp.pi.lixt.mapper.logger;
 
-import br.com.ifsp.pi.lixt.integration.barcode.logger.BarcodeLogger;
+import br.com.ifsp.pi.lixt.integration.barcode.v1.logger.BarcodeLogger;
 import br.com.ifsp.pi.lixt.utils.mapper.Mapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;

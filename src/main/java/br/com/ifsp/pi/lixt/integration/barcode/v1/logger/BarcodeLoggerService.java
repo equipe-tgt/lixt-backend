@@ -1,4 +1,4 @@
-package br.com.ifsp.pi.lixt.integration.barcode.logger;
+package br.com.ifsp.pi.lixt.integration.barcode.v1.logger;
 
 import org.springframework.stereotype.Service;
 

@@ -1,5 +1,6 @@
 package br.com.ifsp.pi.lixt.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class ProductController {
 	
 	@ApiOperation(value = "Salvar um produto")
 	@PostMapping
-	public ResponseEntity<Object> save(@RequestBody(required = false) ProductDto product) {
+	public ResponseEntity<Object> save(@RequestBody(required = false) ProductDto product) throws SQLException {
 		try {
 			return ResponseEntity.ok(ProductMapper.entityToDto(this.productService.save(ProductMapper.dtoToEntity(product))));
 		} catch (DuplicatedDataException e) {
@@ -73,7 +74,7 @@ public class ProductController {
 	}
 	
 	@GetMapping("/by-barcode/{barcode}")
-	public ProductDto findByBarcode(@PathVariable String barcode) {
+	public ProductDto findByBarcode(@PathVariable String barcode) throws SQLException {
 		return ProductMapper.entityToDto(this.barcodeService.findByBarcode(barcode));
 	}
 

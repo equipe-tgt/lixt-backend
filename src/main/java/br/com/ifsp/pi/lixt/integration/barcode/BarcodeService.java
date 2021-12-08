@@ -7,14 +7,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import br.com.ifsp.pi.lixt.data.business.product.Product;
 import br.com.ifsp.pi.lixt.data.business.product.ProductRepository;
-import br.com.ifsp.pi.lixt.integration.barcode.logger.BarcodeLoggerService;
+import br.com.ifsp.pi.lixt.integration.barcode.v2.counter.BarcodeCounterSql;
 import br.com.ifsp.pi.lixt.mapper.ProductMapper;
-import br.com.ifsp.pi.lixt.mapper.logger.BarcodeLoggerMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,7 +30,7 @@ public class BarcodeService {
 	
 	private final RestTemplate template = new RestTemplate();
 	private final ProductRepository productRepository;
-	private final BarcodeLoggerService barcodeLoggerService;
+	private final JdbcTemplate jdbcTemplate;
 	
 	public Product findByBarcode(String barcode) {
 		var product = productRepository.findByBarcode(barcode);
@@ -38,25 +38,21 @@ public class BarcodeService {
 		if(Objects.nonNull(product))
 			return product;
 		
-		var barcodeLogger = this.barcodeLoggerService.barcodeWasSearchedToday(barcode);
-		
-		if(Objects.nonNull(barcodeLogger))
-			return null;
-		
-		Long requestsDone = this.barcodeLoggerService.findCounterOfDay();
+		Integer requestsDone = this.jdbcTemplate.queryForObject(BarcodeCounterSql.count(), Integer.class);
 
 		if(requestsDone < MAX_AMOUNT_REQUEST) {
+			this.jdbcTemplate.update(BarcodeCounterSql.updateBarcodeCount(), requestsDone+1);
+			
 			try {
 				product = this.productRepository.save(ProductMapper.modelIntoApiParams(this.doRequest(barcode)));
-				this.barcodeLoggerService.save(BarcodeLoggerMapper.build(requestsDone + 1, barcode, product.getId()));
 				log.info("Produto " + product.getName() + " (código de barras: " + barcode + ") cadastrado na plataforma. [" + (requestsDone+1) + "/25]");
-				return product;
 			}
 			catch(Exception e) {
-				this.barcodeLoggerService.save(BarcodeLoggerMapper.build(requestsDone + 1, barcode));
 				log.error("Produto (código de barras: " + barcode + ") não encontrado. [" + (requestsDone+1) + "/25]");
-				return null;
+				product = null;
 			}
+			
+			return product;
 		}
 		
 		log.warn("Produto não pôde ser buscado. [" + requestsDone + "/25]");

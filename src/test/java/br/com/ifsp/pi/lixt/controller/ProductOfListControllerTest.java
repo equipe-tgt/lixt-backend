@@ -23,6 +23,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -65,7 +66,7 @@ class ProductOfListControllerTest {
 	private List<CommentDto> comments = new ArrayList<>();
 
 	@BeforeAll
-	void createProducts() {
+	void createProducts() throws SQLException {
 		category = categoryController.save(CategoryDto.builder().name("alimento").build());
 		ResponseEntity<Object> response = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantiator.createProduct("Arroz", category, MeasureType.KG, 5)));
 		product = (ProductDto) response.getBody();

@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,7 +38,7 @@ class ProductControllerTest {
 	private ProductDto product;
 
 	@BeforeAll
-	void createProducts() {
+	void createProducts() throws SQLException {
 		category = categoryController.save(CategoryDto.builder().name("alimento").build());
 		ResponseEntity<Object> arroz = this.productController.save(ProductMapper.entityToDto(ProductDtoInstantiator.createProduct("Arroz", category, MeasureType.KG, 5)));
 		product = (ProductDto) arroz.getBody();
@@ -68,7 +69,7 @@ class ProductControllerTest {
 	@Test
 	@DisplayName("Tentar adicionar um produto com código de barras já cadastrado")
 	@Order(4)
-	void saveProductWithAlreadyExistBarcode(){
+	void saveProductWithAlreadyExistBarcode() throws SQLException{
 		ProductDto newProduct  = new ProductDto(null,
 				"Pão de batata",
 				null,
