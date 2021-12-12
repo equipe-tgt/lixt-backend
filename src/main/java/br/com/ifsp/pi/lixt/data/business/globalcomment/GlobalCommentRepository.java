@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface GlobalCommentRepository extends CrudRepository<GlobalComment, Long>, JpaSpecificationExecutor<GlobalComment> {
-	@Query("SELECT gc FROM GlobalComment gc where gc.productId = ?1")
+	@Query("SELECT gc FROM GlobalComment gc where gc.productId = ?1 and (gc.userId = ?2 or gc.isPublic = true)")
 	List<GlobalComment> findGlobalCommentsByProductId(Long productId);
 
 	@Query("SELECT gc FROM GlobalComment gc where gc.userId = ?1 and gc.productId = ?2")

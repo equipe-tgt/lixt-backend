@@ -30,7 +30,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @Table(name = "tb_item_of_purchase", indexes = { 
 		@Index(columnList = "id_product", name = "fk_itemOfPurchase_product"),
-		@Index(columnList = "st_name", name = "idx_itemOfPurchase_name"),
 })
 public class ItemOfPurchase {
 	

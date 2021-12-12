@@ -28,7 +28,8 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @Table(name = "tb_comment", indexes = {
 		@Index(columnList = "id_product_of_list", name = "fk_comment_productOfList"),
-		@Index(columnList = "id_user", name = "fk_comment_user")
+		@Index(columnList = "id_user", name = "fk_comment_user"),
+		@Index(columnList = "dt_created_at", name = "idx_itemOfPurchase_createdAt"),
 })
 public class Comment {
 	

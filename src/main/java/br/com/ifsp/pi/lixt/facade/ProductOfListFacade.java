@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -90,9 +89,6 @@ public class ProductOfListFacade {
 		Long productId = this.productOfListService.findById(productOfListId).getProductId();
 
 		List<GlobalComment> globalComments = this.globalCommentService.findByProductId(productId);
-		globalComments = globalComments.stream()
-				.filter(comment -> comment.getIsPublic() || Objects.equals(Users.getUserId(), comment.getUserId()))
-				.collect(Collectors.toList());
 		List<Comment> comments = this.productOfListService.findCommentsByProductOfListId(productOfListId);
 
 		return AllCommentsMapper.entityToDto(globalComments, comments);

@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Table(name = "tb_global_comment", indexes = {
 		@Index(columnList = "id_product", name = "fk_globalComment_product"),
-		@Index(columnList = "id_user", name = "fk_globalComment_user")
+		@Index(columnList = "id_user", name = "fk_globalComment_user"),
+		@Index(columnList = "dt_created_at", name = "idx_itemOfPurchase_createdAt"),
 })
 public class GlobalComment {
 
