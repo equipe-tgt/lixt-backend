@@ -97,6 +97,9 @@ public class ListMembersFacade {
 	}
 	
 	public boolean inviteJoinPlatform(String email, Languages language) {
+		if(Objects.nonNull(this.userService.findByEmail(email)))
+			throw new DuplicatedDataException("Usuário já cadastrado na plataforma");
+		
 		MailDto mail = TypeMail.INVITE.apply(language);
 		Map<String, String> params = CreatorParametersMail.invite(Users.getName(), Users.getEmail());
 		FormatterMail.build(mail, params, email);

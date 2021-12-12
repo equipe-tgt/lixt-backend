@@ -3,6 +3,8 @@ package br.com.ifsp.pi.lixt.data.business.globalcomment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import br.com.ifsp.pi.lixt.utils.security.Users;
+
 import java.util.List;
 
 @Service
@@ -24,7 +26,7 @@ public class GlobalCommentService {
 	}
 
 	public List<GlobalComment> findByProductId(Long productId) {
-		return this.globalCommentRepository.findGlobalCommentsByProductId(productId);
+		return this.globalCommentRepository.findGlobalCommentsByProductId(productId, Users.getUserId());
 	}
 
 }
